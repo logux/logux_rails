@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe LoguxController, type: :controller do
   subject do
     post(:create,
-         body: { events: [['action', { type: 'comment/add' }]] }.to_json,
+         params: { events: [['action', { type: 'comment/add' }]] },
          as: :json)
   end
 

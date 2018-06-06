@@ -3,6 +3,7 @@
 require 'logux/meta'
 require 'logux/params'
 require 'logux/action'
+require 'logux/version'
 
 module Logux
   def self.process_batch(request_params)

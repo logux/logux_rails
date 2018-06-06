@@ -2,11 +2,11 @@
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'logux_rails/version'
+require 'logux/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'logux_rails'
-  spec.version       = LoguxRails::VERSION
+  spec.version       = Logux::VERSION
   spec.authors       = ['WildDima']
   spec.email         = ['dtopornin@gmail.com']
 
