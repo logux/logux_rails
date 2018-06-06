@@ -2,6 +2,7 @@
 
 require 'logux_rails/version'
 require 'logux'
+require 'forwardable'
 
 module LoguxRails
   # Your code goes here...
