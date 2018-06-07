@@ -12,7 +12,7 @@ module Logux
       @meta = meta
     end
 
-    def init
+    def subscribe
       channel_class = channel_type.camel_case.constantize
       if !defined?(ActiveRecord) || channel_class.is_a?(ActiveRecord::Base)
         raise_unknown_type_error!

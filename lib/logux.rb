@@ -6,6 +6,7 @@ require 'rails/engine'
 require 'logux/meta'
 require 'logux/params'
 require 'logux/action'
+require 'logux/action_matcher'
 require 'logux/version'
 require 'logux/engine'
 
@@ -31,7 +32,7 @@ module Logux
   end
 
   def self.find_action_class_for(params)
-    "Action::#{params.action.camelcase}".constantize
+    Logux::ActionMatcher.new(params).action
   end
 
   private_class_method :find_action_class_for

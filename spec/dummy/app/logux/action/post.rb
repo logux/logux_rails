@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Action
-  class Comment < Logux::Action
-    def add
+  class Post < Logux::Action
+    def subscribe
       ['processed', { id: meta[:id] }]
     end
   end

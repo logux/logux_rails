@@ -22,5 +22,17 @@ module Logux
     def event
       type.split('/').second
     end
+
+    def channel
+      data[:channel]
+    end
+
+    def channel_name
+      channel.split('/').first
+    end
+
+    def channel_id
+      channel.split('/').last
+    end
   end
 end
