@@ -18,6 +18,24 @@ Or install it yourself as:
 
 ## Usage
 
+First of all, you have to configure logux, by defining server address in, for example, `config/initializers/logux.rb`:
+
+```ruby
+Logux.configuration do |config|
+  config.logux_host = 'http://localhost:3333'
+end
+```
+
+Mount logux in routes:
+
+```ruby
+  mount Logux::Engine => '/'
+```
+
+After this, POST requests to `/logux` will be processed by LoguxController. You can redefine it or inherit from, if it necessary, for example, for implementing custom authorization flow.
+
+LoguxRails will try to find Action for the specific message from logux-server. For example, for `project/rename` action, you should define `Action::Project` class, inherited from `Logux::Action` base class, and implement `rename` method.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
