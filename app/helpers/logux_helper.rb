@@ -1,0 +1,2 @@
+module LoguxHelper
+end
