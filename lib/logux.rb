@@ -1,11 +1,23 @@
 # frozen_string_literal: true
 
+require 'configurations'
+require 'rest-client'
+require 'rails/engine'
 require 'logux/meta'
 require 'logux/params'
 require 'logux/action'
 require 'logux/version'
+require 'logux/engine'
 
 module Logux
+  include Configurations
+
+  configurable :logux_host
+
+  configuration_defaults do |config|
+    config.logux_host = 'localhost:3333'
+  end
+
   def self.process_batch(request_params)
     request_params.map { |params| process(params) }
   end
