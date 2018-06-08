@@ -3,10 +3,12 @@
 require 'configurations'
 require 'rest-client'
 require 'rails/engine'
+require 'hashie/mash'
 require 'logux/meta'
 require 'logux/params'
 require 'logux/action'
-require 'logux/action_matcher'
+require 'logux/request'
+require 'logux/response'
 require 'logux/version'
 require 'logux/engine'
 
