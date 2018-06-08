@@ -4,6 +4,7 @@ require 'configurations'
 require 'rest-client'
 require 'rails/engine'
 require 'hashie/mash'
+require 'logux/client'
 require 'logux/meta'
 require 'logux/params'
 require 'logux/action'
@@ -23,7 +24,9 @@ module Logux
 
   def self.add_action(type, params: {}, meta: {})
     request = Logux::Request.new
-    request.add_action(type, params: params, meta: meta)
+    logux_params = Logux::Params.new(params)
+    logux_meta = Logux::Meta.new(meta)
+    request.add_action(type, params: logux_params, meta: logux_meta)
   end
 
   def self.process_batch(request_params)
