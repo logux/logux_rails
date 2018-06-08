@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Logux
-  class Meta
-    extend Forwardable
-    attr_reader :data
+  class Meta < Hashie::Mash
+    def with_time!
+      self[:time] = _current_time
+      self
+    end
 
-    def_delegator :@data, :[], :[]
-
-    def initialize(data)
-      @data = data
+    def _current_time
+      Time.now.to_i
     end
   end
 end
