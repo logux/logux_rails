@@ -3,7 +3,7 @@
 module Action
   class Post < Logux::Action
     def subscribe
-      ['processed', { id: meta[:id] }]
+      respond :processed
     end
   end
 end

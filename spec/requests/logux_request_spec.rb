@@ -13,10 +13,10 @@ RSpec.describe 'Logux request', type: :request do
     [
       ['action',
        { type: 'logux/subscribe', channel: 'post/123' },
-       { time: Time.now, id: [219_856_768, 'clientid', 0], userId: 1 }],
+       { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }],
       ['action',
        { type: 'comment/add', key: 'text', value: 'hi' },
-       { time: Time.now, id: [219_856_768, 'clientid', 0], userId: 1 }]
+       { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }]
     ]
   end
 

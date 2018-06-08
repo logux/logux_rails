@@ -3,7 +3,7 @@
 module Action
   class Comment < Logux::Action
     def add
-      ['processed', { id: meta[:id] }]
+      respond :processed
     end
   end
 end
