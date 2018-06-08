@@ -2,6 +2,8 @@
 
 require 'bundler/setup'
 require 'logux_rails'
+require 'webmock/rspec'
+require 'timecop'
 require 'pry-byebug'
 
 RSpec.configure do |config|

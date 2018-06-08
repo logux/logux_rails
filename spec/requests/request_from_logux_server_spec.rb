@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Logux request', type: :request do
+RSpec.describe 'Logux response', type: :request do
   subject do
     post('/logux',
          params: logux_params,
