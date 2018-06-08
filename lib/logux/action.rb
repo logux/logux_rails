@@ -22,7 +22,7 @@ module Logux
     end
 
     def respond(status, with: nil)
-      Logux::Response.new(status, params: params, meta: meta)
+      Logux::Response.new(status, params: params, meta: meta, custom_data: with)
     end
 
     def subscribe_class; end

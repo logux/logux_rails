@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Logux
   class Response
     attr_reader :status, :params, :meta, :custom_data

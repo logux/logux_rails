@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 module Logux
   class Client
+    attr_reader :logux_host
+
     def initialize(logux_host: Logux.configuration.logux_host)
       @logux_host = logux_host
     end
