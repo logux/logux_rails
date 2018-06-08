@@ -2,7 +2,6 @@
 
 module Logux
   class Action
-    class EmptyType < StandardError; end
     class UnknownType < StandardError; end
 
     attr_reader :params, :meta
@@ -13,37 +12,27 @@ module Logux
     end
 
     def subscribe
-      channel_class = channel_type.camel_case.constantize
+      channel_class = subscribe_class || params.channel_name.camel_case.constantize
       if !defined?(ActiveRecord) || channel_class.is_a?(ActiveRecord::Base)
         raise_unknown_type_error!
       end
-      channel_class.find_by(id: channel_id)
+      channel_class.find_by(id: subscribe_id || params.channel_id)
     rescue NameError
       raise_unknown_type_error!
     end
 
-    def channel
-      channel = params&.dig(:type)
-      raise_empty_type_error! unless channel
-      channel
+    def respond(status, with: nil)
+      Logux::Response.new(status, params: params, meta: meta)
     end
 
-    def channel_id
-      channel.split('/').last
-    end
+    def subscribe_class; end
 
-    def channel_type
-      channel.split('/').first
-    end
+    def subscribe_id; end
 
     private
 
     def raise_unknown_type_error!
-      raise Logax::Action::UnknownType
-    end
-
-    def raise_empty_type_error!
-      raise Logax::Action::EmtpyType
+      raise Logux::Action::UnknownType
     end
   end
 end
