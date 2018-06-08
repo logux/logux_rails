@@ -21,6 +21,11 @@ module Logux
     config.logux_host = 'localhost:3333'
   end
 
+  def self.add_action(type, params: {}, meta: {})
+    request = Logux::Request.new
+    request.add_action(type, params: params, meta: meta)
+  end
+
   def self.process_batch(request_params)
     request_params.map { |params| process(params) }
   end
@@ -30,11 +35,17 @@ module Logux
     meta = Logux::Meta.new(request_params[2])
     action_class = find_action_class_for(params)
     action = action_class.new(params: params, meta: meta)
-    action.public_send(params.event)
+    action.public_send(params.action_type).to_json
   end
 
   def self.find_action_class_for(params)
-    Logux::ActionMatcher.new(params).action
+    action_name = if params.type == 'logux/subscribe'
+                    params.channel_name
+                  else
+                    params.action_name
+                  end
+
+    "Action::#{action_name.camelize}".constantize
   end
 
   private_class_method :find_action_class_for
