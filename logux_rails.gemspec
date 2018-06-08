@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'configurations'
+  spec.add_dependency 'hashie'
   spec.add_dependency 'rails'
   spec.add_dependency 'rest-client'
   spec.add_development_dependency 'bundler', '~> 1.16'
