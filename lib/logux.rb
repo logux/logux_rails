@@ -39,7 +39,7 @@ module Logux
     meta = Logux::Meta.new(request_params[2])
     action_class = find_action_class_for(params)
     action = action_class.new(params: params, meta: meta)
-    action.public_send(params.action_type).to_json
+    action.public_send(params.action_type).format
   end
 
   def self.find_action_class_for(params)

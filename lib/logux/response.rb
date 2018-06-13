@@ -11,7 +11,7 @@ module Logux
       @custom_data = custom_data
     end
 
-    def to_json
+    def format
       [status, custom_data || meta.slice(:id)]
     end
   end
