@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Action
+module Actions
   class Comment < Logux::Action
     def add
       respond :processed

@@ -49,7 +49,7 @@ module Logux
                     params.action_name
                   end
 
-    "Action::#{action_name.camelize}".constantize
+    "Actions::#{action_name.camelize}".constantize
   end
 
   private_class_method :find_action_class_for

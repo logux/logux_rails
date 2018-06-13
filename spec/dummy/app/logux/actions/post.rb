@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Action
+module Actions
   class Post < Logux::Action
     def subscribe
       respond :processed
