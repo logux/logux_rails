@@ -2,6 +2,8 @@
 
 module Logux
   class Meta < Hashie::Mash
+    disable_warnings
+
     def with_time!
       self[:time] = _current_time
       self

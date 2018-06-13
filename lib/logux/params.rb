@@ -5,6 +5,8 @@ module Logux
     class EmptyType < StandardError; end
     class EmptyChannel < StandardError; end
 
+    disable_warnings
+
     def action_name
       raise_empty_type_error!(__method__) if type.nil?
       type.split('/').first
