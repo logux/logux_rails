@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Logux::Request, timecop: true do
@@ -11,7 +13,7 @@ describe Logux::Request, timecop: true do
     let(:meta) { create(:logux_meta) }
 
     context 'when params has no overwrited keys' do
-      let(:params) { { key: 'name', value: 'test'} }
+      let(:params) { { key: 'name', value: 'test' } }
       let(:meta) { create(:logux_meta) }
       before do
         stub_request(:post, Logux.configuration.logux_host)

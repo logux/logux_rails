@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :logux_params, class: Logux::Params do
     factory :logux_params_subscribe do
