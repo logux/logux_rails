@@ -21,8 +21,11 @@ module Logux
       raise_unknown_type_error!
     end
 
-    def respond(status, with: nil)
-      Logux::Response.new(status, params: params, meta: meta, custom_data: with)
+    def respond(status, with_params: params, with_meta: meta, custom_data: nil)
+      Logux::Response.new(status,
+                          params: with_params,
+                          meta: with_meta,
+                          custom_data: custom_data)
     end
 
     def subscribe_class; end
