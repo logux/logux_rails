@@ -12,7 +12,7 @@ module Logux
     end
 
     def subscribe
-      channel_class = subscribe_class || params.channel_name.camel_case.constantize
+      channel_class = subscribe_class || params.channel_name.camelcase.constantize
       if !defined?(ActiveRecord) || channel_class.is_a?(ActiveRecord::Base)
         raise_unknown_type_error!
       end
