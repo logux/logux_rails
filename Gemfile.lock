@@ -67,6 +67,8 @@ GEM
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.7.1)
+    factory_bot (4.10.0)
+      activesupport (>= 3.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hashdiff (0.3.7)
@@ -196,6 +198,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16)
+  factory_bot
   logux_rails!
   pry
   pry-byebug
