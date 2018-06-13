@@ -1,5 +1,9 @@
 inherit_from: .rubocop_todo.yml
 
+AllCops:
+  Exclude:
+    - 'spec/dummy/db/**/*.rb'
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
