@@ -25,7 +25,8 @@ RSpec.describe Logux do
         .with(body: ['action',
                      { key: 'body', value: 'Test text', type: 'comment/add' },
                      { time: Time.now.to_i }].to_json)
-        .to_return(body: ['processed', { 'id' => [219_856_768, 'clientid', 0] }].to_json)
+        .to_return(body: ['processed',
+                          { 'id' => [219_856_768, 'clientid', 0] }].to_json)
     end
 
     it 'does return correct body' do
