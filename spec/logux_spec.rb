@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Logux do
+describe Logux, timecop: true do
   it 'has a version number' do
     expect(Logux::VERSION).not_to be nil
   end
@@ -13,12 +13,6 @@ RSpec.describe Logux do
     let(:type) { 'comment/add' }
     let(:params) { { key: 'body', value: 'Test text' } }
     let(:meta) { {} }
-
-    around do |example|
-      Timecop.freeze(Time.now)
-      example.call
-      Timecop.return
-    end
 
     before do
       stub_request(:post, Logux.configuration.logux_host)

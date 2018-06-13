@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'factory_bot'
 require 'logux_rails'
 require 'webmock/rspec'
 require 'timecop'
 require 'pry-byebug'
+
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -16,5 +19,10 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+  config.include FactoryBot::Syntax::Methods
+
+  config.before(:suite) do
+    FactoryBot.find_definitions
   end
 end
