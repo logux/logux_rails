@@ -2,7 +2,7 @@
 
 module Logux
   class Action
-    class UnknownType < StandardError; end
+    class UnknownTypeError < StandardError; end
 
     attr_reader :params, :meta
 
@@ -32,7 +32,7 @@ module Logux
     private
 
     def raise_unknown_type_error!
-      raise Logux::Action::UnknownType
+      raise Logux::Action::UnknownTypeError
     end
   end
 end
