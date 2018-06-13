@@ -3,6 +3,7 @@
 require 'configurations'
 require 'rest-client'
 require 'rails/engine'
+require 'active_support'
 require 'hashie/mash'
 require 'logux/client'
 require 'logux/meta'
