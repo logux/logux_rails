@@ -9,6 +9,8 @@ require 'logux/client'
 require 'logux/meta'
 require 'logux/params'
 require 'logux/action'
+require 'logux/action_caller'
+require 'logux/policy'
 require 'logux/request'
 require 'logux/response'
 require 'logux/version'
@@ -17,10 +19,11 @@ require 'logux/engine'
 module Logux
   include Configurations
 
-  configurable :logux_host
+  configurable :logux_host, :verify_authorized
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:3333'
+    config.verify_authorized = false
   end
 
   def self.add_action(type, params: {}, meta: {})
@@ -31,26 +34,16 @@ module Logux
   end
 
   def self.process_batch(request_params)
-    request_params.map { |params| process(params) }
+    request_params.map do |params|
+      processed_data = process(params)
+      yield(processed_data.to_json) if block_given?
+      processed_data
+    end
   end
 
   def self.process(request_params)
     params = Logux::Params.new(request_params[1])
     meta = Logux::Meta.new(request_params[2])
-    action_class = find_action_class_for(params)
-    action = action_class.new(params: params, meta: meta)
-    action.public_send(params.action_type).format
+    Logux::ActionCaller.new(params: params, meta: meta).call!
   end
-
-  def self.find_action_class_for(params)
-    action_name = if params.type == 'logux/subscribe'
-                    params.channel_name
-                  else
-                    params.action_name
-                  end
-
-    "Actions::#{action_name.camelize}".constantize
-  end
-
-  private_class_method :find_action_class_for
 end

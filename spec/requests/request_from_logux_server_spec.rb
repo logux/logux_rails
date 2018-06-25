@@ -27,8 +27,12 @@ describe 'Logux response' do
     ]
   end
 
+  let(:read_server_response) do
+    "[#{response.stream.body.gsub('][', '],[')}]"
+  end
+
   it 'does return correct body' do
     subject
-    expect(JSON.parse(response.body)).to match_array(logux_response)
+    expect(JSON.parse(read_server_response)).to match_array(logux_response)
   end
 end
