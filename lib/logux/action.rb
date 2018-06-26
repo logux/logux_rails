@@ -4,6 +4,16 @@ module Logux
   class Action
     class UnknownTypeError < StandardError; end
 
+    class << self
+      def verify_authorized!
+        Logux.configure.verify_authorized = true
+      end
+
+      def unverify_authorized!
+        Logux.configure.verify_authorized = false
+      end
+    end
+
     attr_reader :params, :meta
 
     def initialize(params:, meta: {})
