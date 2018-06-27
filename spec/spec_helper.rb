@@ -6,11 +6,13 @@ require 'logux_rails'
 require 'webmock/rspec'
 require 'timecop'
 require 'pry-byebug'
+require 'rspec/live_controllers'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
+  config.include RSpec::LiveControllers::Matchers
   config.example_status_persistence_file_path = '.rspec_status'
 
   # Disable RSpec exposing methods globally on `Module` and `main`

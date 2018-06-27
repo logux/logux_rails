@@ -33,6 +33,7 @@ describe 'Logux response' do
 
   it 'does return correct body' do
     subject
-    expect(JSON.parse(read_server_response)).to match_array(logux_response)
+    expect(response.stream).to start_from_chunk(logux_response[0])
+    expect(response.stream).to end_with_chunk(logux_response[1])
   end
 end
