@@ -37,9 +37,9 @@ module Logux
     end
 
     def authorize!
-      klass = find_class_for(params, type: 'policy')
+      klass = find_class_for(params, type: 'policies')
       auth_object = klass.new(params: params, meta: meta, action: action)
-      authorized = auth_object.public_send(params.action_type)
+      authorized = auth_object.public_send("#{params.action_type}?")
       raise Logux::Policy::UnauthorizedError unless authorized
     end
   end
