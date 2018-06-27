@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/wilddima/rspec-live_controllers
+  revision: bbe933c4fc3050603c5888b07194db99a0df69f8
+  specs:
+    rspec-live_controllers (0.1.0)
+
 PATH
   remote: .
   specs:
@@ -203,6 +209,7 @@ DEPENDENCIES
   pry
   pry-byebug
   rake (~> 10.0)
+  rspec-live_controllers!
   rspec-rails
   rubocop
   sqlite3
