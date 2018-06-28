@@ -18,6 +18,8 @@ require 'logux/engine'
 
 module Logux
   include Configurations
+  class Logux::NoPolicyError < StandardError; end
+  class Logux::NoActionError < StandardError; end
 
   configurable :logux_host, :verify_authorized
 
@@ -45,5 +47,7 @@ module Logux
     params = Logux::Params.new(request_params[1])
     meta = Logux::Meta.new(request_params[2])
     Logux::ActionCaller.new(params: params, meta: meta).call!
+  rescue
+    Logux::Response.new(:internal_error, params: params, meta: meta)
   end
 end

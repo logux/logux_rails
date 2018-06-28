@@ -9,17 +9,17 @@ module Logux
 
     def action_name
       raise_empty_type_error!(__method__) if type.nil?
-      type.split('/').first
+      type.split('/')[0]
     end
 
     def action_type
       raise_empty_type_error!(__method__) if type.nil?
-      type.split('/').second
+      type.split('/')[1]
     end
 
     def channel_name
       raise_empty_channel_error!(__method__) if channel.nil?
-      channel.split('/').first
+      channel.split('/')[0]
     end
 
     def channel_id
