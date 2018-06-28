@@ -26,7 +26,6 @@ module Logux
   configuration_defaults do |config|
     config.logux_host = 'localhost:3333'
     config.verify_authorized = false
-    config.logger = Rails.logger
   end
 
   def self.add_action(type, params: {}, meta: {})

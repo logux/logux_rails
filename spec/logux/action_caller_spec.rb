@@ -26,7 +26,7 @@ describe Logux::ActionCaller do
       end
 
       it 'return ok' do
-        expect(subject).to contain_exactly(:ok, {})
+        expect(subject.status).to eq(:ok)
       end
 
       context 'when verify_authorized' do
@@ -50,7 +50,7 @@ describe Logux::ActionCaller do
           end
 
           it 'return ok' do
-            expect(subject).to contain_exactly(:ok, {})
+            expect(subject.status).to eq(:ok)
           end
         end
       end
