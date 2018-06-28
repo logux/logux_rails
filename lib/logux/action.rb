@@ -6,11 +6,11 @@ module Logux
 
     class << self
       def verify_authorized!
-        Logux.configure.verify_authorized = true
+        Logux.configuration.verify_authorized = true
       end
 
       def unverify_authorized!
-        Logux.configure.verify_authorized = false
+        Logux.configuration.verify_authorized = false
       end
     end
 
