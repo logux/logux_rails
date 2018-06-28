@@ -54,7 +54,7 @@ module Logux
 
     def authorize!
       auth_object = policy_class_for(params)
-        .new(params: params, meta: meta, action: action)
+                    .new(params: params, meta: meta, action: action)
       authorized = auth_object.public_send("#{params.action_type}?")
       raise Logux::Policy::UnauthorizedError unless authorized
     end
