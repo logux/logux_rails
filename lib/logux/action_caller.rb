@@ -13,12 +13,19 @@ module Logux
       action_class = action_class_for(params)
       @action = action_class.new(params: params, meta: meta)
       authorize! if authorizable?
-      action.public_send(params.action_type).format
+      format(action.public_send(params.action_type))
     rescue Logux::Policy::UnauthorizedError
       action.respond(:forbidden)
     end
 
     private
+
+    def format(response)
+      return response.format if response.is_a? Logux::Response
+      Logux::Response
+        .new(:processed, params: params, meta: meta)
+        .format
+    end
 
     def action_class_for(params)
       find_class_for(params)
