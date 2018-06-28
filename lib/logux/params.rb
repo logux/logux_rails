@@ -5,19 +5,19 @@ module Logux
     disable_warnings
 
     def action_name
-      type.split('/')[0]
+      type&.split('/')&.dig(0)
     end
 
     def action_type
-      type.split('/')[1]
+      type&.split('/')&.dig(1)
     end
 
     def channel_name
-      channel.split('/')[0]
+      channel&.split('/')&.dig(0)
     end
 
     def channel_id
-      channel.split('/').last
+      channel&.split('/')&.last
     end
   end
 end
