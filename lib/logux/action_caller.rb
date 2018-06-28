@@ -15,16 +15,15 @@ module Logux
       authorize! if authorizable?
       format(action.public_send(params.action_type))
     rescue Logux::Policy::UnauthorizedError
-      action.respond(:forbidden)
+      format(action.respond(:forbidden))
     end
 
     private
 
     def format(response)
-      return response.format if response.is_a? Logux::Response
+      return response if response.is_a? Logux::Response
       Logux::Response
         .new(:processed, params: params, meta: meta)
-        .format
     end
 
     def action_class_for(params)
