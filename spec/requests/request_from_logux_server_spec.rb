@@ -32,16 +32,4 @@ describe 'Logux response' do
     expect(response.stream).to start_from_chunk(logux_response[0])
     expect(response.stream).to end_with_chunk(logux_response[1])
   end
-
-  context 'when verify_authorized' do
-    before do
-      Logux.configuration.verify_authorized = true
-    end
-
-    it 'does return correct body' do
-      subject
-      expect(response.stream).to start_from_chunk(logux_response[0])
-      expect(response.stream).to end_with_chunk(logux_response[1])
-    end
-  end
 end

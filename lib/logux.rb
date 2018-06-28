@@ -47,7 +47,5 @@ module Logux
     params = Logux::Params.new(request_params[1])
     meta = Logux::Meta.new(request_params[2])
     Logux::ActionCaller.new(params: params, meta: meta).call!
-  rescue StandardError
-    Logux::Response.new(:internal_error, params: params, meta: meta)
   end
 end
