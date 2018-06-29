@@ -28,4 +28,30 @@ describe Logux::Action do
       expect(subject.custom_data).to be_nil
     end
   end
+
+  describe '.verify_authorized!' do
+    subject { described_class.verify_authorized! }
+
+    before { Logux.configuration.verify_authorized = false }
+
+    it 'sets to true' do
+      expect { subject }
+        .to change { Logux.configuration.verify_authorized }
+        .from(false)
+        .to(true)
+    end
+  end
+
+  describe '.unverify_authorized!' do
+    subject { described_class.unverify_authorized! }
+
+    before { Logux.configuration.verify_authorized = true }
+
+    it 'sets to false' do
+      expect { subject }
+        .to change { Logux.configuration.verify_authorized }
+        .from(true)
+        .to(false)
+    end
+  end
 end
