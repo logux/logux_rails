@@ -6,8 +6,12 @@ class LoguxController < ActionController::Base
   # rubocop:disable Style/RescueStandardError
   def create
     Logux.verify_request_meta_data(meta_params)
-    Logux.process_batch(command_params) do |processed|
-      response.stream.write(processed)
+    batch_size = command_params.size
+    response.stream.write('[')
+    command_params.map.with_index do |param, index|
+      processed_data = Logux.process(param)
+      response.stream.write(processed_data.to_json)
+      response.stream.write(', ') if index + 1 != batch_size
     end
   rescue => e
     Logux.logger.error(e)

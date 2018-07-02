@@ -11,13 +11,20 @@ describe Logux::Request, timecop: true do
     let(:type) { 'user/add' }
     let(:params) { create(:logux_params_add) }
     let(:meta) { create(:logux_meta) }
+    let(:logux_request) do
+      {
+        version: 0,
+        password: nil,
+        commands: ['action', params.merge(type: type), meta.with_time!]
+      }
+    end
 
     context 'when params has no overwrited keys' do
       let(:params) { { key: 'name', value: 'test' } }
       let(:meta) { create(:logux_meta) }
       before do
         stub_request(:post, Logux.configuration.logux_host)
-          .with(body: ['action', params.merge(type: type), meta.with_time!].to_json)
+          .with(body: logux_request.to_json)
           .to_return(body: ['processed',
                             { 'id' => [219_856_768, 'clientid', 0] }].to_json)
       end

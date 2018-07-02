@@ -26,8 +26,8 @@ module Logux
   configuration_defaults do |config|
     config.logux_host = 'localhost:3333'
     config.verify_authorized = false
-    config.logger = Logger.new(STDOUT)
-    config.logger = Rails.logger if defined? Rails
+    config.logger = ActiveSupport::Logger.new(STDOUT)
+    config.logger = Rails.logger if defined?(Rails) && Rails.logger
   end
 
   def self.add_action(type, params: {}, meta: {})
@@ -38,10 +38,10 @@ module Logux
   end
 
   def self.verify_request_meta_data(meta_params)
-    self.logger.warn(%Q{Please, add passoword for logux server:
+    logger.warn(%(Please, add passoword for logux server:
                         Logux.configure do |c|
                           c.password = 'your-password'
-                        end})
+                        end))
     auth = Logux.configuration.password == meta_params&.dig(:password)
     raise unless auth
   end
@@ -64,6 +64,6 @@ module Logux
   end
 
   def self.logger
-    self.configuration.logger
+    configuration.logger
   end
 end
