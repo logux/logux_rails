@@ -8,18 +8,21 @@ describe 'Logux response' do
          params: logux_params,
          as: :json)
   end
+  let(:password) { Logux.configuration.password }
 
   let(:logux_params) do
-    [
-      ['action',
-       { type: 'logux/subscribe', channel: 'post/123' },
-       { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }],
-      ['action',
-       { type: 'comment/add', key: 'text', value: 'hi' },
-       { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }]
-    ]
+    { version: 0,
+      password: password,
+      commands: [
+        ['action',
+         { type: 'logux/subscribe', channel: 'post/123' },
+         { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }],
+        ['action',
+         { type: 'comment/add', key: 'text', value: 'hi' },
+         { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }]
+      ] }
   end
-
+  let(:params) { Logux.configuration.password }
   let(:logux_response) do
     [
       ['processed', {  'id' => [219_856_768, 'clientid', 0] }],
@@ -31,5 +34,14 @@ describe 'Logux response' do
     subject
     expect(response.stream).to start_from_chunk(logux_response[0])
     expect(response.stream).to end_with_chunk(logux_response[1])
+  end
+
+  context 'when password wrong' do
+    let(:password) { '12345' }
+
+    it 'does return error' do
+      subject
+      expect(response.stream).to start_from_chunk([:internal_error])
+    end
   end
 end

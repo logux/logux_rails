@@ -21,11 +21,13 @@ module Logux
   class NoPolicyError < StandardError; end
   class NoActionError < StandardError; end
 
-  configurable :logux_host, :verify_authorized
+  configurable :logux_host, :verify_authorized, :password, :logger
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:3333'
     config.verify_authorized = false
+    config.logger = Logger.new(STDOUT)
+    config.logger = Rails.logger if defined? Rails
   end
 
   def self.add_action(type, params: {}, meta: {})
@@ -33,6 +35,15 @@ module Logux
     logux_params = Logux::Params.new(params)
     logux_meta = Logux::Meta.new(meta)
     request.add_action(type, params: logux_params, meta: logux_meta)
+  end
+
+  def self.verify_request_meta_data(meta_params)
+    self.logger.warn(%Q{Please, add passoword for logux server:
+                        Logux.configure do |c|
+                          c.password = 'your-password'
+                        end})
+    auth = Logux.configuration.password == meta_params&.dig(:password)
+    raise unless auth
   end
 
   def self.process_batch(request_params)
@@ -50,5 +61,9 @@ module Logux
       .new(params: params, meta: meta)
       .call!
       .format
+  end
+
+  def self.logger
+    self.configuration.logger
   end
 end
