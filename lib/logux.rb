@@ -38,10 +38,12 @@ module Logux
   end
 
   def self.verify_request_meta_data(meta_params)
-    logger.warn(%(Please, add passoword for logux server:
-                        Logux.configure do |c|
-                          c.password = 'your-password'
-                        end))
+    if Logux.configuration.password.nil?
+      logger.warn(%(Please, add passoword for logux server:
+                          Logux.configure do |c|
+                            c.password = 'your-password'
+                          end))
+    end
     auth = Logux.configuration.password == meta_params&.dig(:password)
     raise unless auth
   end

@@ -30,7 +30,8 @@ module Logux
       find_class_for(params)
     rescue NameError
       raise Logux::NoActionError, %(
-        Unable to find action for #{action_name(params)}
+        Unable to find action #{action_name(params).camelize}
+        Should be in app/logux/actions/#{action_name(params)}.rb
       )
     end
 
@@ -38,7 +39,8 @@ module Logux
       find_class_for(params, type: 'policies')
     rescue NameError
       raise Logux::NoPolicyError, %(
-        Unable to find policy for #{action_name(params)}
+        Unable to find policy #{action_name(params).camelize}
+        Should be in app/logux/policies/#{action_name(params)}.rb
       )
     end
 
