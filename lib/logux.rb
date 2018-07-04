@@ -27,7 +27,7 @@ module Logux
     config.logux_host = 'localhost:3333'
     config.verify_authorized = false
     config.logger = ActiveSupport::Logger.new(STDOUT)
-    config.logger = Rails.logger if defined?(Rails) && Rails.logger
+    config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
   end
 
   def self.add_action(type, params: {}, meta: {})

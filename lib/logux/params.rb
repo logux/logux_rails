@@ -9,7 +9,7 @@ module Logux
     end
 
     def action_type
-      type&.split('/')&.dig(1)
+      type&.split('/')&.last
     end
 
     def channel_name

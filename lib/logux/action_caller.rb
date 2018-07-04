@@ -10,6 +10,7 @@ module Logux
     end
 
     def call!
+      Logux.logger.info("Searching action for params: #{params}, meta: #{meta}")
       action_class = action_class_for(params)
       @action = action_class.new(params: params, meta: meta)
       authorize! if authorizable?
@@ -52,7 +53,7 @@ module Logux
       if params.type == 'logux/subscribe'
         params.channel_name
       else
-        params.action_name
+        params.type&.split('/')[0..-2]&.map(&:camelize)&.join('::')
       end
     end
 
