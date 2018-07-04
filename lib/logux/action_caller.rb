@@ -11,7 +11,7 @@ module Logux
 
     def call!
       Logux.logger.info("Searching action for params: #{params}, meta: #{meta}")
-      action_class = action_class_for(params)
+      action_class = class_finder.find_action_class
       @action = action_class.new(params: params, meta: meta)
       authorize! if authorizable?
       format(action.public_send(params.action_type))
@@ -27,23 +27,6 @@ module Logux
         .new(:processed, params: params, meta: meta)
     end
 
-    def action_class_for(params)
-      find_class_for(params)
-    rescue NameError
-      raise Logux::NoActionError, %(
-        Unable to find action #{action_name(params).camelize}
-        Should be in app/logux/actions/#{action_name(params)}.rb
-      )
-    end
-
-    def policy_class_for(params)
-      find_class_for(params, type: 'policies')
-    rescue NameError
-      raise Logux::NoPolicyError, %(
-        Unable to find policy #{action_name(params).camelize}
-        Should be in app/logux/policies/#{action_name(params)}.rb
-      )
-    end
 
     def find_class_for(params, type: 'actions')
       "#{type.camelize}::#{action_name(params).camelize}".constantize
@@ -62,10 +45,19 @@ module Logux
     end
 
     def authorize!
-      auth_object = policy_class_for(params)
+      auth_object = class_finder
+                    .find_policy_class
                     .new(params: params, meta: meta, action: action)
       authorized = auth_object.public_send("#{params.action_type}?")
       raise Logux::Policy::UnauthorizedError unless authorized
+    end
+
+    def class_finder
+      @class_finder ||= Logux::ClassFinder.new(params)
+    end
+
+    def action_name
+      @action_name ||= class_finder.action_name
     end
   end
 end
