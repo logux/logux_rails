@@ -9,9 +9,13 @@ module Logux
     end
 
     def post(params)
-      RestClient.post(logux_host,
-                      params.to_json,
-                      content_type: :json, accept: :json)
+      client.post(params.to_json,
+                  content_type: :json,
+                  accept: :json)
+    end
+
+    def client
+      @client ||= RestClient::Resource.new(logux_host, verify_ssl: false)
     end
   end
 end

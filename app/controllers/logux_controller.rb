@@ -14,7 +14,7 @@ class LoguxController < ActionController::Base
       response.stream.write(', ') if index + 1 != batch_size
     end
   rescue => e
-    Logux.logger.error(e)
+    Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
     response.stream.write([:internal_error].to_json)
   ensure
     response.stream.close

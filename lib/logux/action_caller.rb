@@ -27,17 +27,8 @@ module Logux
         .new(:processed, params: params, meta: meta)
     end
 
-
     def find_class_for(params, type: 'actions')
       "#{type.camelize}::#{action_name(params).camelize}".constantize
-    end
-
-    def action_name(params)
-      if params.type == 'logux/subscribe'
-        params.channel_name
-      else
-        params.type&.split('/')[0..-2]&.map(&:camelize)&.join('::')
-      end
     end
 
     def authorizable?

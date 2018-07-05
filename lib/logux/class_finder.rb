@@ -30,11 +30,10 @@ module Logux
       if params.type == 'logux/subscribe'
         params.channel_name
       else
-        params.type&.split('/')[0..-2]&.map(&:camelize)&.join('::')
+        params.type.split('/')[0..-2].map(&:camelize).join('::')
       end
     end
 
-    def class_path
-    end
+    def class_path; end
   end
 end
