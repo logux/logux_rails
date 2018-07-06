@@ -42,9 +42,7 @@ module Logux
       Logux::Request
         .new(version: version)
         .call(data,
-              params: params,
-              meta: meta,
-              custom_data: custom_data)
+              meta: meta)
     end
 
     def subscribe_class; end
