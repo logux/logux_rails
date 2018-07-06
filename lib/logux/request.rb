@@ -2,32 +2,20 @@
 
 module Logux
   class Request
-    attr_reader :client, :version
+    attr_reader :client, :version, :password
 
-    def initialize(client: Logux::Client.new, version: 0)
+    def initialize(client: Logux::Client.new,
+                   version: 0,
+                   password: Logux.configuration.password)
       @client = client
       @version = version
+      @password = password
     end
 
-    def add_action(type, params: Logux::Params.new({}), meta: Logux::Meta.new({}))
-      body = { version: version, password: password, commands: ['action'] }
-      body[:commands] << build_params(type: type, params: params)
-      body[:commands] << build_meta(meta: meta)
-      client.post(body)
-    end
-
-    private
-
-    def build_params(type:, params: {})
-      params.merge(type: type)
-    end
-
-    def build_meta(meta: {})
-      meta.with_time!
-    end
-
-    def password
-      Logux.configuration.password
+    def call(data, meta: Logux::Meta.new({}))
+      client.post(version: 0,
+                  password: password,
+                  commands: data.map { |d| ['action', d, meta] })
     end
   end
 end

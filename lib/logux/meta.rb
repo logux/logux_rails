@@ -4,13 +4,9 @@ module Logux
   class Meta < Hashie::Mash
     disable_warnings
 
-    def with_time!
-      self[:time] = _current_time
-      self
-    end
-
-    def _current_time
-      Time.now.to_i
+    def initialize(source_hash = nil, default = nil, &blk)
+      super
+      self[:time] ||= Time.zone.now.to_i
     end
   end
 end

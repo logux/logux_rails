@@ -5,33 +5,28 @@ require 'spec_helper'
 describe Logux::Request, timecop: true do
   let(:request) { described_class.new }
 
-  describe '#add_action' do
-    subject { request.add_action(type, params: params, meta: meta) }
+  describe '#call' do
+    subject { request.call(data, meta: meta) }
 
-    let(:type) { 'user/add' }
-    let(:params) { create(:logux_params_add) }
+    let(:data) { [{ id: 1 }, { id: 2 }] }
     let(:meta) { create(:logux_meta) }
     let(:logux_request) do
       {
         version: 0,
         password: nil,
-        commands: ['action', params.merge(type: type), meta.with_time!]
+        commands: [['action', { id: 1 }, meta], ['action', { id: 2 }, meta]]
       }
     end
 
-    context 'when params has no overwrited keys' do
-      let(:params) { { key: 'name', value: 'test' } }
-      let(:meta) { create(:logux_meta) }
-      before do
-        stub_request(:post, Logux.configuration.logux_host)
-          .with(body: logux_request.to_json)
-          .to_return(body: ['processed',
-                            { 'id' => [219_856_768, 'clientid', 0] }].to_json)
-      end
+    before do
+      stub_request(:post, Logux.configuration.logux_host)
+        .with(body: logux_request.to_json)
+        .to_return(body: ['processed',
+                          { 'id' => [219_856_768, 'clientid', 0] }].to_json)
+    end
 
-      it '' do
-        expect(subject).to be_truthy
-      end
+    it 'return processed' do
+      expect(JSON.parse(subject)[0]).to eq('processed')
     end
   end
 end
