@@ -38,7 +38,7 @@ module Logux
                           custom_data: custom_data)
     end
 
-    def request(data, params: @params, meta: @meta, custom_data: nil, version: 0)
+    def request(data, meta: @meta, version: 0)
       Logux::Request
         .new(version: version)
         .call(data,

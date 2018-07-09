@@ -13,7 +13,6 @@ module Logux
       Logux.logger.info("Searching action for params: #{params}, meta: #{meta}")
       action_class = class_finder.find_action_class
       @action = action_class.new(params: params, meta: meta)
-      authorize! if authorizable?
       format(action.public_send(params.action_type))
     rescue Logux::Policy::UnauthorizedError
       format(action.respond(:forbidden))
@@ -29,18 +28,6 @@ module Logux
 
     def find_class_for(params, type: 'actions')
       "#{type.camelize}::#{action_name(params).camelize}".constantize
-    end
-
-    def authorizable?
-      Logux.configuration.verify_authorized
-    end
-
-    def authorize!
-      auth_object = class_finder
-                    .find_policy_class
-                    .new(params: params, meta: meta, action: action)
-      authorized = auth_object.public_send("#{params.action_type}?")
-      raise Logux::Policy::UnauthorizedError unless authorized
     end
 
     def class_finder

@@ -28,32 +28,6 @@ describe Logux::ActionCaller do
       it 'return ok' do
         expect(subject.status).to eq(:ok)
       end
-
-      context 'when verify_authorized' do
-        before do
-          Logux.configuration.verify_authorized = true
-        end
-
-        it 'raise error' do
-          expect { subject }.to raise_error(Logux::NoPolicyError)
-        end
-
-        context 'when policy defined' do
-          before do
-            module Policies
-              class User < Logux::Policy
-                def add?
-                  true
-                end
-              end
-            end
-          end
-
-          it 'return ok' do
-            expect(subject.status).to eq(:ok)
-          end
-        end
-      end
     end
   end
 end

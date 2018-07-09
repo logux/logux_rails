@@ -26,7 +26,7 @@ module Logux
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:3333'
-    config.verify_authorized = false
+    config.verify_authorized = true
     config.logger = ActiveSupport::Logger.new(STDOUT)
     config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
   end
@@ -64,6 +64,33 @@ module Logux
       .new(params: params, meta: meta)
       .call!
       .format
+  end
+
+  def self.process_request(stream:, params:)
+    commands = params&.dig(:commands)
+    process_authorization(stream: stream, commands: commands)
+    process_commands(stream: stream, commands: commands)
+  end
+
+  def self.process_authorization(stream:, commands:)
+    commands.reduce(true) do |auth, command|
+      next auth unless configuration.verify_authorized
+      params = Logux::Params.new(command[1])
+      meta = Logux::Meta.new(command[2])
+      policy_obj = Logux::ClassFinder.new(params)
+                                     .find_policy_class
+                                     .new(params: params, meta: meta)
+      auth && policy_obj.public_send("#{params.action_type}?")
+    end && stream.write(['approved', meta.id])
+  end
+
+  def self.process_commands(stream:, commands:)
+    last_batch = commands.size + 1
+    commands.map.with_index do |param, index|
+      processed = process(param)
+      stream.write(processed.to_json)
+      stream.write(', ') if index != last_batch
+    end
   end
 
   def self.logger
