@@ -11,9 +11,11 @@ require 'logux/params'
 require 'logux/action'
 require 'logux/class_finder'
 require 'logux/action_caller'
+require 'logux/policy_caller'
 require 'logux/policy'
 require 'logux/request'
 require 'logux/response'
+require 'logux/stream'
 require 'logux/version'
 require 'logux/engine'
 
@@ -67,28 +69,31 @@ module Logux
   end
 
   def self.process_request(stream:, params:)
+    stream_writer = Logux::Stream.new(stream)
     commands = params&.dig(:commands)
-    process_authorization(stream: stream, commands: commands)
-    process_commands(stream: stream, commands: commands)
+    authorized = process_authorization(stream: stream_writer, commands: commands)
+    return unless authorized
+    process_commands(stream: stream_writer, commands: commands)
   end
 
   def self.process_authorization(stream:, commands:)
-    commands.reduce(true) do |auth, command|
-      next auth unless configuration.verify_authorized
+    meta = nil
+    authorized = commands.reduce(true) do |auth, command|
       params = Logux::Params.new(command[1])
       meta = Logux::Meta.new(command[2])
-      policy_obj = Logux::ClassFinder.new(params)
-                                     .find_policy_class
-                                     .new(params: params, meta: meta)
-      auth && policy_obj.public_send("#{params.action_type}?")
-    end && stream.write(['approved', meta.id])
+      next auth unless configuration.verify_authorized
+      policy_caller = Logux::PolicyCaller.new(params: params, meta: meta)
+      auth && policy_caller.call!
+    end
+    return(stream.write([:approved, meta.id]) || true) if authorized
+    stream.write([:forbidden, meta.id]) || false
   end
 
   def self.process_commands(stream:, commands:)
     last_batch = commands.size + 1
     commands.map.with_index do |param, index|
       processed = process(param)
-      stream.write(processed.to_json)
+      stream.write(processed)
       stream.write(', ') if index != last_batch
     end
   end

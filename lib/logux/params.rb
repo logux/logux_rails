@@ -19,5 +19,9 @@ module Logux
     def channel_id
       channel&.split('/')&.last
     end
+
+    def to_s
+      to_h.to_s
+    end
   end
 end

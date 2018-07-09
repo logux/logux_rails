@@ -8,5 +8,9 @@ module Logux
       super
       self[:time] ||= Time.zone.now.to_i
     end
+
+    def to_s
+      to_h.to_s
+    end
   end
 end

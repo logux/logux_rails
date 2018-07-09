@@ -14,8 +14,6 @@ module Logux
       action_class = class_finder.find_action_class
       @action = action_class.new(params: params, meta: meta)
       format(action.public_send(params.action_type))
-    rescue Logux::Policy::UnauthorizedError
-      format(action.respond(:forbidden))
     end
 
     private
