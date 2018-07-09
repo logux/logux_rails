@@ -14,7 +14,7 @@ module Logux
 
     def call(data, meta: Logux::Meta.new({}))
       prepared_data = prepare_data(data: data, meta: meta)
-      Logux.logger.info("Logux add: #{JSON.pretty_generate(prepared_data.to_json)}")
+      Logux.logger.info("Logux add: #{JSON.pretty_generate(prepared_data)}")
       client.post(prepared_data)
     end
 
