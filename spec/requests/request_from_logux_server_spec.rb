@@ -32,6 +32,7 @@ describe 'Logux response' do
 
   it 'does return correct body' do
     subject
+    expect(response.stream).to have_chunk(['approved', [219_856_768, 'clientid', 0]])
     expect(response.stream).to have_chunk(logux_response[0])
     expect(response.stream).to have_chunk(logux_response[1])
   end
