@@ -9,7 +9,9 @@ module Logux
     end
 
     def write(payload)
-      stream.write(process(payload))
+      processed_payload = process(payload)
+      Logux.logger.info("Write to logux: #{processed_payload}")
+      stream.write(processed_payload)
     end
 
     private
