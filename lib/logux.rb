@@ -5,24 +5,39 @@ require 'rest-client'
 require 'rails/engine'
 require 'active_support'
 require 'hashie/mash'
-require 'logux/client'
-require 'logux/meta'
-require 'logux/params'
-require 'logux/action'
-require 'logux/class_finder'
-require 'logux/action_caller'
-require 'logux/policy_caller'
-require 'logux/policy'
-require 'logux/request'
-require 'logux/response'
-require 'logux/stream'
-require 'logux/version'
+# require 'logux/client'
+# require 'logux/meta'
+# require 'logux/params'
+# require 'logux/action'
+# require 'logux/class_finder'
+# require 'logux/action_caller'
+# require 'logux/policy_caller'
+# require 'logux/policy'
+# require 'logux/request'
+# require 'logux/response'
+# require 'logux/stream'
+# require 'logux/version'
 require 'logux/engine'
 
 module Logux
+  extend ActiveSupport::Autoload
   include Configurations
+
   class NoPolicyError < StandardError; end
   class NoActionError < StandardError; end
+
+  autoload :Client, 'logux/client'
+  autoload :Meta, 'logux/meta'
+  autoload :Params, 'logux/params'
+  autoload :Action, 'logux/action'
+  autoload :ClassFinder, 'logux/class_finder'
+  autoload :ActionCaller, 'logux/action_caller'
+  autoload :PolicyCaller, 'logux/policy_caller'
+  autoload :Policy, 'logux/policy'
+  autoload :Request, 'logux/request'
+  autoload :Response, 'logux/response'
+  autoload :Stream, 'logux/stream'
+  autoload :Version, 'logux/version'
 
   configurable :logux_host, :verify_authorized, :password, :logger
 
