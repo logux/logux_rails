@@ -22,13 +22,7 @@ module Logux
     end
 
     def subscribe
-      channel_class = subscribe_class || params.channel_name.camelcase.constantize
-      if !defined?(ActiveRecord) || channel_class.is_a?(ActiveRecord::Base)
-        raise_unknown_type_error!
-      end
-      channel_class.find_by(id: subscribe_id || params.channel_id)
-    rescue NameError
-      raise_unknown_type_error!
+      request(subscribe_data, meta: subscribe_meta)
     end
 
     def respond(status, params: @params, meta: @meta, custom_data: nil)
@@ -45,9 +39,17 @@ module Logux
               meta: meta)
     end
 
-    def subscribe_class; end
+    def node_id
+      meta&.dig(:id)&.split(' ')&.second
+    end
 
-    def subscribe_id; end
+    def subscribe_data
+      []
+    end
+
+    def subscribe_meta
+      { meta: { nodeIds: [node_id] } }
+    end
 
     private
 

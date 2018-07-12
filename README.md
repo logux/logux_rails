@@ -39,6 +39,7 @@ LoguxRails will try to find Action for the specific message from logux-server. F
 ## Todo
 
 - Add permit method to logux params
+- Add specs matchers, with mocks for requests and so on.
 
 ## Development
 

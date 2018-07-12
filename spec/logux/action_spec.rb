@@ -7,13 +7,15 @@ describe Logux::Action do
   let(:params) { create(:logux_params_subscribe) }
   let(:user) { User.find_or_create_by(id: 1, name: 'test') }
   let(:meta) { {} }
+  let!(:logux_request) { stub_request(:post, 'http://localhost:3333/') }
 
   describe '#subscribe' do
     subject { action.subscribe }
 
     context 'when ActiveRecord defined' do
       it 'tries to find record by chanel data' do
-        expect(subject).to eq(user)
+        subject
+        expect(logux_request).to have_been_made.times(1)
       end
     end
   end
