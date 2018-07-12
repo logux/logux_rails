@@ -48,7 +48,7 @@ module Logux
     end
 
     def subscribe_meta
-      { meta: { nodeIds: [node_id] } }
+      { nodeIds: [node_id] }
     end
 
     private
