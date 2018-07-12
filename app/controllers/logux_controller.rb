@@ -13,6 +13,7 @@ class LoguxController < ActionController::Base
     Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
     response.stream.write([:internal_error].to_json)
   ensure
+    response.stream.write(']')
     response.stream.close
   end
   # rubocop:enable Style/RescueStandardError
