@@ -4,6 +4,8 @@ module Logux
   class Stream
     attr_reader :stream
 
+    delegate :close, to: :stream
+
     def initialize(stream)
       @stream = stream
     end

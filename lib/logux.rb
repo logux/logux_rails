@@ -72,11 +72,10 @@ module Logux
   end
 
   def self.process_request(stream:, params:)
-    stream_writer = Logux::Stream.new(stream)
     commands = params&.dig(:commands)
-    authorized = process_authorization(stream: stream_writer, commands: commands)
+    authorized = process_authorization(stream: stream, commands: commands)
     return unless authorized
-    process_commands(stream: stream_writer, commands: commands)
+    process_commands(stream: stream, commands: commands)
   end
 
   def self.process_authorization(stream:, commands:)

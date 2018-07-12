@@ -6,15 +6,15 @@ class LoguxController < ActionController::Base
   # rubocop:disable Style/RescueStandardError
   def create
     Logux.verify_request_meta_data(meta_params)
-    response.stream.write('[')
-    Logux.process_request(stream: response.stream,
+    logux_stream.write('[')
+    Logux.process_request(stream: logux_stream,
                           params: logux_params)
   rescue => e
     Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
-    response.stream.write([:internal_error].to_json)
+    logux_stream.write([:internal_error].to_json)
   ensure
-    response.stream.write(']')
-    response.stream.close
+    logux_stream.write(']')
+    logux_stream.close
   end
   # rubocop:enable Style/RescueStandardError
 
@@ -30,5 +30,9 @@ class LoguxController < ActionController::Base
 
   def command_params
     logux_params&.dig(:commands)
+  end
+
+  def logux_stream
+    @logux_stream ||= Logux::Stream.new(response.stream)
   end
 end
