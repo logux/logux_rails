@@ -92,11 +92,11 @@ module Logux
   end
 
   def self.process_commands(stream:, commands:)
-    last_batch = commands.size + 1
+    last_batch = commands.size - 1
     commands.map.with_index do |param, index|
-      processed = process(param)
+      processed = process(param).to_json
+      processed += ',' if index != last_batch
       stream.write(processed)
-      stream.write(', ') if index != last_batch
     end
   end
 
