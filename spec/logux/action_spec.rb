@@ -7,7 +7,7 @@ describe Logux::Action do
   let(:params) { create(:logux_params_subscribe) }
   let(:user) { User.find_or_create_by(id: 1, name: 'test') }
   let(:meta) { Logux::Meta.new }
-  let!(:logux_request) { stub_request(:post, 'http://localhost:3333/') }
+  let!(:logux_request) { stub_request(:post, Logux.configuration.logux_host) }
 
   describe '#subscribe' do
     subject { action.subscribe }
