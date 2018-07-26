@@ -6,7 +6,7 @@ module Logux
 
     def initialize(source_hash = nil, default = nil, &blk)
       super
-      self[:time] ||= Time.zone.now.to_i
+      self[:time] ||= Time.zone&.now&.to_i || Time.now.to_i
     end
 
     def to_s

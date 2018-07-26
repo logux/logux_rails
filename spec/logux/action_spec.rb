@@ -6,7 +6,7 @@ describe Logux::Action do
   let(:action) { described_class.new(params: params, meta: meta) }
   let(:params) { create(:logux_params_subscribe) }
   let(:user) { User.find_or_create_by(id: 1, name: 'test') }
-  let(:meta) { {} }
+  let(:meta) { Logux::Meta.new }
   let!(:logux_request) { stub_request(:post, 'http://localhost:3333/') }
 
   describe '#subscribe' do
@@ -26,7 +26,7 @@ describe Logux::Action do
     it 'returns logux response' do
       expect(subject.status).to eq(:processed)
       expect(subject.params).to eq(params)
-      expect(subject.meta).to eq({})
+      expect(subject.meta).to have_key(:time)
       expect(subject.custom_data).to be_nil
     end
   end

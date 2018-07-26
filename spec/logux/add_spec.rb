@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Logux::Request, timecop: true do
+describe Logux::Add, timecop: true do
   let(:request) { described_class.new }
 
   describe '#call' do

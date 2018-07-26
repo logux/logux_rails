@@ -22,7 +22,7 @@ module Logux
   autoload :ActionCaller, 'logux/action_caller'
   autoload :PolicyCaller, 'logux/policy_caller'
   autoload :Policy, 'logux/policy'
-  autoload :Request, 'logux/request'
+  autoload :Add, 'logux/add'
   autoload :Response, 'logux/response'
   autoload :Stream, 'logux/stream'
   autoload :Version, 'logux/version'
@@ -36,11 +36,11 @@ module Logux
     config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
   end
 
-  def self.add_action(type, params: {}, meta: {})
-    request = Logux::Request.new
+  def self.add(type, params: {}, meta: {})
+    logux_add = Logux::Add.new
     logux_params = Logux::Params.new(params)
     logux_meta = Logux::Meta.new(meta)
-    request.add_action(type, params: logux_params, meta: logux_meta)
+    logux_add.call(type, params: logux_params, meta: logux_meta)
   end
 
   def self.verify_request_meta_data(meta_params)

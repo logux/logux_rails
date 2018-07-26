@@ -22,7 +22,7 @@ module Logux
     end
 
     def subscribe
-      request(subscribe_data, meta: subscribe_meta)
+      add(subscribe_data, meta: subscribe_meta)
     end
 
     def respond(status, params: @params, meta: @meta, custom_data: nil)
@@ -32,16 +32,21 @@ module Logux
                           custom_data: custom_data)
     end
 
-    def request(data, meta: @meta, version: 0)
-      Logux::Request
+    def add(data, meta: @meta, version: 0)
+      Logux::Add
         .new(version: version)
         .call(data,
               meta: meta)
     end
 
-    def node_id
-      meta&.dig(:id)&.split(' ')&.second
+    def user_id
+      @user_id ||= meta&.id&.split(' ')&.second&.split(':')&.first
     end
+
+    def node_id
+      @node_id ||= meta&.id&.split(' ')&.second
+    end
+
 
     def subscribe_data
       []
