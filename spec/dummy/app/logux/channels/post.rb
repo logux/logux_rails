@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Actions
-  class Post < Logux::ActionController
+module Channels
+  class Post < Logux::ChannelController
     def subscribe
       respond :processed
     end

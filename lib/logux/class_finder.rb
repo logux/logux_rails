@@ -9,7 +9,7 @@ module Logux
     end
 
     def find_action_class
-      "Actions::#{class_name.camelize}".constantize
+      "#{class_namespace}::#{class_name}".constantize
     rescue NameError
       raise Logux::NoActionError, %(
         Unable to find action #{class_name.camelize}
@@ -18,7 +18,7 @@ module Logux
     end
 
     def find_policy_class
-      "Policies::#{class_name.camelize}".constantize
+      "Policies::#{class_namespace}::#{class_name}".constantize
     rescue NameError
       raise Logux::NoPolicyError, %(
         Unable to find policy #{class_name.camelize}
@@ -26,14 +26,21 @@ module Logux
       )
     end
 
+    def class_namespace
+      return 'Channels' if params.type == 'logux/subscribe'
+      'Actions'
+    end
+
     def class_name
       if params.type == 'logux/subscribe'
-        params.channel_name
+        params.channel_name.camelize
       else
         params.type.split('/')[0..-2].map(&:camelize).join('::')
       end
     end
 
-    def class_path; end
+    def class_path
+      "#{class_namespace}::#{class_name}".underscore
+    end
   end
 end

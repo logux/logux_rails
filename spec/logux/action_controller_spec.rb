@@ -9,17 +9,6 @@ describe Logux::ActionController do
   let(:meta) { Logux::Meta.new }
   let!(:logux_request) { stub_request(:post, Logux.configuration.logux_host) }
 
-  describe '#subscribe' do
-    subject { action.subscribe }
-
-    context 'when ActiveRecord defined' do
-      it 'tries to find record by chanel data' do
-        subject
-        expect(logux_request).to have_been_made.times(1)
-      end
-    end
-  end
-
   describe '#respond' do
     subject { action.respond(:processed) }
 
