@@ -47,7 +47,6 @@ module Logux
       @node_id ||= meta&.id&.split(' ')&.second
     end
 
-
     def subscribe_data
       []
     end
