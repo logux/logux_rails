@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Logux::Action do
+describe Logux::ActionController do
   let(:action) { described_class.new(params: params, meta: meta) }
   let(:params) { create(:logux_params_subscribe) }
   let(:user) { User.find_or_create_by(id: 1, name: 'test') }

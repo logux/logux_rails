@@ -17,7 +17,7 @@ module Logux
   autoload :Client, 'logux/client'
   autoload :Meta, 'logux/meta'
   autoload :Params, 'logux/params'
-  autoload :Action, 'logux/action'
+  autoload :ActionController, 'logux/action_controller'
   autoload :ClassFinder, 'logux/class_finder'
   autoload :ActionCaller, 'logux/action_caller'
   autoload :PolicyCaller, 'logux/policy_caller'

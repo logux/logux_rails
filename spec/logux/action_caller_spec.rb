@@ -17,7 +17,7 @@ describe Logux::ActionCaller do
     context 'when action defined' do
       before do
         module Actions
-          class User < Logux::Action
+          class User < Logux::ActionController
             def add
               respond(:ok)
             end
