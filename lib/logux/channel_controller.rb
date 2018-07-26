@@ -3,7 +3,7 @@
 module Logux
   class ChannelController < BaseController
     def subscribe
-      add(subscribe_data, meta: subscribe_meta)
+      add(initial_data, meta: subscribe_meta)
     end
 
     def initial_data
