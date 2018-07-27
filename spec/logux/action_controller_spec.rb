@@ -23,7 +23,11 @@ describe Logux::ActionController do
   describe '.verify_authorized!' do
     subject { described_class.verify_authorized! }
 
-    before { Logux.configuration.verify_authorized = false }
+    around do |example|
+      Logux.configuration.verify_authorized = false
+      example.call
+      Logux.configuration.verify_authorized = true
+    end
 
     it 'sets to true' do
       expect { subject }

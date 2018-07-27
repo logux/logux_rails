@@ -37,6 +37,26 @@ describe 'Logux response' do
     expect(response.stream).to have_chunk(logux_response[1])
   end
 
+  context 'when no authorized' do
+    let(:logux_params) do
+      { version: 0,
+        password: password,
+        commands: [
+          ['action',
+           { type: 'comment/update', key: 'text', value: 'hi' },
+           { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }]
+        ] }
+    end
+    let(:logux_response) do
+      ['forbidden', [219_856_768, 'clientid', 0]]
+    end
+
+    it 'does return correct body' do
+      subject
+      expect(response.stream).to have_chunk(logux_response)
+    end
+  end
+
   context 'when password wrong' do
     let(:password) { '12345' }
 

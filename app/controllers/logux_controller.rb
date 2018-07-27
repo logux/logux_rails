@@ -7,7 +7,7 @@ class LoguxController < ActionController::Base
   def create
     Logux.verify_request_meta_data(meta_params)
     logux_stream.write('[')
-    Logux.process_request(stream: logux_stream,
+    Logux.process_actions(stream: logux_stream,
                           params: logux_params)
   rescue => e
     Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
@@ -26,10 +26,6 @@ class LoguxController < ActionController::Base
 
   def meta_params
     logux_params&.slice(:version, :password)
-  end
-
-  def command_params
-    logux_params&.dig(:commands)
   end
 
   def logux_stream

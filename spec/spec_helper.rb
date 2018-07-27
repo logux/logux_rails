@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+SimpleCov.start
+
 require 'bundler/setup'
 require 'factory_bot'
 require 'logux_rails'

@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-live_controllers'
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'timecop'
   spec.add_development_dependency 'webmock'

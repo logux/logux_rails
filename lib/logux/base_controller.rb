@@ -29,8 +29,7 @@ module Logux
     def add(data, meta: @meta, version: 0)
       Logux::Add
         .new(version: version)
-        .call(data,
-              meta: meta)
+        .call(data, meta: meta)
     end
 
     def user_id

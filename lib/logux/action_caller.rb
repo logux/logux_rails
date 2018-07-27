@@ -24,16 +24,8 @@ module Logux
         .new(:processed, params: params, meta: meta)
     end
 
-    def find_class_for(params, type: 'actions')
-      "#{type.camelize}::#{action_name(params).camelize}".constantize
-    end
-
     def class_finder
       @class_finder ||= Logux::ClassFinder.new(params)
-    end
-
-    def action_name
-      @action_name ||= class_finder.action_name
     end
   end
 end

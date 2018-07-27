@@ -38,11 +38,10 @@ module Logux
     config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
   end
 
-  def self.add(type, params: {}, meta: {})
+  def self.add(type, meta: {})
     logux_add = Logux::Add.new
-    logux_params = Logux::Params.new(params)
     logux_meta = Logux::Meta.new(meta)
-    logux_add.call(type, params: logux_params, meta: logux_meta)
+    logux_add.call(type, meta: logux_meta)
   end
 
   def self.verify_request_meta_data(meta_params)
@@ -56,14 +55,6 @@ module Logux
     raise unless auth
   end
 
-  def self.process_batch(request_params)
-    request_params.map do |params|
-      processed_data = process(params)
-      yield(processed_data.to_json) if block_given?
-      processed_data
-    end
-  end
-
   def self.process(request_params)
     params = Logux::Params.new(request_params[1])
     meta = Logux::Meta.new(request_params[2])
@@ -73,7 +64,7 @@ module Logux
       .format
   end
 
-  def self.process_request(stream:, params:)
+  def self.process_actions(stream:, params:)
     commands = params&.dig(:commands)
     authorized = process_authorization(stream: stream, commands: commands)
     return unless authorized
@@ -85,7 +76,6 @@ module Logux
     authorized = commands.reduce(true) do |auth, command|
       params = Logux::Params.new(command[1])
       meta = Logux::Meta.new(command[2])
-      next auth unless configuration.verify_authorized
       policy_caller = Logux::PolicyCaller.new(params: params, meta: meta)
       auth && policy_caller.call!
     end

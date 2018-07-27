@@ -4,7 +4,7 @@ PATH
     logux_rails (0.1.0)
       configurations
       hashie
-      rails
+      rails (~> 5)
       rest-client
 
 GEM

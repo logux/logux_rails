@@ -3,7 +3,7 @@
 module Channels
   class Post < Logux::ChannelController
     def subscribe
-      respond :processed
+      respond :forbidden if user_id == 1
     end
   end
 end

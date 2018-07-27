@@ -14,18 +14,13 @@ module Logux
       policy_class = class_finder.find_policy_class
       @policy = policy_class.new(params: params, meta: meta)
       policy.public_send("#{params.action_type}?")
-    end
-
-    def find_class_for(params, type: 'actions')
-      "#{type.camelize}::#{action_name(params).camelize}".constantize
+    rescue Logux::NoPolicyError => e
+      raise e if Logux.configuration.verify_authorized
+      Logux.logger.warn(e)
     end
 
     def class_finder
       @class_finder ||= Logux::ClassFinder.new(params)
-    end
-
-    def action_name
-      @action_name ||= class_finder.action_name
     end
   end
 end

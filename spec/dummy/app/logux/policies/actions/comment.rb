@@ -6,6 +6,10 @@ module Policies
       def add?
         true
       end
+
+      def update?
+        false
+      end
     end
   end
 end
