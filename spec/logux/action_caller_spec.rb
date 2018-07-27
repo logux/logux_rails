@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe Logux::ActionCaller do
-  let(:action_caller) { described_class.new(params: params, meta: meta) }
-  let(:params) { create(:logux_params_add) }
+  let(:action_caller) { described_class.new(action: action, meta: meta) }
+  let(:action) { create(:logux_actions_add) }
   let(:meta) { create(:logux_meta) }
 
   describe '#call!' do

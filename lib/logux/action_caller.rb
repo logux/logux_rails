@@ -2,18 +2,18 @@
 
 module Logux
   class ActionCaller
-    attr_reader :params, :meta, :action
+    attr_reader :action, :meta, :action_controller
 
-    def initialize(params:, meta:)
-      @params = params
+    def initialize(action:, meta:)
+      @action = action
       @meta = meta
     end
 
     def call!
-      Logux.logger.info("Searching action for params: #{params}, meta: #{meta}")
+      Logux.logger.info("Searching action for action: #{action}, meta: #{meta}")
       action_class = class_finder.find_action_class
-      @action = action_class.new(params: params, meta: meta)
-      format(action.public_send(params.action_type))
+      @action_controller = action_class.new(action: action, meta: meta)
+      format(action_controller.public_send(action.action_type))
     end
 
     private
@@ -21,11 +21,11 @@ module Logux
     def format(response)
       return response if response.is_a? Logux::Response
       Logux::Response
-        .new(:processed, params: params, meta: meta)
+        .new(:processed, action: action, meta: meta)
     end
 
     def class_finder
-      @class_finder ||= Logux::ClassFinder.new(params)
+      @class_finder ||= Logux::ClassFinder.new(action)
     end
   end
 end

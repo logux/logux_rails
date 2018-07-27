@@ -3,18 +3,18 @@
 require 'spec_helper'
 
 describe Logux::ActionController do
-  let(:action) { described_class.new(params: params, meta: meta) }
-  let(:params) { create(:logux_params_subscribe) }
+  let(:action_controller) { described_class.new(action: action, meta: meta) }
+  let(:action) { create(:logux_actions_subscribe) }
   let(:user) { User.find_or_create_by(id: 1, name: 'test') }
   let(:meta) { Logux::Meta.new }
   let!(:logux_request) { stub_request(:post, Logux.configuration.logux_host) }
 
   describe '#respond' do
-    subject { action.respond(:processed) }
+    subject { action_controller.respond(:processed) }
 
     it 'returns logux response' do
       expect(subject.status).to eq(:processed)
-      expect(subject.params).to eq(params)
+      expect(subject.action).to eq(action)
       expect(subject.meta).to have_key(:time)
       expect(subject.custom_data).to be_nil
     end

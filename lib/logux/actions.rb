@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Logux
-  class Params < Hashie::Mash
+  class Actions < Hashie::Mash
     disable_warnings
 
     def action_name

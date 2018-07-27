@@ -7,8 +7,8 @@ class LoguxController < ActionController::Base
   def create
     Logux.verify_request_meta_data(meta_params)
     logux_stream.write('[')
-    Logux.process_actions(stream: logux_stream,
-                          params: logux_params)
+    Logux.process(stream: logux_stream,
+                  params: logux_params)
   rescue => e
     Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
     logux_stream.write([:internal_error].to_json)

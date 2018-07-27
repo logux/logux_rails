@@ -4,10 +4,10 @@ module Logux
   class Policy
     class UnauthorizedError < StandardError; end
 
-    attr_reader :params, :meta
+    attr_reader :actions, :meta
 
-    def initialize(params:, meta:)
-      @params = params
+    def initialize(actions:, meta:)
+      @actions = actions
       @meta = meta
     end
   end

@@ -2,11 +2,11 @@
 
 module Logux
   class Response
-    attr_reader :status, :params, :meta, :custom_data
+    attr_reader :status, :action, :meta, :custom_data
 
-    def initialize(status, params:, meta:, custom_data: nil)
+    def initialize(status, action:, meta:, custom_data: nil)
       @status = status
-      @params = params
+      @action = action
       @meta = meta
       @custom_data = custom_data
     end

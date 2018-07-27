@@ -12,16 +12,16 @@ module Logux
       end
     end
 
-    attr_reader :params, :meta
+    attr_reader :action, :meta
 
-    def initialize(params:, meta: {})
-      @params = params
+    def initialize(action:, meta: {})
+      @action = action
       @meta = meta
     end
 
-    def respond(status, params: @params, meta: @meta, custom_data: nil)
+    def respond(status, action: @action, meta: @meta, custom_data: nil)
       Logux::Response.new(status,
-                          params: params,
+                          action: action,
                           meta: meta,
                           custom_data: custom_data)
     end

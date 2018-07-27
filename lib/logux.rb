@@ -16,7 +16,7 @@ module Logux
 
   autoload :Client, 'logux/client'
   autoload :Meta, 'logux/meta'
-  autoload :Params, 'logux/params'
+  autoload :Actions, 'logux/actions'
   autoload :BaseController, 'logux/base_controller'
   autoload :ActionController, 'logux/action_controller'
   autoload :ChannelController, 'logux/channel_controller'
@@ -55,38 +55,38 @@ module Logux
     raise unless auth
   end
 
-  def self.process(request_params)
-    params = Logux::Params.new(request_params[1])
-    meta = Logux::Meta.new(request_params[2])
+  def self.process_action(action_params)
+    action = Logux::Actions.new(action_params[1])
+    meta = Logux::Meta.new(action_params[2])
     Logux::ActionCaller
-      .new(params: params, meta: meta)
+      .new(action: action, meta: meta)
       .call!
       .format
   end
 
-  def self.process_actions(stream:, params:)
-    commands = params&.dig(:commands)
-    authorized = process_authorization(stream: stream, commands: commands)
+  def self.process(stream:, params:)
+    actions = params&.dig(:commands)
+    authorized = process_authorization(stream: stream, actions: actions)
     return unless authorized
-    process_commands(stream: stream, commands: commands)
+    process_actions(stream: stream, actions: actions)
   end
 
-  def self.process_authorization(stream:, commands:)
+  def self.process_authorization(stream:, actions:)
     meta = nil
-    authorized = commands.reduce(true) do |auth, command|
-      params = Logux::Params.new(command[1])
+    authorized = actions.reduce(true) do |auth, command|
+      actions = Logux::Actions.new(command[1])
       meta = Logux::Meta.new(command[2])
-      policy_caller = Logux::PolicyCaller.new(params: params, meta: meta)
+      policy_caller = Logux::PolicyCaller.new(actions: actions, meta: meta)
       auth && policy_caller.call!
     end
     return(stream.write([:approved, meta.id]) || true) if authorized
     stream.write([:forbidden, meta.id]) || false
   end
 
-  def self.process_commands(stream:, commands:)
-    last_batch = commands.size - 1
-    commands.map.with_index do |param, index|
-      processed = process(param).to_json
+  def self.process_actions(stream:, actions:)
+    last_batch = actions.size - 1
+    actions.map.with_index do |action, index|
+      processed = process_action(action).to_json
       processed += ',' if index != last_batch
       stream.write(processed)
     end

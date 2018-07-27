@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe Logux::Client do
   let(:client) { described_class.new }
-  let(:params) { create(:logux_params_add) }
+  let(:params) { create(:logux_actions_add) }
 
   describe '#post' do
     subject { client.post(params) }
