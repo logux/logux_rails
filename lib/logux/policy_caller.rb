@@ -2,25 +2,25 @@
 
 module Logux
   class PolicyCaller
-    attr_reader :actions, :meta, :policy
+    attr_reader :action, :meta, :policy
 
-    def initialize(actions:, meta:)
-      @actions = actions
+    def initialize(action:, meta:)
+      @action = action
       @meta = meta
     end
 
     def call!
-      Logux.logger.info("Searching policy for actions: #{actions}, meta: #{meta}")
+      Logux.logger.info("Searching policy for action: #{action}, meta: #{meta}")
       policy_class = class_finder.find_policy_class
-      @policy = policy_class.new(actions: actions, meta: meta)
-      policy.public_send("#{actions.action_type}?")
+      @policy = policy_class.new(action: action, meta: meta)
+      policy.public_send("#{action.action_type}?")
     rescue Logux::NoPolicyError => e
       raise e if Logux.configuration.verify_authorized
       Logux.logger.warn(e)
     end
 
     def class_finder
-      @class_finder ||= Logux::ClassFinder.new(actions)
+      @class_finder ||= Logux::ClassFinder.new(action)
     end
   end
 end

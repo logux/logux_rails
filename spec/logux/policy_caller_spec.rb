@@ -3,12 +3,12 @@
 require 'spec_helper'
 
 describe Logux::PolicyCaller do
-  let(:policy_caller) { described_class.new(actions: actions, meta: meta) }
+  let(:policy_caller) { described_class.new(action: action, meta: meta) }
 
   describe '.call!' do
     subject { policy_caller.call! }
 
-    let(:actions) { Logux::Actions.new(type: 'test/test') }
+    let(:action) { Logux::Actions.new(type: 'test/test') }
     let(:meta) { {} }
 
     it 'doesn\'t raise an error' do

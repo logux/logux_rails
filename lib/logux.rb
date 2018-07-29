@@ -74,9 +74,9 @@ module Logux
   def self.process_authorization(stream:, actions:)
     meta = nil
     authorized = actions.reduce(true) do |auth, command|
-      actions = Logux::Actions.new(command[1])
+      action = Logux::Actions.new(command[1])
       meta = Logux::Meta.new(command[2])
-      policy_caller = Logux::PolicyCaller.new(actions: actions, meta: meta)
+      policy_caller = Logux::PolicyCaller.new(action: action, meta: meta)
       auth && policy_caller.call!
     end
     return(stream.write([:approved, meta.id].to_json + ',') || true) if authorized
