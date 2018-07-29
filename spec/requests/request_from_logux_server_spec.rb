@@ -62,7 +62,7 @@ describe 'Logux response' do
 
     it 'does return error' do
       subject
-      expect(response.stream).to start_from_chunk([:internal_error])
+      expect(response.stream).to start_from_chunk([:error])
     end
   end
 end
