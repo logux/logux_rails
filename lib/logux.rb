@@ -79,7 +79,7 @@ module Logux
       policy_caller = Logux::PolicyCaller.new(actions: actions, meta: meta)
       auth && policy_caller.call!
     end
-    return(stream.write([:approved, meta.id]) || true) if authorized
+    return(stream.write([:approved, meta.id].to_json + ',') || true) if authorized
     stream.write([:forbidden, meta.id]) || false
   end
 
