@@ -29,13 +29,14 @@ module Logux
   autoload :Stream, 'logux/stream'
   autoload :Version, 'logux/version'
 
-  configurable :logux_host, :verify_authorized, :password, :logger
+  configurable :logux_host, :verify_authorized, :password, :logger, :on_error
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:1338'
     config.verify_authorized = true
     config.logger = ActiveSupport::Logger.new(STDOUT)
     config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
+    config.on_error = ->(e) {}
   end
 
   def self.add(type, meta: {})

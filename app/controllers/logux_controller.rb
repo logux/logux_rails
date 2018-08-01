@@ -10,8 +10,12 @@ class LoguxController < ActionController::Base
     Logux.process(stream: logux_stream,
                   params: logux_params)
   rescue => e
-    Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
-    logux_stream.write([:error].to_json)
+    begin
+      Logux.configuration.on_error.call(e)
+      Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
+    ensure
+      logux_stream.write([:error].to_json)
+    end
   ensure
     logux_stream.write(']')
     logux_stream.close
