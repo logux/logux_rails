@@ -17,6 +17,7 @@ module Logux
   autoload :Client, 'logux/client'
   autoload :Meta, 'logux/meta'
   autoload :Actions, 'logux/actions'
+  autoload :Auth, 'logux/auth'
   autoload :BaseController, 'logux/base_controller'
   autoload :ActionController, 'logux/action_controller'
   autoload :ChannelController, 'logux/channel_controller'
@@ -27,6 +28,7 @@ module Logux
   autoload :Add, 'logux/add'
   autoload :Response, 'logux/response'
   autoload :Stream, 'logux/stream'
+  autoload :Process, 'logux/process'
   autoload :Version, 'logux/version'
 
   configurable :logux_host, :verify_authorized, :password, :logger, :on_error
@@ -56,41 +58,8 @@ module Logux
     raise unless auth
   end
 
-  def self.process_action(action_params)
-    action = Logux::Actions.new(action_params[1])
-    meta = Logux::Meta.new(action_params[2])
-    Logux::ActionCaller
-      .new(action: action, meta: meta)
-      .call!
-      .format
-  end
-
-  def self.process(stream:, params:)
-    actions = params&.dig(:commands)
-    authorized = process_authorization(stream: stream, actions: actions)
-    return unless authorized
-    process_actions(stream: stream, actions: actions)
-  end
-
-  def self.process_authorization(stream:, actions:)
-    meta = nil
-    authorized = actions.reduce(true) do |auth, command|
-      action = Logux::Actions.new(command[1])
-      meta = Logux::Meta.new(command[2])
-      policy_caller = Logux::PolicyCaller.new(action: action, meta: meta)
-      auth && policy_caller.call!
-    end
-    return(stream.write([:approved, meta.id].to_json + ',') || true) if authorized
-    stream.write([:forbidden, meta.id]) || false
-  end
-
-  def self.process_actions(stream:, actions:)
-    last_batch = actions.size - 1
-    actions.map.with_index do |action, index|
-      processed = process_action(action).to_json
-      processed += ',' if index != last_batch
-      stream.write(processed)
-    end
+  def self.process_batch(stream:, batch:)
+    Logux::Process::Batch.new(stream: stream, batch: batch).call
   end
 
   def self.logger

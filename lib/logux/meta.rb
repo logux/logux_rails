@@ -12,5 +12,13 @@ module Logux
     def to_s
       to_h.to_s
     end
+
+    def node_id
+      id&.split(' ')&.second
+    end
+
+    def user_id
+      id&.split(' ')&.second&.split(':')&.first
+    end
   end
 end

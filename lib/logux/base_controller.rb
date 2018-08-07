@@ -33,11 +33,11 @@ module Logux
     end
 
     def user_id
-      @user_id ||= meta&.id&.split(' ')&.second&.split(':')&.first
+      @user_id ||= meta.user_id
     end
 
     def node_id
-      @node_id ||= meta&.id&.split(' ')&.second
+      @node_id ||= meta.node_id
     end
   end
 end
