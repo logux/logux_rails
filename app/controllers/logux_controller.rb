@@ -7,8 +7,7 @@ class LoguxController < ActionController::Base
   def create
     Logux.verify_request_meta_data(meta_params)
     logux_stream.write('[')
-    Logux.process(stream: logux_stream,
-                  params: logux_params)
+    Logux.process_batch(stream: logux_stream, batch: command_params)
   rescue => e
     begin
       Logux.configuration.on_error.call(e)
@@ -26,6 +25,10 @@ class LoguxController < ActionController::Base
 
   def logux_params
     params.to_unsafe_h
+  end
+
+  def command_params
+    logux_params.dig('commands')
   end
 
   def meta_params
