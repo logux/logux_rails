@@ -11,7 +11,7 @@ module Logux
     end
 
     def initial_meta
-      { nodeIds: [ meta.proxy || node_id] }
+      { nodeIds: [meta.proxy || node_id] }
     end
   end
 end

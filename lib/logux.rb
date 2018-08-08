@@ -31,14 +31,17 @@ module Logux
   autoload :Process, 'logux/process'
   autoload :Version, 'logux/version'
 
-  configurable :logux_host, :verify_authorized, :password, :logger, :on_error
+  configurable :logux_host, :verify_authorized,
+               :password, :logger,
+               :on_error, :auth_rule
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:1338'
     config.verify_authorized = true
     config.logger = ActiveSupport::Logger.new(STDOUT)
     config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
-    config.on_error = ->(e) {}
+    config.on_error = proc {}
+    config.auth_rule = proc { false }
   end
 
   def self.add(type, meta: {})
