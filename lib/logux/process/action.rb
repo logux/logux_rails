@@ -48,7 +48,7 @@ module Logux
         policy_check = policy_caller.call!
         status = policy_check ? :approved : :forbidden
         stream.write([status, meta_from_chunk.id])
-        return if policy_check
+        return stream.write(',') if policy_check
         stop_process!
       end
     end
