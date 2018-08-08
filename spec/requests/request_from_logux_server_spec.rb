@@ -16,23 +16,23 @@ describe 'Logux response' do
       commands: [
         ['action',
          { type: 'logux/subscribe', channel: 'post/123' },
-         { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }],
+         { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }],
         ['action',
          { type: 'comment/add', key: 'text', value: 'hi' },
-         { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }]
+         { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
       ] }
   end
   let(:params) { Logux.configuration.password }
   let(:logux_response) do
     [
-      ['processed', {  'id' => [219_856_768, 'clientid', 0] }],
-      ['processed', {  'id' => [219_856_768, 'clientid', 0] }]
+      ['processed', '219_856_768 clientid 0'],
+      ['processed', '219_856_768 clientid 0']
     ]
   end
 
   it 'does return correct body' do
     subject
-    expect(response.stream).to have_chunk(['approved', [219_856_768, 'clientid', 0]])
+    expect(response.stream).to have_chunk(['approved', '219_856_768 clientid 0'])
     expect(response.stream).to have_chunk(logux_response[0])
     expect(response.stream).to have_chunk(logux_response[1])
   end
@@ -44,11 +44,11 @@ describe 'Logux response' do
         commands: [
           ['action',
            { type: 'comment/update', key: 'text', value: 'hi' },
-           { time: Time.now.to_i, id: [219_856_768, 'clientid', 0], userId: 1 }]
+           { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
         ] }
     end
     let(:logux_response) do
-      ['forbidden', [219_856_768, 'clientid', 0]]
+      ['forbidden', '219_856_768 clientid 0']
     end
 
     it 'does return correct body' do

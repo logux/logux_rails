@@ -12,7 +12,7 @@ module Logux
     end
 
     def format
-      [status, custom_data || meta.slice(:id)]
+      [status, custom_data || meta.id]
     end
   end
 end

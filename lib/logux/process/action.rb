@@ -37,7 +37,8 @@ module Logux
       def process_action!
         return if stop_process?
         stream.write(Logux::ActionCaller
-          .new(action: action_from_chunk, meta: meta_from_chunk)
+          .new(action: action_from_chunk,
+               meta: meta_from_chunk)
           .call!
           .format)
       end

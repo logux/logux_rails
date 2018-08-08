@@ -3,15 +3,15 @@
 module Logux
   class ChannelController < BaseController
     def subscribe
-      add(initial_data, meta: subscribe_meta)
+      add(initial_data, meta: initial_meta)
     end
 
     def initial_data
       []
     end
 
-    def subscribe_meta
-      { nodeIds: [node_id] }
+    def initial_meta
+      { nodeIds: [ meta.proxy || node_id] }
     end
   end
 end
