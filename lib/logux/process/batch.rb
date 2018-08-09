@@ -35,16 +35,24 @@ module Logux
         @preprocessed_batch ||= batch.map do |chunk|
           case chunk[0]
           when 'action'
-            { type: :action,
-              action: Logux::Actions.new(chunk[1]),
-              meta: Logux::Meta.new(chunk[2]) }
+            preprocess_action(chunk)
           when 'auth'
-            { type: :auth,
-              auth: Logux::Auth.new(node_id: chunk[1],
-                                    credentials: chunk[2],
-                                    auth_id: chunk[3]) }
+            preprocess_auth(chunk)
           end
         end
+      end
+
+      def preprocess_action(chunk)
+        { type: :action,
+          action: Logux::Actions.new(chunk[1]),
+          meta: Logux::Meta.new(chunk[2]) }
+      end
+
+      def preprocess_auth(chunk)
+        { type: :auth,
+          auth: Logux::Auth.new(node_id: chunk[1],
+                                credentials: chunk[2],
+                                auth_id: chunk[3]) }
       end
     end
   end

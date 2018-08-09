@@ -8,3 +8,11 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
     - 'logux_rails.gemspec'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/controllers/logux_controller.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/logux_controller.rb'

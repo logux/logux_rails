@@ -7,7 +7,7 @@ module Logux
     end
 
     def initial_data
-      []
+      [1, 2]
     end
 
     def initial_meta
