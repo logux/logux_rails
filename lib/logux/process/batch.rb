@@ -17,7 +17,7 @@ module Logux
           when :action
             process_action(chunk: chunk.slice(:action, :meta))
           when :auth
-            process_auth(chunk: chunk.slice(:auth))
+            process_auth(chunk: chunk[:auth])
           end
           stream.write(',') if index != last_chunk
         end
