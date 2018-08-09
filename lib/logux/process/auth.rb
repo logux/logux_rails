@@ -3,6 +3,8 @@
 module Logux
   module Process
     class Auth
+      attr_reader :stream, :chunk
+
       def initialize(stream:, chunk:)
         @stream = stream
         @chunk = chunk
