@@ -1,8 +1,6 @@
 # LoguxRails
 
-[![Build Status](https://travis-ci.org/wilddima/logux_rails.svg?branch=master)](https://travis-ci.org/wilddima/logux_rails)
-
-[![Coverage Status](https://coveralls.io/repos/github/wilddima/logux_rails/badge.svg?branch=master)](https://coveralls.io/github/wilddima/logux_rails?branch=master)
+[![Build Status](https://travis-ci.org/wilddima/logux_rails.svg?branch=master)](https://travis-ci.org/wilddima/logux_rails) [![Coverage Status](https://coveralls.io/repos/github/wilddima/logux_rails/badge.svg?branch=master)](https://coveralls.io/github/wilddima/logux_rails?branch=master)
 
 ## Installation
 
