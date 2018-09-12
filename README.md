@@ -1,5 +1,7 @@
 # LoguxRails
 
+[![Build Status](https://travis-ci.org/wilddima/logux_rails.svg?branch=master)](https://travis-ci.org/wilddima/logux_rails)
+
 ## Installation
 
 Add this line to your application's Gemfile:
