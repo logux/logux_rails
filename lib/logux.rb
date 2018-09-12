@@ -6,6 +6,7 @@ require 'rails/engine'
 require 'active_support'
 require 'hashie/mash'
 require 'logux/engine'
+require 'nanoid'
 
 module Logux
   extend ActiveSupport::Autoload
@@ -67,5 +68,9 @@ module Logux
 
   def self.logger
     configuration.logger
+  end
+
+  def self.generate_action_id
+    "#{Time.now.to_datetime.strftime('%Q')} server:#{Nanoid.generate(size: 8)} 0"
   end
 end

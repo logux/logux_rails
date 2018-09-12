@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'configurations'
   spec.add_dependency 'hashie'
+  spec.add_dependency 'nanoid'
   spec.add_dependency 'rails', '~> 5'
   spec.add_dependency 'rest-client'
   spec.add_development_dependency 'bundler', '~> 1.16'

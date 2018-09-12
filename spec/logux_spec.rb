@@ -5,7 +5,7 @@ describe Logux, timecop: true do
     expect(Logux::VERSION).not_to be nil
   end
 
-  describe '#add' do
+  describe '.add' do
     subject { described_class.add(type) }
 
     let(:type) { [] }
@@ -15,6 +15,14 @@ describe Logux, timecop: true do
     it 'makes request' do
       subject
       expect(WebMock).to have_requested(:post, Logux.configuration.logux_host)
+    end
+  end
+
+  describe '.generate_action_id' do
+    subject { described_class. generate_action_id }
+
+    it 'returns correct action id' do
+      expect(subject).to match(/1528884000000 server:.{8} 0/)
     end
   end
 end
