@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rails', '~> 5'
   spec.add_dependency 'rest-client'
   spec.add_development_dependency 'bundler', '~> 1.16'
+  spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'factory_bot'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-byebug'
