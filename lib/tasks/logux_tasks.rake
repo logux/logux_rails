@@ -15,4 +15,16 @@ namespace :logux do
       end
     end
   end
+
+  desc 'Lists all Logux channels'
+  task channels: :environment do
+    Dir[Rails.root.join('app', 'logux', 'channels', '**', '*.rb')].each do |file|
+      require file
+    end
+
+    puts "channel\tClass"
+    Logux::ChannelController.descendants.each do |controller_klass|
+      puts "#{controller_klass.name.demodulize.underscore}\t#{controller_klass.name}"
+    end
+  end
 end
