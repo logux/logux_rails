@@ -3,34 +3,46 @@
 require 'spec_helper'
 
 describe Logux::PolicyCaller do
+  subject(:call!) { policy_caller.call! }
+
   let(:policy_caller) { described_class.new(action: action, meta: meta) }
+  let(:meta) { {} }
 
-  describe '.call!' do
-    subject(:call!) { policy_caller.call! }
+  context 'when request is not verified' do
+    let(:action) { create(:logux_actions_unknown) }
 
-    let(:action) { Logux::Actions.new(type: 'test/test') }
-    let(:meta) { {} }
+    before do
+      Logux.configuration.verify_authorized = false
+      allow(Logux.logger).to receive(:warn)
+      call!
+      Logux.configuration.verify_authorized = true
+    end
 
-    context 'when request is not verified' do
-      before do
-        allow(Logux.logger).to receive(:warn)
-        call!
-      end
+    it 'doesn\'t raise an error' do
+      expect(Logux.logger).to have_received(:warn).once
+    end
+  end
 
-      it 'doesn\'t raise an error' do
-        expect(Logux.logger).to have_received(:warn).once
+  context 'when verify_authorized' do
+    around do |example|
+      Logux.configuration.verify_authorized = true
+      example.call
+      Logux.configuration.verify_authorized = false
+    end
+
+    context 'with unknown action' do
+      let(:action) { create(:logux_actions_unknown) }
+
+      it 'raises an unknownActionError' do
+        expect { call! }.to raise_error(Logux::UnknownActionError)
       end
     end
 
-    context 'when verify_authorized' do
-      around do |example|
-        Logux.configuration.verify_authorized = true
-        example.call
-        Logux.configuration.verify_authorized = true
-      end
+    context 'with unknown subscribe' do
+      let(:action) { create(:logux_actions_unknown_subscribe) }
 
-      it 'raises an error' do
-        expect { call! }.to raise_error(Logux::NoPolicyError)
+      it 'raises an unknownActionError' do
+        expect { call! }.to raise_error(Logux::UnknownChannelError)
       end
     end
   end

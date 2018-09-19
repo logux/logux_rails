@@ -15,13 +15,13 @@ module Logux
       policy_class = class_finder.find_policy_class
       @policy = policy_class.new(action: action, meta: meta)
       policy.public_send("#{action.action_type}?")
-    rescue Logux::NoPolicyError => e
+    rescue Logux::UnknownActionError, Logux::UnknownChannelError => e
       raise e if Logux.configuration.verify_authorized
       Logux.logger.warn(e)
     end
 
     def class_finder
-      @class_finder ||= Logux::ClassFinder.new(action)
+      @class_finder ||= Logux::ClassFinder.new(action: action, meta: meta)
     end
   end
 end

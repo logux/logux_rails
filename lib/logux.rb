@@ -13,8 +13,18 @@ module Logux
   extend ActiveSupport::Autoload
   include Configurations
 
-  class NoPolicyError < StandardError; end
-  class NoActionError < StandardError; end
+  class WithMetaError < StandardError
+    attr_reader :meta
+
+    def initialize(msg, meta: nil)
+      @meta = meta
+      super(msg)
+    end
+  end
+
+  UnknownActionError = Class.new(WithMetaError)
+  UnknownChannelError = Class.new(WithMetaError)
+  UnauthorizedError = Class.new(StandardError)
 
   autoload :Client, 'logux/client'
   autoload :Meta, 'logux/meta'
@@ -35,6 +45,7 @@ module Logux
   autoload :Logger, 'logux/logger'
   autoload :Version, 'logux/version'
   autoload :Test, 'logux/test'
+  autoload :ErrorRenderer, 'logux/error_renderer'
 
   configurable :logux_host, :verify_authorized,
                :password, :logger,
@@ -64,13 +75,13 @@ module Logux
 
   def self.verify_request_meta_data(meta_params)
     if Logux.configuration.password.nil?
-      logger.warn(%(Please, add passoword for logux server:
+      logger.warn(%(Please, add password for logux server:
                           Logux.configure do |c|
                             c.password = 'your-password'
                           end))
     end
     auth = Logux.configuration.password == meta_params&.dig(:password)
-    raise unless auth
+    raise Logux::UnauthorizedError, 'Incorrect password' unless auth
   end
 
   def self.process_batch(stream:, batch:)

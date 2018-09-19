@@ -32,3 +32,6 @@ FactoryBot/StaticAttributeDefinedDynamically:
 
 RSpec/ExpectChange:
   EnforcedStyle: block
+
+Style/RescueStandardError:
+  EnforcedStyle: implicit
