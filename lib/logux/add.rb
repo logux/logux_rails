@@ -14,7 +14,7 @@ module Logux
 
     def call(data, meta: Logux::Meta.new({}))
       prepared_data = prepare_data(data: data, meta: meta)
-      Logux.logger_info("Receive from Logux", prepared_data)
+      Logux::Logger.info("Receive from Logux", prepared_data)
       client.post(prepared_data)
     end
 

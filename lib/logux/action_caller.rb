@@ -10,7 +10,7 @@ module Logux
     end
 
     def call!
-      Logux.logger_info("Searching action for Logux action: #{action}, meta: #{meta}")
+      Logux::Logger.info("Searching action for Logux action: #{action}, meta: #{meta}")
       action_class = class_finder.find_action_class
       @action_controller = action_class.new(action: action, meta: meta)
       format(action_controller.public_send(action.action_type))

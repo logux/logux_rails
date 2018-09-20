@@ -31,6 +31,7 @@ module Logux
   autoload :Response, 'logux/response'
   autoload :Stream, 'logux/stream'
   autoload :Process, 'logux/process'
+  autoload :Logger, 'logux/logger'
   autoload :Version, 'logux/version'
 
   configurable :logux_host, :verify_authorized,
@@ -65,20 +66,6 @@ module Logux
 
   def self.process_batch(stream:, batch:)
     Logux::Process::Batch.new(stream: stream, batch: batch).call
-  end
-
-  def self.logger
-    configuration.logger
-  end
-
-  def self.logger_info(message, data = "")
-    msg = message.light_yellow
-    if data.present? && data.is_a?(Hash)
-      msg = msg + ': '.light_yellow +
-       JSON.pretty_generate(data).light_white.on_light_blue
-    end
-
-    logger.info(msg)
   end
 
   def self.generate_action_id
