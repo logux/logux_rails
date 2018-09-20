@@ -8,7 +8,7 @@ namespace :logux do
     end
 
     puts "action.type\tClass#method"
-    Logux::ActionController.descendants.each do |controller_klass|
+    Logux::ActionController.descendants.sort_by(&:name).each do |controller_klass|
       controller_klass.instance_methods(false).each do |action|
         action_type = "#{controller_klass.name.demodulize.underscore}/#{action}"
         puts "#{action_type}\t#{controller_klass.name}##{action}"
@@ -23,8 +23,8 @@ namespace :logux do
     end
 
     puts "channel\tClass"
-    Logux::ChannelController.descendants.each do |controller_klass|
-      puts "#{controller_klass.name.demodulize.underscore}\t#{controller_klass.name}"
+    Logux::ChannelController.descendants.map(&:name).sort.each do |klass_name|
+      puts "#{klass_name.demodulize.underscore}\t#{klass_name}"
     end
   end
 end
