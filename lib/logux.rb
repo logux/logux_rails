@@ -7,6 +7,7 @@ require 'active_support'
 require 'hashie/mash'
 require 'logux/engine'
 require 'nanoid'
+require 'colorize'
 
 module Logux
   extend ActiveSupport::Autoload
@@ -68,6 +69,16 @@ module Logux
 
   def self.logger
     configuration.logger
+  end
+
+  def self.logger_info(message, data = "")
+    msg = message.light_yellow
+    if data.present? && data.is_a?(Hash)
+      msg = msg + ': '.light_yellow +
+       JSON.pretty_generate(data).light_white.on_light_blue
+    end
+
+    logger.info(msg)
   end
 
   def self.generate_action_id

@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'nanoid'
   spec.add_dependency 'rails', '~> 5'
   spec.add_dependency 'rest-client'
+  spec.add_dependency 'colorize'
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'factory_bot'
