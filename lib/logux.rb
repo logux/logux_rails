@@ -38,11 +38,12 @@ module Logux
                :password, :logger,
                :on_error, :auth_rule
 
+
   configuration_defaults do |config|
     config.logux_host = 'localhost:1338'
     config.verify_authorized = true
     config.logger = ActiveSupport::Logger.new(STDOUT)
-    config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
+    config.logger =  Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
     config.on_error = proc {}
     config.auth_rule = proc { false }
   end
@@ -55,7 +56,7 @@ module Logux
 
   def self.verify_request_meta_data(meta_params)
     if Logux.configuration.password.nil?
-      logger.warn(%(Please, add passoword for logux server:
+      Logux::Logger.warn(%(Please, add passoword for logux server:
                           Logux.configure do |c|
                             c.password = 'your-password'
                           end))

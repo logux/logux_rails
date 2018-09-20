@@ -2,11 +2,11 @@
 
 module Logux
   class Logger
-    def self.info(message, data = "")
+    def self.info(message, data = '')
       msg = message.light_yellow
       if data.present? && data.is_a?(Hash)
         msg = msg + ': '.light_yellow +
-         JSON.pretty_generate(data).light_white.on_light_blue
+              JSON.pretty_generate(data).light_white.on_light_blue
       end
 
       logger.info(msg)

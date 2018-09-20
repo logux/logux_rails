@@ -22,12 +22,12 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'colorize'
   spec.add_dependency 'configurations'
   spec.add_dependency 'hashie'
   spec.add_dependency 'nanoid'
   spec.add_dependency 'rails', '~> 5'
   spec.add_dependency 'rest-client'
-  spec.add_dependency 'colorize'
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'factory_bot'
