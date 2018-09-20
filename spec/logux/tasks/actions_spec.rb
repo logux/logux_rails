@@ -11,7 +11,9 @@ describe 'rake logux:actions', type: :task do
 
   it 'outputs all action types and corresponding class and method names' do
     expect { task.execute }.to output(
-      "action.type\tClass#method\ncomment/add\tActions::Comment#add\n"
+      "   action.type Class#method\n"\
+      "blog/notes/add Actions::Blog::Notes#add\n"\
+      "   comment/add Actions::Comment#add\n"
     ).to_stdout
   end
 end

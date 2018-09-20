@@ -11,7 +11,8 @@ describe 'rake logux:channels', type: :task do
 
   it 'outputs all channels and corresponding class names' do
     expect { task.execute }.to output(
-      "channel\tClass\npost\tChannels::Post\n"
+      "channel Class\n"\
+      "   post Channels::Post\n"
     ).to_stdout
   end
 end
