@@ -26,7 +26,7 @@ describe Logux::ActionCaller do
       end
 
       after do
-        Actions::User.undef_method :add
+        Actions::User.send :undef_method, :add
         Actions.send :remove_const, :User
         Actions.send :const_set, :User, Class.new
       end
