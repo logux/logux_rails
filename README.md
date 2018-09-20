@@ -38,6 +38,8 @@ After this, POST requests to `/logux` will be processed by LoguxController. You 
 
 LoguxRails will try to find Action for the specific message from logux-server. For example, for `project/rename` action, you should define `Action::Project` class, inherited from `Logux::Action` base class, and implement `rename` method.
 
+You can execute `rake logux:actions` to get the list of available action types, or `rakelogux:channels` to get the list of available channels 
+
 ## Todo
 
 - Add permit method to logux params
