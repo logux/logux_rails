@@ -25,6 +25,12 @@ describe Logux::ActionCaller do
         end
       end
 
+      after do
+        Actions::User.send :undef_method, :add
+        Actions.send :remove_const, :User
+        Actions.send :const_set, :User, Class.new
+      end
+
       it 'return ok' do
         expect(subject.status).to eq(:ok)
       end
