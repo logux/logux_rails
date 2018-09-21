@@ -12,7 +12,7 @@ module Logux
 
     def write(payload)
       processed_payload = process(payload)
-      Logux::Logger.info("Write to Logux response: #{processed_payload}")
+      Logux.logger.info("Write to Logux response: #{processed_payload}")
       stream.write(processed_payload)
     end
 

@@ -31,7 +31,7 @@ module Logux
   autoload :Response, 'logux/response'
   autoload :Stream, 'logux/stream'
   autoload :Process, 'logux/process'
-  autoload :Logger, 'logux/logger'
+  autoload :Logging, 'logux/logging'
   autoload :Version, 'logux/version'
 
   configurable :logux_host, :verify_authorized,
@@ -43,7 +43,7 @@ module Logux
     config.logux_host = 'localhost:1338'
     config.verify_authorized = true
     config.logger = ActiveSupport::Logger.new(STDOUT)
-    config.logger =  Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
+    config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
     config.on_error = proc {}
     config.auth_rule = proc { false }
   end
@@ -56,7 +56,7 @@ module Logux
 
   def self.verify_request_meta_data(meta_params)
     if Logux.configuration.password.nil?
-      Logux::Logger.warn(%(Please, add passoword for logux server:
+      logger.warn(%(Please, add passoword for logux server:
                           Logux.configure do |c|
                             c.password = 'your-password'
                           end))
@@ -71,5 +71,9 @@ module Logux
 
   def self.generate_action_id
     "#{Time.now.to_datetime.strftime('%Q')} server:#{Nanoid.generate(size: 8)} 0"
+  end
+
+  def self.logger
+    Logux::Logging
   end
 end

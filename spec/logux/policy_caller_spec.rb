@@ -12,7 +12,7 @@ describe Logux::PolicyCaller do
     let(:meta) { {} }
 
     it 'doesn\'t raise an error' do
-      expect(Logux::Logger).to receive(:warn).once
+      expect(Logux.logger).to receive(:warn).once
       subject
     end
 

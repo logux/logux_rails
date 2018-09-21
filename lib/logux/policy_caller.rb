@@ -10,13 +10,13 @@ module Logux
     end
 
     def call!
-      Logux::Logger.info("Searching policy for Logux action: #{action}, meta: #{meta}")
+      Logux.logger.info("Searching policy for Logux action: #{action}, meta: #{meta}")
       policy_class = class_finder.find_policy_class
       @policy = policy_class.new(action: action, meta: meta)
       policy.public_send("#{action.action_type}?")
     rescue Logux::NoPolicyError => e
       raise e if Logux.configuration.verify_authorized
-      Logux::Logger.warn(e)
+      Logux.logger.warn(e)
     end
 
     def class_finder
