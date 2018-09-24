@@ -27,6 +27,7 @@ module Logux
   autoload :PolicyCaller, 'logux/policy_caller'
   autoload :Policy, 'logux/policy'
   autoload :Add, 'logux/add'
+  autoload :Node, 'logux/node'
   autoload :Response, 'logux/response'
   autoload :Stream, 'logux/stream'
   autoload :Process, 'logux/process'
@@ -71,6 +72,6 @@ module Logux
   end
 
   def self.generate_action_id
-    "#{Time.now.to_datetime.strftime('%Q')} server:#{Nanoid.generate(size: 8)} 0"
+    Logux::Node.instance.generate_action_id
   end
 end
