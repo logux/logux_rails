@@ -31,7 +31,7 @@ module Logux
   autoload :Response, 'logux/response'
   autoload :Stream, 'logux/stream'
   autoload :Process, 'logux/process'
-  autoload :Logging, 'logux/logging'
+  autoload :Logger, 'logux/logger'
   autoload :Version, 'logux/version'
 
   configurable :logux_host, :verify_authorized,
@@ -74,6 +74,6 @@ module Logux
   end
 
   def self.logger
-    Logux::Logging
+    Logux::Logger
   end
 end
