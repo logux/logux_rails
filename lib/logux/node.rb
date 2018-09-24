@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Logux
   class Node
     include Singleton
