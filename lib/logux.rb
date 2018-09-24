@@ -7,6 +7,7 @@ require 'active_support'
 require 'hashie/mash'
 require 'logux/engine'
 require 'nanoid'
+require 'colorize'
 
 module Logux
   extend ActiveSupport::Autoload
@@ -31,11 +32,13 @@ module Logux
   autoload :Response, 'logux/response'
   autoload :Stream, 'logux/stream'
   autoload :Process, 'logux/process'
+  autoload :Logger, 'logux/logger'
   autoload :Version, 'logux/version'
 
   configurable :logux_host, :verify_authorized,
                :password, :logger,
                :on_error, :auth_rule
+
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:1338'
@@ -67,11 +70,11 @@ module Logux
     Logux::Process::Batch.new(stream: stream, batch: batch).call
   end
 
-  def self.logger
-    configuration.logger
-  end
-
   def self.generate_action_id
     Logux::Node.instance.generate_action_id
+  end
+
+  def self.logger
+    Logux::Logger
   end
 end
