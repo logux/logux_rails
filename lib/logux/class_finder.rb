@@ -11,19 +11,21 @@ module Logux
     def find_action_class
       "#{class_namespace}::#{class_name}".constantize
     rescue NameError
-      raise Logux::NoActionError, %(
+      Logux.logger.warn %(
         Unable to find action #{class_name.camelize}
         Should be in app/logux/actions/#{class_path}.rb
       )
+      nil
     end
 
     def find_policy_class
       "Policies::#{class_namespace}::#{class_name}".constantize
     rescue NameError
-      raise Logux::NoPolicyError, %(
+      Logux.logger.warn %(
         Unable to find policy #{class_name.camelize}
         Should be in app/logux/policies/#{class_path}.rb
       )
+      nil
     end
 
     def class_namespace

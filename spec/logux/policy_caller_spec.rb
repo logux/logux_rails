@@ -9,23 +9,32 @@ describe Logux::PolicyCaller do
     subject { policy_caller.call! }
 
     let(:action) { Logux::Actions.new(type: 'test/test') }
-    let(:meta) { {} }
+    let(:meta) { create(:logux_meta) }
 
     it 'doesn\'t raise an error' do
       expect(Logux.logger).to receive(:warn).once
       subject
     end
 
-    context 'when verify_authorized' do
-      around do |example|
-        Logux.configuration.verify_authorized = true
-        example.call
-        Logux.configuration.verify_authorized = true
+    context 'when unknown action' do
+      before do
+        expect(Logux.logger).to receive(:warn).once
       end
 
-      it 'raises an error' do
-        expect { subject }.to raise_error(Logux::NoPolicyError)
+      it { expect(subject).to eq(['unknownAction', meta.id]) }
+    end
+
+    context 'when unknown channel' do
+      let(:action) do
+        Logux::Actions.new(type: 'logux/subscribe',
+                           channel: 'test/user')
       end
+
+      before do
+        expect(Logux.logger).to receive(:warn).once
+      end
+
+      it { expect(subject).to eq(['unknownChannel', meta.id]) }
     end
   end
 end

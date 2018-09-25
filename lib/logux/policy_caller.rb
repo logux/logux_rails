@@ -13,11 +13,13 @@ module Logux
       Logux.logger
            .info("Searching policy for Logux action: #{action}, meta: #{meta}")
       policy_class = class_finder.find_policy_class
-      @policy = policy_class.new(action: action, meta: meta)
-      policy.public_send("#{action.action_type}?")
-    rescue Logux::NoPolicyError => e
-      raise e if Logux.configuration.verify_authorized
-      Logux.logger.warn(e)
+      if policy_class
+        @policy = policy_class.new(action: action, meta: meta)
+        policy.public_send("#{action.action_type}?")
+      else
+        class_namespace = class_finder.class_namespace.singularize
+        ["unknown#{class_namespace}", meta.id]
+      end
     end
 
     def class_finder
