@@ -39,7 +39,6 @@ module Logux
                :password, :logger,
                :on_error, :auth_rule
 
-
   configuration_defaults do |config|
     config.logux_host = 'localhost:1338'
     config.verify_authorized = true

@@ -6,7 +6,7 @@ module Logux
 
     def initialize(source_hash = nil, default = nil, &blk)
       super
-      self[:time] ||= (Time.now.to_datetime.strftime('%Q'))
+      self[:time] ||= Time.now.to_datetime.strftime('%Q')
     end
 
     def to_s
