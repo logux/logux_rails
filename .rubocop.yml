@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - 'spec/dummy/db/**/*.rb'
     - 'vendor/**/*'
+  TargetRubyVersion: 2.4
 
 Metrics/BlockLength:
   Exclude:
