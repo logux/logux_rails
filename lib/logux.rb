@@ -55,6 +55,16 @@ module Logux
     logux_add.call(type, meta: logux_meta)
   end
 
+  def self.undo(meta: {}, reason: nil)
+    logux_add = Logux::Add.new
+    logux_meta = Logux::Meta.new(meta.merge({ status: 'processed' }))
+
+    logux_add.call(
+      { type: 'logux/undo', id: logux_meta.id, reason: reason },
+      meta: logux_meta
+    )
+  end
+
   def self.verify_request_meta_data(meta_params)
     if Logux.configuration.password.nil?
       logger.warn(%(Please, add passoword for logux server:
