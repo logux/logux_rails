@@ -24,7 +24,7 @@ describe Logux, timecop: true do
   end
 
   describe '.undo' do
-    subject { described_class.undo(meta: meta, reason: reason) }
+    subject { described_class.undo(meta, reason) }
 
     let(:meta) do
       {
