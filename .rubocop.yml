@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - 'spec/dummy/db/**/*.rb'
+    - 'vendor/**/*'
 
 Metrics/BlockLength:
   Exclude:
