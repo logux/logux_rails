@@ -13,9 +13,7 @@ module Logux
     def call!
       Logux.logger
            .info("Searching policy for Logux action: #{action}, meta: #{meta}")
-      policy_class = class_finder.find_policy_class
-      @policy = policy_class.new(action: action, meta: meta)
-      policy.public_send("#{action.action_type}?")
+      call_policy
     rescue Logux::NoPolicyError => e
       stream.write(unknown_events)
       raise e if Logux.configuration.verify_authorized
@@ -27,6 +25,12 @@ module Logux
     end
 
     private
+
+    def call_policy
+      policy_class = class_finder.find_policy_class
+      @policy = policy_class.new(action: action, meta: meta)
+      policy.public_send("#{action.action_type}?")
+    end
 
     def unknown_events
       class_namespace = class_finder.class_namespace.singularize
