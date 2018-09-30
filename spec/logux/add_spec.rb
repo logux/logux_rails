@@ -18,15 +18,8 @@ describe Logux::Add, timecop: true do
       }
     end
 
-    before do
-      stub_request(:post, Logux.configuration.logux_host)
-        .with(body: logux_request.to_json)
-        .to_return(body: ['processed',
-                          { 'id' => [219_856_768, 'clientid', 0] }].to_json)
-    end
-
     it 'return processed' do
-      expect(JSON.parse(subject)[0]).to eq('processed')
+      expect { subject }.to send_to_logux(logux_request)
     end
   end
 end

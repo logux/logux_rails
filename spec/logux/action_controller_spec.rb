@@ -7,7 +7,6 @@ describe Logux::ActionController do
   let(:action) { create(:logux_actions_subscribe) }
   let(:user) { User.find_or_create_by(id: 1, name: 'test') }
   let(:meta) { Logux::Meta.new }
-  let!(:logux_request) { stub_request(:post, Logux.configuration.logux_host) }
 
   describe '#respond' do
     subject { action_controller.respond(:processed) }

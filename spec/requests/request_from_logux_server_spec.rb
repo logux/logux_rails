@@ -30,10 +30,6 @@ describe 'Logux response' do
     ]
   end
 
-  before do
-    stub_request(:post, Logux.configuration.logux_host)
-  end
-
   it 'does return correct body' do
     subject
     expect(response.stream).to have_chunk(['approved', '219_856_768 clientid 0'])
@@ -86,10 +82,7 @@ describe 'Logux response' do
     end
 
     it 'returns correct chunk' do
-      subject
-      expect(WebMock)
-        .to have_requested(:post, Logux.configuration.logux_host)
-        .with(body: /proxy_id/)
+      expect { subject }.to change { logux_store.size }.by(1)
     end
   end
 end

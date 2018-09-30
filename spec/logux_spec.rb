@@ -10,8 +10,6 @@ describe Logux, timecop: true do
 
     let(:type) { [] }
 
-    before { stub_request(:post, Logux.configuration.logux_host) }
-
     it 'makes request' do
       subject
       expect(WebMock).to have_requested(:post, Logux.configuration.logux_host)
