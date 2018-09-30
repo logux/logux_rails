@@ -34,7 +34,7 @@ module Logux
   autoload :Process, 'logux/process'
   autoload :Logger, 'logux/logger'
   autoload :Version, 'logux/version'
-  autoload :RSpec, 'logux/rspec'
+  autoload :Test, 'logux/test'
 
   configurable :logux_host, :verify_authorized,
                :password, :logger,
