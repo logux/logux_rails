@@ -45,7 +45,9 @@ module Logux
 
       def process_authorization!
         policy_caller = Logux::PolicyCaller.new(action: action_from_chunk,
-                                                meta: meta_from_chunk)
+                                                meta: meta_from_chunk,
+                                                stream: stream)
+
         policy_check = policy_caller.call!
         status = policy_check ? :approved : :forbidden
         stream.write([status, meta_from_chunk.id])

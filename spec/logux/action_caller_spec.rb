@@ -10,13 +10,7 @@ describe Logux::ActionCaller do
   describe '#call!' do
     subject { action_caller.call! }
 
-    context 'when action doesnt defined' do
-      before do
-        expect(Logux.logger).to receive(:warn).once
-      end
-
-      it { is_expected.to be_nil }
-    end
+    it { expect { subject }.to raise_error(Logux::NoActionError) }
 
     context 'when action defined' do
       before do

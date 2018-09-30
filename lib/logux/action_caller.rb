@@ -13,9 +13,6 @@ module Logux
       Logux.logger
            .info("Searching action for Logux action: #{action}, meta: #{meta}")
       action_class = class_finder.find_action_class
-
-      return unless action_class
-
       @action_controller = action_class.new(action: action, meta: meta)
       format(action_controller.public_send(action.action_type))
     end

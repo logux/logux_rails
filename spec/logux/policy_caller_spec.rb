@@ -1,40 +1,43 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
 require 'spec_helper'
 
 describe Logux::PolicyCaller do
-  let(:policy_caller) { described_class.new(action: action, meta: meta) }
+  let(:response_stream) do
+    ActionController::Live::Buffer.new(ActionDispatch::Response.new)
+  end
+
+  let(:policy_caller) do
+    described_class.new(action: action, meta: meta, stream: stream)
+  end
 
   describe '.call!' do
     subject { policy_caller.call! }
 
+    let(:stream) { Logux::Stream.new(response_stream) }
     let(:action) { Logux::Actions.new(type: 'test/test') }
     let(:meta) { create(:logux_meta) }
+
+    before do
+      expect(stream).to receive(:write).with(['unknownAction', meta.id])
+    end
 
     it 'doesn\'t raise an error' do
       expect(Logux.logger).to receive(:warn).once
       subject
     end
 
-    context 'when unknown action' do
-      before do
-        expect(Logux.logger).to receive(:warn).once
+    context 'when verify_authorized' do
+      around do |example|
+        Logux.configuration.verify_authorized = true
+        example.call
+        Logux.configuration.verify_authorized = true
       end
 
-      it { expect(subject).to eq(['unknownAction', meta.id]) }
-    end
-
-    context 'when unknown channel' do
-      let(:action) do
-        Logux::Actions.new(type: 'logux/subscribe',
-                           channel: 'test/user')
+      it 'raises an error' do
+        expect { subject }.to raise_error(Logux::NoPolicyError)
       end
-
-      before do
-        expect(Logux.logger).to receive(:warn).once
-      end
-
-      it { expect(subject).to eq(['unknownChannel', meta.id]) }
     end
   end
 end

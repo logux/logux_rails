@@ -3,7 +3,6 @@
 class LoguxController < ActionController::Base
   include ActionController::Live
 
-  # rubocop:disable Style/RescueStandardError
   def create
     Logux.verify_request_meta_data(meta_params)
     logux_stream.write('[')

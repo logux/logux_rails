@@ -20,10 +20,6 @@ describe Logux::ClassFinder do
 
     let(:params) { create(:logux_actions_add, type: 'test/test/name/try/user/add') }
 
-    before do
-      expect(Logux.logger).to receive(:warn).once
-    end
-
-    it { is_expected.to be_nil }
+    it { expect { subject }.to raise_error(Logux::NoPolicyError) }
   end
 end
