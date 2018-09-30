@@ -6,7 +6,8 @@ module Logux
       include Singleton
 
       def add_request(action)
-        requests << action
+        parsed_body = parse_body(action[:request]&.body)
+        requests << action.merge(body: parsed_body)
       end
 
       def requests
@@ -14,7 +15,15 @@ module Logux
       end
 
       def reset!
-        @requests = nil
+        @requests = []
+      end
+
+      private
+
+      def parse_body(body)
+        JSON.parse(body)
+      rescue JSON::ParserError, TypeError
+        {}
       end
     end
   end
