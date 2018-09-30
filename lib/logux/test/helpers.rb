@@ -30,14 +30,7 @@ module Logux
           @difference = (after_state - before_state)
                         .map { |dif| dif[:body].deep_symbolize_keys }
           @difference.find do |state|
-            case state
-            when Hash
-              state.merge(expected || {}).deep_symbolize_keys == state
-            when Array
-              ((state - (expected || []) | (expected || []) - state)).empty?
-            else
-              raise TypeError
-            end
+            state.merge(expected || {}).deep_symbolize_keys == state
           end
         end
 
