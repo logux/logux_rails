@@ -49,10 +49,17 @@ module Logux
     config.auth_rule = proc { false }
   end
 
-  def self.add(type, meta: {})
+  def self.add(data, meta: {})
     logux_add = Logux::Add.new
     logux_meta = Logux::Meta.new(meta)
-    logux_add.call(type, meta: logux_meta)
+    logux_add.call(data, meta: logux_meta)
+  end
+
+  def self.add_batch(data, meta: {})
+    raise 'Not working yet, can not share metadata between different actions'
+    logux_add = Logux::AddBatch.new
+    logux_meta = Logux::Meta.new(meta)
+    logux_add.call(data, meta: logux_meta)
   end
 
   def self.verify_request_meta_data(meta_params)

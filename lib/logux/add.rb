@@ -23,7 +23,7 @@ module Logux
     def prepare_data(data:, meta:)
       { version: 0,
         password: password,
-        commands: data.map { |d| ['action', d, meta] } }
+        commands: [['action', d, meta]] }
     end
   end
 end
