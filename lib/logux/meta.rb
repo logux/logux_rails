@@ -6,6 +6,7 @@ module Logux
 
     def initialize(source_hash = nil, default = nil, &blk)
       super
+      self[:id] ||= Logux.generate_action_id
       self[:time] ||= Time.now.to_datetime.strftime('%Q')
     end
 
