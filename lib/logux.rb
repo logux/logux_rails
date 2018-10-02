@@ -57,7 +57,7 @@ module Logux
 
   def self.undo(meta = {}, reason = nil)
     logux_add = Logux::Add.new
-    logux_meta = Logux::Meta.new(meta.merge({ status: 'processed' }))
+    logux_meta = Logux::Meta.new(meta.merge(status: 'processed'))
 
     logux_add.call(
       { type: 'logux/undo', id: logux_meta.id, reason: reason },
