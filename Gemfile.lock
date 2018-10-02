@@ -180,6 +180,8 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
+    rubocop-rspec (1.27.0)
+      rubocop (>= 0.56.0)
     ruby-progressbar (1.9.0)
     safe_yaml (1.0.4)
     simplecov (0.16.1)
@@ -229,6 +231,7 @@ DEPENDENCIES
   rspec-live_controllers
   rspec-rails
   rubocop
+  rubocop-rspec
   simplecov
   sqlite3
   timecop

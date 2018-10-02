@@ -7,10 +7,8 @@ describe Logux::Client do
   let(:params) { create(:logux_actions_add) }
 
   describe '#post' do
-    subject { client.post(params) }
-
     it 'performs request' do
-      expect { subject }.to send_to_logux(params)
+      expect { client.post(params) }.to send_to_logux(params)
     end
   end
 end

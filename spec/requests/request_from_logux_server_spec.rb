@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 describe 'Logux response' do
-  subject do
+  let(:request_logux) do
     post('/logux',
          params: logux_params,
          as: :json)
   end
+
   let(:password) { Logux.configuration.password }
 
   let(:logux_params) do
@@ -23,21 +24,22 @@ describe 'Logux response' do
       ] }
   end
   let(:params) { Logux.configuration.password }
-  let(:logux_response) do
-    [
-      ['processed', '219_856_768 clientid 0'],
-      ['processed', '219_856_768 clientid 0']
-    ]
-  end
 
-  it 'does return correct body' do
-    subject
-    expect(response.stream).to have_chunk(['approved', '219_856_768 clientid 0'])
-    expect(response.stream).to have_chunk(logux_response[0])
-    expect(response.stream).to have_chunk(logux_response[1])
+  context 'when authorized' do
+    before { request_logux }
+
+    it 'returns approved chunk' do
+      expect(response.stream).to have_chunk(['approved', '219_856_768 clientid 0'])
+    end
+
+    it 'returns processed chunk' do
+      expect(response.stream).to have_chunk(['processed', '219_856_768 clientid 0'])
+    end
   end
 
   context 'when no authorized' do
+    before { request_logux }
+
     let(:logux_params) do
       { version: 0,
         password: password,
@@ -52,16 +54,16 @@ describe 'Logux response' do
     end
 
     it 'does return correct body' do
-      subject
       expect(response.stream).to have_chunk(logux_response)
     end
   end
 
   context 'when password wrong' do
+    before { request_logux }
+
     let(:password) { '12345' }
 
     it 'does return error' do
-      subject
       expect(response.stream).to start_from_chunk([:error])
     end
   end
@@ -82,7 +84,7 @@ describe 'Logux response' do
     end
 
     it 'returns correct chunk' do
-      expect { subject }.to change { logux_store.size }.by(1)
+      expect { request_logux }.to change { logux_store.size }.by(1)
     end
   end
 end
