@@ -16,7 +16,7 @@ describe Logux, timecop: true do
   end
 
   describe '.generate_action_id' do
-    let(:action_id) { described_class.generate_action_id }
+    subject(:action_id) { described_class.generate_action_id }
 
     it 'returns correct action id' do
       expect(action_id).not_to be_empty

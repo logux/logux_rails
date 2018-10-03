@@ -13,6 +13,8 @@ describe Logux::ActionCaller do
     end
 
     context 'when action defined' do
+      subject(:result) { action_caller.call! }
+
       before do
         module Actions
           class User < Logux::ActionController
@@ -22,8 +24,6 @@ describe Logux::ActionCaller do
           end
         end
       end
-
-      let(:result) { action_caller.call! }
 
       after do
         Actions::User.send :undef_method, :add

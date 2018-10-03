@@ -6,7 +6,7 @@ describe Logux::PolicyCaller do
   let(:policy_caller) { described_class.new(action: action, meta: meta) }
 
   describe '.call!' do
-    let(:call!) { policy_caller.call! }
+    subject(:call!) { policy_caller.call! }
 
     let(:action) { Logux::Actions.new(type: 'test/test') }
     let(:meta) { {} }

@@ -6,7 +6,7 @@ describe Logux::ClassFinder do
   let(:finder) { described_class.new(params) }
 
   describe '#class_name' do
-    let(:class_name) { finder.class_name }
+    subject(:class_name) { finder.class_name }
 
     let(:params) { create(:logux_actions_add, type: 'test/test/name/try/user/add') }
 
@@ -16,7 +16,7 @@ describe Logux::ClassFinder do
   end
 
   describe '#find_policy_class' do
-    let(:policy_class) { finder.find_policy_class }
+    subject(:policy_class) { finder.find_policy_class }
 
     let(:params) { create(:logux_actions_add, type: 'test/test/name/try/user/add') }
 
