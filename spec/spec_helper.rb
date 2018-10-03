@@ -8,7 +8,10 @@ SimpleCov::Formatter::MultiFormatter.new([
                                            Coveralls::SimpleCov::Formatter
                                          ])
 Coveralls.wear!
-SimpleCov.start
+SimpleCov.start do
+  add_filter '/spec/'
+  add_filter '/lib/logux/test/'
+end
 
 require 'bundler/setup'
 require 'factory_bot'

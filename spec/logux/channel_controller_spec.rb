@@ -9,11 +9,11 @@ describe Logux::ChannelController do
   let(:meta) { Logux::Meta.new }
 
   describe '#subscribe' do
-    subject { channel_controller.subscribe }
+    let(:subscribe) { channel_controller.subscribe }
 
     context 'when ActiveRecord defined' do
       it 'tries to find record by chanel data' do
-        expect { subject }.to send_to_logux
+        expect { subscribe }.to send_to_logux
       end
     end
   end

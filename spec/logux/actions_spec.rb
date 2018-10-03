@@ -8,24 +8,24 @@ describe Logux::Actions do
   describe '#action_type' do
     subject { actions.action_type }
 
-    it { should eq 'add' }
+    it { is_expected.to eq 'add' }
   end
 
   describe '#action_name' do
     subject { actions.action_name }
 
-    it { should eq 'user' }
+    it { is_expected.to eq 'user' }
   end
 
   describe '#channel_name' do
     subject { actions.channel_name }
 
-    it { should eq 'project' }
+    it { is_expected.to eq 'project' }
   end
 
   describe '#channel_id' do
     subject { actions.channel_id }
 
-    it { should eq '123' }
+    it { is_expected.to eq '123' }
   end
 end

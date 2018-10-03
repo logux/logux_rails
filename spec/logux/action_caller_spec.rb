@@ -8,10 +8,8 @@ describe Logux::ActionCaller do
   let(:meta) { create(:logux_meta) }
 
   describe '#call!' do
-    subject { action_caller.call! }
-
     it 'raise error' do
-      expect { subject }.to raise_error(Logux::NoActionError)
+      expect { action_caller.call! }.to raise_error(Logux::NoActionError)
     end
 
     context 'when action defined' do
@@ -25,6 +23,8 @@ describe Logux::ActionCaller do
         end
       end
 
+      let(:result) { action_caller.call! }
+
       after do
         Actions::User.send :undef_method, :add
         Actions.send :remove_const, :User
@@ -32,7 +32,7 @@ describe Logux::ActionCaller do
       end
 
       it 'return ok' do
-        expect(subject.status).to eq(:ok)
+        expect(result.status).to eq(:ok)
       end
     end
   end

@@ -6,8 +6,6 @@ describe Logux::Add, timecop: true do
   let(:request) { described_class.new }
 
   describe '#call' do
-    subject { request.call(data, meta: meta) }
-
     let(:data) { [{ id: 1 }, { id: 2 }] }
     let(:meta) { create(:logux_meta) }
     let(:logux_request) do
@@ -19,7 +17,7 @@ describe Logux::Add, timecop: true do
     end
 
     it 'return processed' do
-      expect { subject }.to send_to_logux(logux_request)
+      expect { request.call(data, meta: meta) }.to send_to_logux(logux_request)
     end
   end
 end

@@ -1,5 +1,7 @@
 inherit_from: .rubocop_todo.yml
 
+require: rubocop-rspec
+
 AllCops:
   Exclude:
     - 'spec/dummy/db/**/*.rb'
@@ -19,3 +21,11 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Exclude:
     - 'app/controllers/logux_controller.rb'
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/logux/tasks/*.rb'
+    - 'spec/requests/*.rb'
+
+RSpec/ExpectChange:
+  EnforcedStyle: block

@@ -6,14 +6,20 @@ describe Logux::PolicyCaller do
   let(:policy_caller) { described_class.new(action: action, meta: meta) }
 
   describe '.call!' do
-    subject { policy_caller.call! }
+    let(:call!) { policy_caller.call! }
 
     let(:action) { Logux::Actions.new(type: 'test/test') }
     let(:meta) { {} }
 
-    it 'doesn\'t raise an error' do
-      expect(Logux.logger).to receive(:warn).once
-      subject
+    context 'when request is not verified' do
+      before do
+        allow(Logux.logger).to receive(:warn)
+        call!
+      end
+
+      it 'doesn\'t raise an error' do
+        expect(Logux.logger).to have_received(:warn).once
+      end
     end
 
     context 'when verify_authorized' do
@@ -24,7 +30,7 @@ describe Logux::PolicyCaller do
       end
 
       it 'raises an error' do
-        expect { subject }.to raise_error(Logux::NoPolicyError)
+        expect { call! }.to raise_error(Logux::NoPolicyError)
       end
     end
   end
