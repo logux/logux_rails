@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'Logux response' do
-  let(:request_logux) do
+  subject(:request_logux) do
     post('/logux',
          params: logux_params,
          as: :json)

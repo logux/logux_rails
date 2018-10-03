@@ -6,7 +6,7 @@ describe Logux::Node do
   let(:node) { described_class.instance }
 
   describe '#generate_action_id' do
-    let(:action_id) { node.generate_action_id }
+    subject(:action_id) { node.generate_action_id }
 
     it 'returns correct id' do
       expect(action_id).to match(/^[0-9]{13} server:.{8} 0$/)
@@ -26,7 +26,7 @@ describe Logux::Node do
   end
 
   describe '#node_id' do
-    let(:node_id) { node.node_id }
+    subject(:node_id) { node.node_id }
 
     it 'generates nanoid' do
       expect(node_id).not_to be_empty

@@ -9,7 +9,7 @@ describe Logux::ActionController do
   let(:meta) { Logux::Meta.new }
 
   describe '#respond' do
-    let(:response) { action_controller.respond(:processed) }
+    subject(:response) { action_controller.respond(:processed) }
 
     it 'returns logux response' do
       expect(response).to have_attributes(
@@ -23,7 +23,7 @@ describe Logux::ActionController do
   end
 
   describe '.verify_authorized!' do
-    let(:verify_authorized!) { described_class.verify_authorized! }
+    subject(:verify_authorized!) { described_class.verify_authorized! }
 
     around do |example|
       Logux.configuration.verify_authorized = false
@@ -40,7 +40,7 @@ describe Logux::ActionController do
   end
 
   describe '.unverify_authorized!' do
-    let(:unverify_authorized!) { described_class.unverify_authorized! }
+    subject(:unverify_authorized!) { described_class.unverify_authorized! }
 
     before { Logux.configuration.verify_authorized = true }
 
