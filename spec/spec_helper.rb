@@ -10,6 +10,7 @@ SimpleCov::Formatter::MultiFormatter.new([
 Coveralls.wear!
 SimpleCov.start do
   add_filter '/spec/'
+  add_filter '/lib/logux/test/'
 end
 
 require 'bundler/setup'
