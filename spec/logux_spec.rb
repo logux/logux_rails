@@ -24,7 +24,7 @@ describe Logux, timecop: true do
   end
 
   describe '.undo' do
-    subject { described_class.undo(meta, reason) }
+    let(:request) { described_class.undo(meta, reason) }
 
     let(:meta) do
       {
@@ -38,11 +38,24 @@ describe Logux, timecop: true do
 
     let(:reason) { 'error' }
 
-    before { stub_request(:post, Logux.configuration.logux_host) }
+    let(:logux_request) do
+      {
+        version: 0,
+        password: nil,
+        commands: [
+          ['action', ['type', 'logux/undo'], meta_request],
+          ['action', ['id', meta[:id]], meta_request],
+          ['action', ['reason', reason], meta_request]
+        ]
+      }
+    end
+
+    let(:meta_request) do
+      Logux::Meta.new(meta.merge(status: 'processed'))
+    end
 
     it 'makes request' do
-      subject
-      expect(WebMock).to have_requested(:post, Logux.configuration.logux_host)
+      expect { request }.to send_to_logux(logux_request)
     end
   end
 end
