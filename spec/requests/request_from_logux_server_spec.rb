@@ -2,85 +2,56 @@
 
 require 'rails_helper'
 
-describe 'Logux response' do
+describe 'Logux response', timecop: true do
   subject(:request_logux) do
-    post('/logux',
-         params: logux_params,
-         as: :json)
+    receive_action(data: logux_params, meta: logux_meta, password: password)
   end
-
-  let(:password) { Logux.configuration.password }
 
   let(:logux_params) do
-    { version: 0,
-      password: password,
-      commands: [
-        ['action',
-         { type: 'logux/subscribe', channel: 'post/123' },
-         { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }],
-        ['action',
-         { type: 'comment/add', key: 'text', value: 'hi' },
-         { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
-      ] }
+    [{ type: 'logux/subscribe', channel: 'post/123' },
+     { type: 'comment/add', key: 'text', value: 'hi' }]
   end
-  let(:params) { Logux.configuration.password }
+  let(:logux_meta) { {} }
+
+  let(:password) { Logux.configuration.password }
 
   context 'when authorized' do
     before { request_logux }
 
+    it 'correct size of responses' do
+      expect(request_logux.size).to eq(4)
+    end
+
     it 'returns approved chunk' do
-      expect(response.stream).to have_chunk(['approved', '219_856_768 clientid 0'])
+      expect(request_logux).to be_approved
     end
 
     it 'returns processed chunk' do
-      expect(response.stream).to have_chunk(['processed', '219_856_768 clientid 0'])
+      expect(request_logux).to be_processed
     end
   end
 
   context 'when no authorized' do
-    before { request_logux }
-
     let(:logux_params) do
-      { version: 0,
-        password: password,
-        commands: [
-          ['action',
-           { type: 'comment/update', key: 'text', value: 'hi' },
-           { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
-        ] }
-    end
-    let(:logux_response) do
-      ['forbidden', '219_856_768 clientid 0']
+      { type: 'comment/update', key: 'text', value: 'hi' }
     end
 
     it 'does return correct body' do
-      expect(response.stream).to have_chunk(logux_response)
+      expect(request_logux).to be_forbidden
     end
   end
 
   context 'when password wrong' do
-    before { request_logux }
-
     let(:password) { '12345' }
 
     it 'does return error' do
-      expect(response.stream).to start_from_chunk([:error])
+      expect(request_logux).to be_errored
     end
   end
 
   context 'with proxy' do
-    let(:logux_params) do
-      { version: 0,
-        password: password,
-        commands: [
-          ['action',
-           { type: 'logux/subscribe', channel: 'post/123' },
-           { time: Time.now.to_i, proxy: 'proxy_id',
-             id: '219_856_768 clientid 0', userId: 1 }],
-          ['action',
-           { type: 'comment/add', key: 'text', value: 'hi' },
-           { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
-        ] }
+    let(:logux_meta) do
+      { proxy: 'proxy_id' }
     end
 
     it 'returns correct chunk' do

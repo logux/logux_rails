@@ -5,46 +5,20 @@ module Logux
     module Helpers
       extend ActiveSupport::Concern
 
+      autoload :Receive, 'logux/test/helpers/receive'
+      autoload :Send, 'logux/test/helpers/send'
+
       WebMock.after_request do |request, response|
         (request.uri.origin =~ /#{Logux.configuration.logux_host}/) || next
         Logux::Test::Store.instance.add_request(request: request,
                                                 response: response)
       end
 
-      included do
-        before do
-          stub_request(:post, Logux.configuration.logux_host)
-          Logux::Test::Store.instance.reset!
+      included do |base|
+        if %i[request controller].include? metadata[:type]
+          base.include Logux::Test::Helpers::Receive
         end
-      end
-
-      def logux_store
-        Logux::Test::Store.instance.requests
-      end
-
-      RSpec::Matchers.define :send_to_logux do |expected|
-        match do |actual|
-          before_state = logux_store.dup
-          actual.call
-          after_state = logux_store
-          @difference = (after_state - before_state)
-                        .map { |dif| dif[:body].deep_symbolize_keys }
-          @difference.find do |state|
-            state.merge(expected || {}).deep_symbolize_keys == state
-          end
-        end
-
-        failure_message do
-          "expected that #{pretty(@difference)} to include #{pretty(expected)}"
-        end
-
-        def supports_block_expectations?
-          true
-        end
-
-        def pretty(obj)
-          JSON.pretty_generate(obj)
-        end
+        base.include Logux::Test::Helpers::Send
       end
     end
   end

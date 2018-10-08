@@ -12,7 +12,7 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
     - 'logux_rails.gemspec'
-    - 'lib/logux/test/helpers.rb'
+    - 'lib/logux/test/**/*.rb'
 
 Metrics/AbcSize:
   Exclude:
