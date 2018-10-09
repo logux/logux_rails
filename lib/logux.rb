@@ -55,13 +55,12 @@ module Logux
     logux_add.call(type, meta: logux_meta)
   end
 
-  def self.undo(meta = Logux::Meta.new({}), reason = nil)
+  def self.undo(meta: Logux::Meta.new({}), reason: nil)
     logux_add = Logux::Add.new
-    logux_meta = Logux::Meta.new(meta.merge(status: 'processed'))
 
     logux_add.call(
-      { type: 'logux/undo', id: logux_meta.id, reason: reason },
-      meta: logux_meta
+      { type: 'logux/undo', id: meta.id, reason: reason },
+      meta: meta
     )
   end
 
