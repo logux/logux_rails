@@ -70,6 +70,36 @@ module Logux
           end
         end
 
+        RSpec::Matchers.define :be_authenticated do
+          match do |actual|
+            @actual = actual
+            @actual.find { |res| res.first == 'authenticated' }
+          end
+
+          failure_message do
+            "expected that #{pretty(@actual)} to be authenticated"
+          end
+
+          def pretty(obj)
+            JSON.pretty_generate(obj)
+          end
+        end
+
+        RSpec::Matchers.define :be_denied do
+          match do |actual|
+            @actual = actual
+            @actual.find { |res| res.first == 'denied' }
+          end
+
+          failure_message do
+            "expected that #{pretty(@actual)} to be denied"
+          end
+
+          def pretty(obj)
+            JSON.pretty_generate(obj)
+          end
+        end
+
         def receive_subscription(data: {},
                                  meta: {},
                                  password: Logux.configuration.password,
@@ -86,7 +116,21 @@ module Logux
                            version: LOGUX_VERSION)
           meta = Logux::Meta.new(meta)
           params = default_params(password, version).merge(
-            commands: format(data: data, meta: meta)
+            commands: format(data: data, meta: meta, type: 'action')
+          )
+
+          post('/logux',
+               params: params,
+               as: :json)
+
+          JSON.parse(response.stream.body)
+        end
+
+        def receive_auth(data:,
+                         password: Logux.configuration.password,
+                         version: LOGUX_VERSION)
+          params = default_params(password, version).merge(
+            commands: [['auth'] + data]
           )
 
           post('/logux',
@@ -101,14 +145,14 @@ module Logux
             password: password }
         end
 
-        def format(data:, meta:)
+        def format(data:, meta:, type:)
           case data
           when Array
             data.map do |chunk|
-              ['action', chunk, meta.merge(id: Logux.generate_action_id)]
+              [type, chunk, meta.merge(id: Logux.generate_action_id)]
             end
           when Hash
-            [['action', data, meta]]
+            [[type, data, meta]]
           else
             raise NotImplementedError
           end

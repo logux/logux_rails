@@ -14,6 +14,10 @@ Metrics/BlockLength:
     - 'logux_rails.gemspec'
     - 'lib/logux/test/**/*.rb'
 
+Metrics/ModuleLength:
+  Exclude:
+    - 'lib/logux/test/**/*.rb'
+
 Metrics/AbcSize:
   Exclude:
     - 'app/controllers/logux_controller.rb'
