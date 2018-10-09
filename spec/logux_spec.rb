@@ -24,16 +24,16 @@ describe Logux, timecop: true do
   end
 
   describe '.undo' do
-    let(:request) { described_class.undo(meta, reason) }
+    let(:request) { described_class.undo(meta: meta, reason: reason) }
 
     let(:meta) do
-      {
+      Logux::Meta.new(
         id: '1 1:uuid 0',
         users: ['3'],
         reasons: ['user/1/lastValue'],
         nodeIds: ['2:uuid'],
         channels: ['user/1']
-      }
+      )
     end
 
     let(:reason) { 'error' }
@@ -43,15 +43,11 @@ describe Logux, timecop: true do
         version: 0,
         password: nil,
         commands: [
-          ['action', ['type', 'logux/undo'], meta_request],
-          ['action', ['id', meta[:id]], meta_request],
-          ['action', ['reason', reason], meta_request]
+          ['action', ['type', 'logux/undo'], meta],
+          ['action', ['id', meta[:id]], meta],
+          ['action', ['reason', reason], meta]
         ]
       }
-    end
-
-    let(:meta_request) do
-      Logux::Meta.new(meta.merge(status: 'processed'))
     end
 
     it 'makes request' do

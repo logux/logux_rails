@@ -56,9 +56,7 @@ module Logux
   end
 
   def self.undo(meta: Logux::Meta.new({}), reason: nil)
-    logux_add = Logux::Add.new
-
-    logux_add.call(
+    Logux::Add.new.call(
       { type: 'logux/undo', id: meta.id, reason: reason },
       meta: meta
     )
