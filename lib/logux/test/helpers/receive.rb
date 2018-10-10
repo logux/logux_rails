@@ -149,7 +149,7 @@ module Logux
           case data
           when Array
             data.map do |chunk|
-              [type, chunk, meta.merge(id: Logux.generate_action_id)]
+              [type, chunk, { id: Logux.generate_action_id }.merge(meta)]
             end
           when Hash
             [[type, data, meta]]

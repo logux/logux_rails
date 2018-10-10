@@ -12,7 +12,7 @@ module Logux
       @password = password
     end
 
-    def call(data, meta: Logux::Meta.new({}))
+    def call(data, meta: {})
       prepared_data = prepare_data(data: data, meta: meta)
       Logux.logger.info('Logux add:', prepared_data)
       client.post(prepared_data)
@@ -23,7 +23,18 @@ module Logux
     def prepare_data(data:, meta:)
       { version: 0,
         password: password,
-        commands: data.map { |d| ['action', d, meta] } }
+        commands: format_data(data, meta) }
+    end
+
+    def format_data(data, meta)
+      case data
+      when Array
+        data.map { |d| ['action', d, meta.merge(Logux::Meta.new)] }
+      when Hash
+        ['action', data, meta.merge(Logux::Meta.new)]
+      else
+        raise ArgumentError, data
+      end
     end
   end
 end

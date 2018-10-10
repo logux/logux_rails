@@ -4,8 +4,13 @@ module Logux
   class Node
     include Singleton
 
-    attr_accessor :last_time, :sequence
-    attr_writer :node_id
+    attr_accessor :last_time, :sequence, :mutex, :node_id
+
+    def initialize
+      @mutex = Mutex.new
+      @node_id = "server:#{Nanoid.generate(size: 8)}"
+      super
+    end
 
     def generate_action_id
       mutex.synchronize do
@@ -20,18 +25,10 @@ module Logux
       end
     end
 
-    def node_id
-      @node_id ||= "server:#{Nanoid.generate(size: 8)}"
-    end
-
     private
 
     def now_time
       Time.now.to_datetime.strftime('%Q')
-    end
-
-    def mutex
-      @mutex ||= Mutex.new
     end
   end
 end

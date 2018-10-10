@@ -48,6 +48,32 @@ module Logux
             JSON.pretty_generate(obj)
           end
         end
+
+        RSpec::Matchers.define :send_action_to_logux do |expected|
+          match do |actual|
+            before_state = logux_store.dup
+            actual.call
+            after_state = logux_store
+            difference = (after_state - before_state)
+                         .map { |dif| dif[:body].deep_symbolize_keys }
+            @actions = difference
+                       .dig(0, :commands)
+                       .select { |action| action.first == 'action' }
+            @actions.map { |action| action[1] } == expected
+          end
+
+          failure_message do
+            "expected that #{pretty(@actions)} to include #{pretty(expected)}"
+          end
+
+          def supports_block_expectations?
+            true
+          end
+
+          def pretty(obj)
+            JSON.pretty_generate(obj)
+          end
+        end
       end
     end
   end
