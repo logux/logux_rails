@@ -5,21 +5,14 @@ module Logux
     module Helpers
       extend ActiveSupport::Concern
 
-      WebMock.after_request do |request, response|
-        (request.uri.origin =~ /#{Logux.configuration.logux_host}/) || next
-        Logux::Test::Store.instance.add_request(request: request,
-                                                response: response)
-      end
-
       included do
         before do
-          stub_request(:post, Logux.configuration.logux_host)
           Logux::Test::Store.instance.reset!
         end
       end
 
       def logux_store
-        Logux::Test::Store.instance.requests
+        Logux::Test::Store.instance.data
       end
 
       RSpec::Matchers.define :send_to_logux do |expected|
@@ -28,7 +21,8 @@ module Logux
           actual.call
           after_state = logux_store
           @difference = (after_state - before_state)
-                        .map { |dif| dif[:body].deep_symbolize_keys }
+                        .map { |d| JSON.parse(d) }
+                        .map(&:deep_symbolize_keys)
           @difference.find do |state|
             state.merge(expected || {}).deep_symbolize_keys == state
           end

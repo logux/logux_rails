@@ -6,12 +6,12 @@ describe Logux, timecop: true do
   end
 
   describe '.add' do
-    before { described_class.add(type) }
-
     let(:type) { [] }
 
     it 'makes request' do
-      expect(WebMock).to have_requested(:post, Logux.configuration.logux_host)
+      stub = stub_request(:post, Logux.configuration.logux_host)
+      Logux::Test.enable_http_requests! { described_class.add(type) }
+      expect(stub).to have_been_requested
     end
   end
 
