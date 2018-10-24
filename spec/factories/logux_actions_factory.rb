@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :logux_actions, class: Logux::Actions do
     factory :logux_actions_subscribe do
-      type { 'logux/subscribe' } 
+      type { 'logux/subscribe' }
       channel { 'user/1' }
     end
 
