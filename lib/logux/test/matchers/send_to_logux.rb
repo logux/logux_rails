@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'base'
+
 module Logux
   module Test
     module Matchers
-      class SendToLogux
-        attr_reader :expected
-
-        def initialize(expected = nil)
-          @expected = expected
-        end
-
+      class SendToLogux < Base
         def matches?(actual)
           before_state = Logux::Test::Store.instance.data.dup
           actual.call
@@ -24,16 +20,6 @@ module Logux
 
         def failure_message
           "expected that #{pretty(@difference)} to include #{pretty(expected)}"
-        end
-
-        def supports_block_expectations?
-          true
-        end
-
-        private
-
-        def pretty(obj)
-          JSON.pretty_generate(obj)
         end
       end
     end
