@@ -5,25 +5,16 @@ module Logux
     class Store
       include Singleton
 
-      def add_request(action)
-        parsed_body = parse_body(action[:request]&.body)
-        requests << action.merge(body: parsed_body)
+      def add(params)
+        data << params
       end
 
-      def requests
-        @requests ||= []
+      def data
+        @data ||= []
       end
 
       def reset!
-        @requests = []
-      end
-
-      private
-
-      def parse_body(body)
-        JSON.parse(body)
-      rescue JSON::ParserError, TypeError
-        {}
+        @data = []
       end
     end
   end
