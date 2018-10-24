@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'logux/test/matchers/send_to_logux'
+
 module Logux
   module Test
     module Helpers
@@ -15,30 +17,8 @@ module Logux
         Logux::Test::Store.instance.data
       end
 
-      RSpec::Matchers.define :send_to_logux do |expected|
-        match do |actual|
-          before_state = logux_store.dup
-          actual.call
-          after_state = logux_store
-          @difference = (after_state - before_state)
-                        .map { |d| JSON.parse(d) }
-                        .map(&:deep_symbolize_keys)
-          @difference.find do |state|
-            state.merge(expected || {}).deep_symbolize_keys == state
-          end
-        end
-
-        failure_message do
-          "expected that #{pretty(@difference)} to include #{pretty(expected)}"
-        end
-
-        def supports_block_expectations?
-          true
-        end
-
-        def pretty(obj)
-          JSON.pretty_generate(obj)
-        end
+      def send_to_logux(data = nil)
+        Logux::Test::Matchers::SendToLogux.new(data)
       end
     end
   end
