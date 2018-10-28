@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Logux
-  class Actions < Hashie::Mash
-    disable_warnings
-
+  class Actions < ::ActionController::Parameters
     def action_name
       type&.split('/')&.dig(0)
     end
@@ -20,8 +18,12 @@ module Logux
       channel&.split('/')&.last
     end
 
-    def to_s
-      to_h.to_s
+    def type
+      require(:type)
+    end
+
+    def channel
+      require(:channel)
     end
   end
 end
