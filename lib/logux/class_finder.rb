@@ -2,41 +2,56 @@
 
 module Logux
   class ClassFinder
-    attr_reader :params
+    attr_reader :action, :meta
 
-    def initialize(params)
-      @params = params
+    def initialize(action:, meta:)
+      @action = action
+      @meta = meta
     end
 
     def find_action_class
       "#{class_namespace}::#{class_name}".constantize
     rescue NameError
-      raise Logux::NoActionError, %(
+      message = %(
         Unable to find action #{class_name.camelize}
-        Should be in app/logux/actions/#{class_path}.rb
+        Should be in app/logux/#{class_namespace.downcase}/#{class_path}.rb
       )
+      raise Logux::UnknownActionError.new(message, meta: meta) if action?
+      raise Logux::UnknownChannelError.new(message, meta: meta)
     end
 
     def find_policy_class
       "Policies::#{class_namespace}::#{class_name}".constantize
     rescue NameError
-      raise Logux::NoPolicyError, %(
-        Unable to find policy #{class_name.camelize}
-        Should be in app/logux/policies/#{class_path}.rb
+      message = %(
+        Unable to find action policy #{class_name.camelize}
+        Should be in app/logux/policies/#{class_namespace.downcase}/#{class_path}.rb
       )
-    end
-
-    def class_namespace
-      return 'Channels' if params.type == 'logux/subscribe'
-      'Actions'
+      raise Logux::UnknownActionError.new(message, meta: meta) if action?
+      raise Logux::UnknownChannelError.new(message, meta: meta)
     end
 
     def class_name
-      if params.type == 'logux/subscribe'
-        params.channel_name.camelize
+      if subscribe?
+        action.channel_name.camelize
       else
-        params.type.split('/')[0..-2].map(&:camelize).join('::')
+        action.type.split('/')[0..-2].map(&:camelize).join('::')
       end
+    end
+
+    private
+
+    def class_namespace
+      return 'Channels' if subscribe?
+      'Actions'
+    end
+
+    def subscribe?
+      action.type == 'logux/subscribe'
+    end
+
+    def action?
+      !subscribe?
     end
 
     def class_path

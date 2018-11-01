@@ -8,10 +8,6 @@ describe Logux::ActionCaller do
   let(:meta) { create(:logux_meta) }
 
   describe '#call!' do
-    it 'raise error' do
-      expect { action_caller.call! }.to raise_error(Logux::NoActionError)
-    end
-
     context 'when action defined' do
       subject(:result) { action_caller.call! }
 

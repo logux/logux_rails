@@ -3,7 +3,6 @@
 class LoguxController < ActionController::Base
   include ActionController::Live
 
-  # rubocop:disable Style/RescueStandardError
   def create
     Logux.verify_request_meta_data(meta_params)
     logux_stream.write('[')
@@ -13,13 +12,12 @@ class LoguxController < ActionController::Base
       Logux.configuration.on_error.call(e)
       Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
     ensure
-      logux_stream.write([:error].to_json)
+      logux_stream.write(Logux::ErrorRenderer.new(e).message)
     end
   ensure
     logux_stream.write(']')
     logux_stream.close
   end
-  # rubocop:enable Style/RescueStandardError
 
   private
 

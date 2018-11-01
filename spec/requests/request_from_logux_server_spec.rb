@@ -53,7 +53,7 @@ describe 'Logux response' do
       ['forbidden', '219_856_768 clientid 0']
     end
 
-    it 'does return correct body' do
+    it 'returns correct body' do
       expect(response.stream).to have_chunk(logux_response)
     end
   end
@@ -63,8 +63,10 @@ describe 'Logux response' do
 
     let(:password) { '12345' }
 
-    it 'does return error' do
-      expect(response.stream).to start_from_chunk([:error])
+    it 'returns error' do
+      expect(response.stream).to start_from_chunk(
+        ['unauthorized', 'Incorrect password']
+      )
     end
   end
 
@@ -87,4 +89,109 @@ describe 'Logux response' do
       expect { request_logux }.to change { logux_store.size }.by(1)
     end
   end
+
+  # rubocop: disable RSpec/NestedGroups
+  # TODO: refactoring; may be move this cases to separated file
+  context 'with unknown action' do
+    let(:logux_params) do
+      { version: 0,
+        password: password,
+        commands: [
+          ['action',
+           { type: action, key: 'text', value: 'hi' },
+           { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
+        ] }
+    end
+
+    context 'when verify_authorized=true' do
+      before { Logux.configuration.verify_authorized = true }
+
+      context 'when policy not exists' do
+        let(:action) { 'notexists/create' }
+
+        it 'returns unknownAction' do
+          request_logux
+          expect(response.stream).to have_chunk(
+            ['unknownAction', '219_856_768 clientid 0']
+          )
+        end
+      end
+
+      context 'when policy is exists' do
+        let(:action) { 'policy_without_action/create' }
+
+        it 'returns processed' do
+          request_logux
+          expect(response.stream).to have_chunk(
+            ['processed', '219_856_768 clientid 0']
+          )
+        end
+      end
+    end
+
+    context 'when verify_authorized=false' do
+      let(:action) { 'notexists/create' }
+
+      before { Logux.configuration.verify_authorized = false }
+
+      it 'returns processed' do
+        request_logux
+        expect(response.stream).to have_chunk(
+          ['processed', '219_856_768 clientid 0']
+        )
+      end
+    end
+  end
+
+  context 'with unknown subscribe' do
+    let(:logux_params) do
+      { version: 0,
+        password: password,
+        commands: [
+          ['action',
+           { type: 'logux/subscribe', channel: channel },
+           { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
+        ] }
+    end
+
+    context 'when verify_authorized=true' do
+      before { Logux.configuration.verify_authorized = true }
+
+      context 'when policy not exists' do
+        let(:channel) { 'notexists/123' }
+
+        it 'returns unknownChannel' do
+          request_logux
+          expect(response.stream).to have_chunk(
+            ['unknownChannel', '219_856_768 clientid 0']
+          )
+        end
+      end
+
+      context 'when policy is exists' do
+        let(:channel) { 'policy_without_channel/123' }
+
+        it 'returns processed' do
+          request_logux
+          expect(response.stream).to have_chunk(
+            ['processed', '219_856_768 clientid 0']
+          )
+        end
+      end
+    end
+
+    context 'when verify_authorized=false' do
+      let(:channel) { 'notexists/123' }
+
+      before { Logux.configuration.verify_authorized = false }
+
+      it 'returns processed' do
+        request_logux
+        expect(response.stream).to have_chunk(
+          ['processed', '219_856_768 clientid 0']
+        )
+      end
+    end
+  end
+  # rubocop: enable RSpec/NestedGroups
 end

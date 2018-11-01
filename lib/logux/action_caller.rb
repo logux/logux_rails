@@ -15,6 +15,9 @@ module Logux
       action_class = class_finder.find_action_class
       @action_controller = action_class.new(action: action, meta: meta)
       format(action_controller.public_send(action.action_type))
+    rescue Logux::UnknownActionError, Logux::UnknownChannelError => e
+      Logux.logger.warn(e)
+      format(nil)
     end
 
     private
@@ -26,7 +29,7 @@ module Logux
     end
 
     def class_finder
-      @class_finder ||= Logux::ClassFinder.new(action)
+      @class_finder ||= Logux::ClassFinder.new(action: action, meta: meta)
     end
   end
 end
