@@ -19,8 +19,7 @@ module Logux
     private
 
     def process(payload)
-      return payload if payload.is_a?(::String)
-      payload.to_json
+      payload.is_a?(::String) ? payload : payload.to_json
     end
   end
 end

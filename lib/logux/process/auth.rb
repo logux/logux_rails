@@ -13,6 +13,7 @@ module Logux
       def call
         authed = Logux.configuration.auth_rule.call(user_id, chunk.credentials)
         return stream.write(['authenticated', chunk.auth_id]) if authed
+
         stream.write(['denied', chunk.auth_id])
       end
 

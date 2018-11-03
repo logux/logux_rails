@@ -20,12 +20,12 @@ FactoryBot.define do
     end
 
     factory :logux_actions_unknown do
-      type 'unknown/action'
+      type { 'unknown/action' }
     end
 
     factory :logux_actions_unknown_subscribe do
-      type 'logux/subscribe'
-      channel 'unknown/channel'
+      type { 'logux/subscribe' }
+      channel { 'unknown/channel' }
     end
   end
 end

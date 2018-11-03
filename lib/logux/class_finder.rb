@@ -12,23 +12,19 @@ module Logux
     def find_action_class
       "#{class_namespace}::#{class_name}".constantize
     rescue NameError
-      message = %(
-        Unable to find action #{class_name.camelize}
-        Should be in app/logux/#{class_namespace.downcase}/#{class_path}.rb
-      )
-      raise Logux::UnknownActionError.new(message, meta: meta) if action?
-      raise Logux::UnknownChannelError.new(message, meta: meta)
+      message =
+        "Unable to find action #{class_name.camelize}.\n" \
+        "Should be in app/logux/#{class_namespace.downcase}/#{class_path}.rb"
+      raise_error_for_failed_find(message)
     end
 
     def find_policy_class
       "Policies::#{class_namespace}::#{class_name}".constantize
     rescue NameError
-      message = %(
-        Unable to find action policy #{class_name.camelize}
-        Should be in app/logux/policies/#{class_namespace.downcase}/#{class_path}.rb
-      )
-      raise Logux::UnknownActionError.new(message, meta: meta) if action?
-      raise Logux::UnknownChannelError.new(message, meta: meta)
+      message =
+        "Unable to find action policy #{class_name.camelize}.\n" \
+        "Should be in app/logux/#{class_namespace.downcase}/#{class_path}.rb"
+      raise_error_for_failed_find(message)
     end
 
     def class_name
@@ -42,8 +38,7 @@ module Logux
     private
 
     def class_namespace
-      return 'Channels' if subscribe?
-      'Actions'
+      subscribe? ? 'Channels' : 'Actions'
     end
 
     def subscribe?
@@ -56,6 +51,11 @@ module Logux
 
     def class_path
       "#{class_namespace}::#{class_name}".underscore
+    end
+
+    def raise_error_for_failed_find(message)
+      exception_class = action? ? UnknownActionError : UnknownChannelError
+      raise exception_class.new(message, meta: meta)
     end
   end
 end

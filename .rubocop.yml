@@ -14,14 +14,6 @@ Metrics/BlockLength:
     - 'logux_rails.gemspec'
     - 'lib/logux/test/helpers.rb'
 
-Metrics/AbcSize:
-  Exclude:
-    - 'app/controllers/logux_controller.rb'
-
-Metrics/MethodLength:
-  Exclude:
-    - 'app/controllers/logux_controller.rb'
-
 RSpec/DescribeClass:
   Exclude:
     - 'spec/logux/tasks/*.rb'
@@ -35,3 +27,6 @@ RSpec/ExpectChange:
 
 Style/RescueStandardError:
   EnforcedStyle: implicit
+
+Style/DateTime:
+  Enabled: false

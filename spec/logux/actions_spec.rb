@@ -3,7 +3,9 @@
 require 'spec_helper'
 
 describe Logux::Actions do
-  let(:actions) { described_class.new(type: 'user/add', channel: 'project/123') }
+  let(:actions) do
+    described_class.new(type: 'user/add', channel: 'project/123')
+  end
 
   describe '#action_type' do
     subject { actions.action_type }

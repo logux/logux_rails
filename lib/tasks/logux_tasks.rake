@@ -26,9 +26,8 @@ namespace :logux do
 
   desc 'Lists all Logux channels'
   task channels: :environment do
-    Dir[Rails.root.join('app', 'logux', 'channels', '**', '*.rb')].each do |file|
-      require file
-    end
+    path = Rails.root.join('app', 'logux', 'channels', '**', '*.rb')
+    Dir[path].each { |file| require file }
 
     output = [%w[channel Class]]
     Logux::ChannelController.descendants.map(&:name).sort.each do |klass_name|
