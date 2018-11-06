@@ -36,11 +36,13 @@ module Logux
 
       def process_action!
         return if stop_process?
-        stream.write(Logux::ActionCaller
-          .new(action: action_from_chunk,
-               meta: meta_from_chunk)
-          .call!
-          .format)
+
+        action_caller = Logux::ActionCaller.new(
+          action: action_from_chunk,
+          meta: meta_from_chunk
+        )
+
+        stream.write(action_caller.call!.format)
       end
 
       def process_authorization!
@@ -50,6 +52,7 @@ module Logux
         status = policy_check ? :approved : :forbidden
         stream.write([status, meta_from_chunk.id])
         return stream.write(',') if policy_check
+
         stop_process!
       end
     end

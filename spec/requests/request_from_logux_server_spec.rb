@@ -29,11 +29,15 @@ describe 'Logux response' do
     before { request_logux }
 
     it 'returns approved chunk' do
-      expect(response.stream).to have_chunk(['approved', '219_856_768 clientid 0'])
+      expect(response.stream).to have_chunk(
+        ['approved', '219_856_768 clientid 0']
+      )
     end
 
     it 'returns processed chunk' do
-      expect(response.stream).to have_chunk(['processed', '219_856_768 clientid 0'])
+      expect(response.stream).to have_chunk(
+        ['processed', '219_856_768 clientid 0']
+      )
     end
   end
 

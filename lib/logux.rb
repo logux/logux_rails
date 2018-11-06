@@ -55,7 +55,9 @@ module Logux
     config.logux_host = 'localhost:1338'
     config.verify_authorized = true
     config.logger = ActiveSupport::Logger.new(STDOUT)
-    config.logger = Rails.logger if defined?(Rails) && Rails.respond_to?(:logger)
+    if defined?(Rails) && Rails.respond_to?(:logger)
+      config.logger = Rails.logger
+    end
     config.on_error = proc {}
     config.auth_rule = proc { false }
   end

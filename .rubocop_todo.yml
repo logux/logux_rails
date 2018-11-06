@@ -6,10 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-Metrics/AbcSize:
-  Max: 19
-
 # Offense count: 17
 Style/Documentation:
   Enabled: false
@@ -19,9 +15,3 @@ Style/MixinUsage:
   Exclude:
     - 'spec/dummy/bin/setup'
     - 'spec/dummy/bin/update'
-
-# Offense count: 5
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 85

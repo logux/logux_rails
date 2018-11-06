@@ -9,7 +9,9 @@ describe Logux::ClassFinder do
   describe '#class_name' do
     subject(:class_name) { finder.class_name }
 
-    let(:action) { create(:logux_actions_add, type: 'test/test/name/try/user/add') }
+    let(:action) do
+      create(:logux_actions_add, type: 'test/test/name/try/user/add')
+    end
 
     it 'returns nested classes' do
       expect(class_name).to eq('Test::Test::Name::Try::User')
