@@ -34,7 +34,7 @@ class LoguxController < ActionController::Base
 
   def handle_processing_errors(exception)
     Logux.configuration.on_error.call(exception)
-    Logux.logger.error("#{e}\n#{e.backtrace.join("\n")}")
+    Logux.logger.error("#{exception}\n#{exception.backtrace.join("\n")}")
   ensure
     logux_stream.write(Logux::ErrorRenderer.new(exception).message)
   end

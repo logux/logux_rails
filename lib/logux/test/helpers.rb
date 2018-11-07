@@ -17,8 +17,8 @@ module Logux
         Logux::Test::Store.instance.data
       end
 
-      def send_to_logux(data = nil)
-        Logux::Test::Matchers::SendToLogux.new(data)
+      def send_to_logux(*commands)
+        Logux::Test::Matchers::SendToLogux.new(*commands)
       end
     end
   end
