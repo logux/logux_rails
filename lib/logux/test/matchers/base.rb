@@ -6,7 +6,7 @@ module Logux
       class Base
         attr_reader :expected
 
-        def initialize(expected = nil)
+        def initialize(*expected)
           @expected = expected
         end
 

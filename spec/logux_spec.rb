@@ -38,20 +38,16 @@ describe Logux, timecop: true do
 
     let(:reason) { 'error' }
 
-    let(:logux_request) do
-      {
-        version: 0,
-        password: nil,
-        commands: [
-          ['action', ['type', 'logux/undo'], meta],
-          ['action', ['id', meta[:id]], meta],
-          ['action', ['reason', reason], meta]
-        ]
-      }
+    let(:logux_commands) do
+      [
+        ['action', ['type', 'logux/undo'], meta],
+        ['action', ['id', meta[:id]], meta],
+        ['action', ['reason', reason], meta]
+      ]
     end
 
     it 'makes request' do
-      expect { request }.to send_to_logux(logux_request)
+      expect { request }.to send_to_logux(*logux_commands)
     end
   end
 end
