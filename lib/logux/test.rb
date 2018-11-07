@@ -29,6 +29,7 @@ module Logux
 
     autoload :Helpers, 'logux/test/helpers'
     autoload :Store, 'logux/test/store'
+    autoload :Matchers, 'logux/test/matchers'
   end
 end
 Logux::Client.prepend Logux::Test::Client

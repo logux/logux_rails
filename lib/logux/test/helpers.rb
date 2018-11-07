@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'logux/test/matchers/send_to_logux'
-
 module Logux
   module Test
     module Helpers
@@ -19,6 +17,10 @@ module Logux
 
       def send_to_logux(*commands)
         Logux::Test::Matchers::SendToLogux.new(*commands)
+      end
+
+      def be_approved(*meta)
+        Logux::Test::Matchers::BeApproved.new(*meta)
       end
     end
   end
