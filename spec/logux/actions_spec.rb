@@ -4,7 +4,9 @@ require 'spec_helper'
 
 describe Logux::Actions do
   let(:actions) do
-    described_class.new(type: 'user/add', channel: 'project/123')
+    described_class.new(
+      type: 'user/add', channel: 'project/123', data: 'data'
+    )
   end
 
   describe '#action_type' do
@@ -29,5 +31,15 @@ describe Logux::Actions do
     subject { actions.channel_id }
 
     it { is_expected.to eq '123' }
+  end
+
+  describe 'permitted attributes' do
+    it 'has actions params unpermitted' do
+      expect(actions).not_to be_permitted
+    end
+
+    it 'permits params' do
+      expect(actions.permit(:data)).to be_permitted
+    end
   end
 end

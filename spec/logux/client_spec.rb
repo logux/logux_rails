@@ -5,7 +5,9 @@ require 'spec_helper'
 describe Logux::Client do
   let(:client) { described_class.new }
   let(:meta) { create(:logux_meta) }
-  let(:commands) { [['action', { id: 1 }, meta], ['action', { id: 2 }, meta]] }
+  let(:commands) do
+    [['action', { id: 1 }, meta], ['action', { id: 2 }, meta]]
+  end
   let(:params) do
     {
       version: 0,
