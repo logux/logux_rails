@@ -50,7 +50,8 @@ module Logux
 
   configurable :logux_host, :verify_authorized,
                :password, :logger,
-               :on_error, :auth_rule
+               :on_error, :auth_rule,
+               :render_backtrace_on_error
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:1338'
@@ -61,6 +62,7 @@ module Logux
     end
     config.on_error = proc {}
     config.auth_rule = proc { false }
+    config.render_backtrace_on_error = false
   end
 
   def self.add(type, meta: {})
