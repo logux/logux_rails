@@ -16,3 +16,4 @@
 .*.swp
 coverage
 Gemfile.lock
+spec/dummy/db/*.sqlite3
