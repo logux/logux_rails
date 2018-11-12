@@ -28,12 +28,29 @@ describe Logux::ErrorRenderer do
       expect(build_message(exception)).to eq(%w[unauthorized test])
     end
 
-    it 'returns correct error message for some unknown error' do
-      exception = StandardError.new
+    context 'when Logux.configuration.render_backtrace_on_error is true' do
+      around do |example|
+        Logux.configuration.render_backtrace_on_error = true
+        example.run
+        Logux.configuration.render_backtrace_on_error = false
+      end
 
-      expect(build_message(exception)).to eq(
-        ['error', 'Please look server logs for more information']
-      )
+      it 'returns correct error with backtrace for some unknown error' do
+        exception = StandardError.new
+        exception.set_backtrace(caller)
+
+        expect(build_message(exception)).to eq(['error', exception.backtrace])
+      end
+    end
+
+    context 'when Logux.configuration.render_backtrace_on_error is false' do
+      it 'returns correct error message for some unknown error' do
+        exception = StandardError.new
+
+        expect(build_message(exception)).to eq(
+          ['error', 'Please look server logs for more information']
+        )
+      end
     end
   end
 end
