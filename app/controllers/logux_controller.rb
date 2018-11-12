@@ -4,8 +4,8 @@ class LoguxController < ActionController::Base
   include ActionController::Live
 
   def create
-    Logux.verify_request_meta_data(meta_params)
     logux_stream.write('[')
+    Logux.verify_request_meta_data(meta_params)
     Logux.process_batch(stream: logux_stream, batch: command_params)
   rescue => ex
     handle_processing_errors(ex)

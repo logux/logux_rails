@@ -32,9 +32,7 @@ describe 'Request logux server' do
     end
 
     it 'returns processed chunk' do
-      expect(response.stream).to have_chunk(
-        ['processed', '219_856_768 clientid 0']
-      )
+      expect(response).to be_processed('219_856_768 clientid 0')
     end
   end
 
@@ -50,12 +48,9 @@ describe 'Request logux server' do
            { time: Time.now.to_i, id: '219_856_768 clientid 0', userId: 1 }]
         ] }
     end
-    let(:logux_response) do
-      ['forbidden', '219_856_768 clientid 0']
-    end
 
     it 'returns correct body' do
-      expect(response.stream).to have_chunk(logux_response)
+      expect(response).to be_forbidden
     end
   end
 
@@ -65,9 +60,7 @@ describe 'Request logux server' do
     let(:password) { '12345' }
 
     it 'returns error' do
-      expect(response.stream).to start_from_chunk(
-        ['unauthorized', 'Incorrect password']
-      )
+      expect(response).to be_unauthorized
     end
   end
 

@@ -40,9 +40,7 @@ describe 'Request logux server without action' do
 
       it 'returns processed' do
         request_logux
-        expect(response.stream).to have_chunk(
-          ['processed', '219_856_768 clientid 0']
-        )
+        expect(response).to be_processed('219_856_768 clientid 0')
       end
     end
   end
@@ -54,9 +52,7 @@ describe 'Request logux server without action' do
 
     it 'returns processed' do
       request_logux
-      expect(response.stream).to have_chunk(
-        ['processed', '219_856_768 clientid 0']
-      )
+      expect(response).to be_processed('219_856_768 clientid 0')
     end
   end
 end
