@@ -1,0 +1,11 @@
+Description:
+  Generates the necessary migration to enable field tracking for logux updates
+
+Examples:
+  rails generate logux:model User
+
+    This will generate the migration to add a column with update time data.
+
+  rails generate logux:model User --nullable
+
+    This will generate the migration to add a column with update time data and add `null: false` constraint. Be careful, adding the constraint to the table with a big number of rows can cause lots of locks.

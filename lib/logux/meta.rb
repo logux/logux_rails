@@ -21,5 +21,13 @@ module Logux
     def user_id
       id&.split(' ')&.second&.split(':')&.first
     end
+
+    def sequence_id
+      id&.split(' ')&.third
+    end
+
+    def comparable_time
+      [time, node_id, sequence_id].join(' ')
+    end
   end
 end

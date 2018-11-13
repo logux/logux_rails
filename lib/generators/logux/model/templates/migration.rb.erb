@@ -1,0 +1,14 @@
+class <%= @migration_class_name %> < ActiveRecord::Migration<%= ActiveRecord::VERSION::MAJOR < 5 ? '' : '[5.0]' %>
+  def up
+    <% if nullable? %>
+    add_column :<%= plural_table_name %>, :logux_fields_updated_at, :jsonb, null: false, default: {}
+    <% else %>
+    add_column :<%= plural_table_name %>, :logux_fields_updated_at, :jsonb, null: true
+    change_column_default :<%= plural_table_name %>, :logux_fields_updated_at, {}
+    <% end %>
+  end
+
+  def down
+    remove_column :<%= plural_table_name %>, :logux_fields_updated_at
+  end
+end
