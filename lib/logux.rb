@@ -62,7 +62,7 @@ module Logux
     end
     config.on_error = proc {}
     config.auth_rule = proc { false }
-    config.render_backtrace_on_error = false
+    config.render_backtrace_on_error = true
   end
 
   def self.add(type, meta: {})
