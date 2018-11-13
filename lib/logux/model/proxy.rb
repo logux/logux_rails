@@ -8,8 +8,12 @@ module Logux
       end
 
       def update(meta, attributes)
-        updater = Updater.new(@model, meta, attributes)
-        @model.update_attributes_unsafe(updater.updated_attributes)
+        updater = Updater.new(
+          model: @model,
+          logux_id: meta.logux_id,
+          attributes: attributes
+        )
+        @model.update_attributes(updater.updated_attributes)
       end
 
       def updated_at(field)

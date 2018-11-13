@@ -26,7 +26,7 @@ module Logux
       id&.split(' ')&.third
     end
 
-    def comparable_time
+    def logux_id
       [time, node_id, sequence_id].join(' ')
     end
   end

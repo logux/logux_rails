@@ -7,8 +7,8 @@ describe Logux::Model do
     create(
       :post,
       logux_fields_updated_at: {
-        title: initial_meta.comparable_time,
-        content: initial_meta.comparable_time
+        title: initial_meta.logux_id,
+        content: initial_meta.logux_id
       }
     )
   end
@@ -64,30 +64,30 @@ describe Logux::Model do
   end
 
   describe '#update_attributes' do
-    it 'raises exception when user tries to update attribute directly' do
-      expect do
-        model.update_attributes(title: 'something', content: 'something')
-      end.to raise_exception(RuntimeError)
-    end
+    it 'updates logux.updated_at' do
+      model.update_attributes(title: 'something')
 
-    it 'allows updating not tracked attributes' do
-      expect do
-        model.update_attributes(updated_at: 2.days.ago)
-      end.not_to raise_exception
+      title_updated_at = model.logux.updated_at(:title)
+      expect(title_updated_at).not_to eq(initial_meta.logux_id)
     end
   end
 
   describe '#update_attribute' do
-    it 'raises exception when user tries to update attribute directly' do
-      expect do
-        model.update_attribute(:content, 'something')
-      end.to raise_exception(RuntimeError)
-    end
+    it 'updates logux.updated_at' do
+      model.update_attribute(:content, 'something')
 
-    it 'allows updating not tracked attributes' do
-      expect do
-        model.update_attribute(:updated_at, 2.days.ago)
-      end.not_to raise_exception
+      content_updated_at = model.logux.updated_at(:content)
+      expect(content_updated_at).not_to eq(initial_meta.logux_id)
+    end
+  end
+
+  describe 'direct attribute assignment' do
+    it 'updates logux.updated_at' do
+      model.content = 'something'
+      model.save
+
+      content_updated_at = model.logux.updated_at(:content)
+      expect(content_updated_at).not_to eq(initial_meta.logux_id)
     end
   end
 end
