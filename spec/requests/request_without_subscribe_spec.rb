@@ -40,7 +40,7 @@ describe 'Request logux server without subscribe' do
 
       it 'returns processed' do
         request_logux
-        expect(response).to be_processed('219_856_768 clientid 0')
+        expect(response).to logux_processed('219_856_768 clientid 0')
       end
     end
   end
@@ -52,7 +52,7 @@ describe 'Request logux server without subscribe' do
 
     it 'returns processed' do
       request_logux
-      expect(response).to be_processed('219_856_768 clientid 0')
+      expect(response).to logux_processed('219_856_768 clientid 0')
     end
   end
 end

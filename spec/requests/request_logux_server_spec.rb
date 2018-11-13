@@ -28,11 +28,11 @@ describe 'Request logux server' do
     before { request_logux }
 
     it 'returns approved chunk' do
-      expect(response).to be_approved('219_856_768 clientid 0')
+      expect(response).to logux_approved('219_856_768 clientid 0')
     end
 
     it 'returns processed chunk' do
-      expect(response).to be_processed('219_856_768 clientid 0')
+      expect(response).to logux_processed('219_856_768 clientid 0')
     end
   end
 
@@ -50,7 +50,7 @@ describe 'Request logux server' do
     end
 
     it 'returns correct body' do
-      expect(response).to be_forbidden
+      expect(response).to logux_forbidden
     end
   end
 
@@ -60,7 +60,7 @@ describe 'Request logux server' do
     let(:password) { '12345' }
 
     it 'returns error' do
-      expect(response).to be_unauthorized
+      expect(response).to logux_unauthorized
     end
   end
 
