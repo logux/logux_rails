@@ -39,5 +39,14 @@ FactoryBot.define do
         )
       end
     end
+
+    factory :logux_actions_post do
+      skip_create
+      initialize_with do
+        new(
+          { type: 'post/rename', key: 'name', value: 'test' }.merge(attributes)
+        )
+      end
+    end
   end
 end

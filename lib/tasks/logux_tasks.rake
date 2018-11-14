@@ -10,7 +10,7 @@ namespace :logux do
 
     output = [%w[action.type Class#method]]
     Logux::ActionController.descendants.sort_by(&:name).each do |klass|
-      klass.instance_methods(false).each do |action|
+      klass.instance_methods(false).sort.each do |action|
         output << [
           "#{klass.name.gsub(/^Actions::/, '').underscore}/#{action}",
           "#{klass.name}##{action}"
