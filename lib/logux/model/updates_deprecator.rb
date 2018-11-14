@@ -15,19 +15,15 @@ module Logux
         @level = level
       end
 
-      def watch
-        ActiveSupport::Notifications.subscribe(
-          EVENT, ->(_, _, _, _, args) { handle_insecure_update(args) }
-        )
-
-        yield
-      ensure
-        ActiveSupport::Notifications.unsubscribe(EVENT)
+      def watch(&block)
+        callback = lambda(&method(:handle_insecure_update))
+        ActiveSupport::Notifications.subscribed(callback, EVENT, &block)
       end
 
       private
 
-      def handle_insecure_update(args)
+      # rubocop:disable Naming/UncommunicativeMethodParamName
+      def handle_insecure_update(_, _, _, _, args)
         attributes = args[:changed].map(&:to_sym) - [:logux_fields_updated_at]
         insecure_attributes =
           attributes & args[:model_class].logux_crdt_mapped_attributes
@@ -35,6 +31,7 @@ module Logux
 
         notify_about_insecure_update(insecure_attributes)
       end
+      # rubocop:enable Naming/UncommunicativeMethodParamName
 
       def notify_about_insecure_update(insecure_attributes)
         pluralized_attributes = 'attribute'.pluralize(insecure_attributes.count)
