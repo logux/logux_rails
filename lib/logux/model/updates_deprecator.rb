@@ -24,9 +24,11 @@ module Logux
 
       # rubocop:disable Naming/UncommunicativeMethodParamName
       def handle_insecure_update(_, _, _, _, args)
-        attributes = args[:changed].map(&:to_sym) - [:logux_fields_updated_at]
+        model = args[:model]
+
+        attributes = model.changed.map(&:to_sym) - [:logux_fields_updated_at]
         insecure_attributes =
-          attributes & args[:model_class].logux_crdt_mapped_attributes
+          attributes & model.class.logux_crdt_mapped_attributes
         return if insecure_attributes.empty?
 
         notify_about_insecure_update(insecure_attributes)

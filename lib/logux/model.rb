@@ -32,8 +32,7 @@ module Logux
 
       ActiveSupport::Notifications.instrument(
         Logux::Model::UpdatesDeprecator::EVENT,
-        model_class: self.class,
-        changed: changed
+        model: self
       )
     end
   end
