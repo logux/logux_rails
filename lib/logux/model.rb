@@ -3,6 +3,7 @@
 require_relative 'model/updater'
 require_relative 'model/proxy'
 require_relative 'model/dsl'
+require_relative 'model/updates_deprecator'
 
 module Logux
   module Model
@@ -29,14 +30,9 @@ module Logux
       updater = Updater.new(model: self, attributes: attributes)
       self.logux_fields_updated_at = updater.updated_attributes
 
-      trigger_insecure_update_notification
-    end
-
-    def trigger_insecure_update_notification
       ActiveSupport::Notifications.instrument(
-        'logux.insecure_update',
-        model_class: self.class,
-        changed: changed
+        Logux::Model::UpdatesDeprecator::EVENT,
+        model: self
       )
     end
   end
