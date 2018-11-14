@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'logux/model/insecure_update_subscriber'
-
 module Logux
   class ActionCaller
     attr_reader :action, :meta
@@ -14,7 +12,7 @@ module Logux
     end
 
     def call!
-      detect_insecure_updates do
+      Logux::Model::UpdatesDeprecator.watch(level: :error) do
         logger.info(
           "Searching action for Logux action: #{action}, meta: #{meta}"
         )
@@ -39,16 +37,6 @@ module Logux
 
     def action_controller
       class_finder.find_action_class.new(action: action, meta: meta)
-    end
-
-    def detect_insecure_updates
-      ActiveSupport::Notifications.subscribe(
-        'logux.insecure_update',
-        Logux::Model::InsecureUpdateSubscriber.new
-      )
-      yield
-    ensure
-      ActiveSupport::Notifications.unsubscribe('logux.insecure_update')
     end
   end
 end
