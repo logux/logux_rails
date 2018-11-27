@@ -1,14 +1,11 @@
-sudo: false
-language: ruby
-rvm:
-  - 2.4.2
-
-before_install: gem install bundler -v 1.16.0
+sudo: require
+services:
+  - docker
 
 before_script:
-  - bundle install
-  - bundle exec appraisal
-
+  - unset BUNDLE_GEMFILE
+  - docker-compose run app bundle install
+  - docker-compose run app bundle exec appraisal install
 script:
-  - bundle exec appraisal rspec
-  - bundle exec rubocop
+  - docker-compose run app bundle exec appraisal rspec
+  - docker-compose run app bundle exec rubocop

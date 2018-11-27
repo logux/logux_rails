@@ -19,7 +19,7 @@ describe Logux::Model::UpdatesDeprecator do
         described_class.watch(level: :error) do
           post.update_attributes(updated_at: Time.now)
         end
-      end.not_to raise_error(Logux::Model::InsecureUpdateError)
+      end.not_to raise_error
     end
   end
 
