@@ -40,8 +40,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec-rails'
   spec.add_development_dependency 'rubocop', '~> 0.60.0'
   spec.add_development_dependency 'rubocop-rspec', '~> 1.27.0'
-  spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'pg'
+  spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'timecop'
   spec.add_development_dependency 'webmock'
 end
