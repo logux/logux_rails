@@ -32,4 +32,24 @@ describe Logux::Meta do
       end
     end
   end
+
+  describe '#client_id' do
+    let(:attributes) { { id: id } }
+
+    context 'with full node ID' do
+      let(:id) { '1 user:client:id 0' }
+
+      it 'parses client ID' do
+        expect(meta.client_id).to eq('user:client')
+      end
+    end
+
+    context 'with short node ID' do
+      let(:id) { '1 id 0' }
+
+      it 'parses client ID' do
+        expect(meta.client_id).to eq('id')
+      end
+    end
+  end
 end
