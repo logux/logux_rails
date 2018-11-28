@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  app:
+    image: ruby:2.5.1
+    environment:
+      - BUNDLE_PATH=/bundle
+      - BUNDLE_CONFIG=/app/.bundle/config
+
+      - DB_HOST=db
+      - DB_NAME=logux_rails
+      - DB_USERNAME=postgres
+    command: bash
+    working_dir: /app
+    volumes:
+      - .:/app:cached
+      - bundler_data:/bundle
+    tmpfs:
+      - /tmp
+    depends_on:
+      - db
+
+  db:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=logux_rails
+
+volumes:
+  bundler_data:

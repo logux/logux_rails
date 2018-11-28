@@ -45,11 +45,26 @@ You can execute `rake logux:actions` to get the list of available action types, 
 - Add permit method to logux params
 - Add specs matchers, with mocks for requests and so on.
 
-## Development
+## Development with Docker
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```bash
+  docker-compose run app bundle install
+  docker-compose run app bundle exec appraisal install
+```
+
+Run tests with:
+
+```bash
+  docker-compose run app bundle exec appraisal rspec
+```
+
+Run rubocop with:
+
+```bash
+  docker-compose run app bundle exec rubocop
+```
 
 ## Contributing
 
