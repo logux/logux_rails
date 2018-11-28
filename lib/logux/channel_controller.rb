@@ -7,11 +7,10 @@ module Logux
     end
 
     def initial_data
-      [1, 2]
     end
 
     def initial_meta
-      { nodeIds: [meta.proxy || node_id] }
+      { clients: [meta.client_id] }
     end
   end
 end

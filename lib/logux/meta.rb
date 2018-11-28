@@ -22,6 +22,10 @@ module Logux
       id&.split(' ')&.second&.split(':')&.first
     end
 
+    def client_id
+      node_id.split(':')[0..1].join(':')
+    end
+
     def sequence_id
       id&.split(' ')&.third
     end
