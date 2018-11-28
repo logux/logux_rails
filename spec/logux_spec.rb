@@ -39,8 +39,8 @@ describe Logux, timecop: true do
       [
         [
           'action',
-          { type: 'logux/undo', id: meta[:id], reason: reason },
-          { nodeIds: ['1:uuid'] }
+          an_action_with(type: 'logux/undo', id: meta[:id], reason: reason),
+          a_meta_with(nodeIds: ['1:uuid'])
         ]
       ]
     end
