@@ -19,8 +19,8 @@ describe Logux::Client do
   describe '#post' do
     it 'performs request' do
       expect { client.post(params) }.to send_to_logux(
-        ['action', an_action(id: 1), a_meta],
-        ['action', an_action(id: 2), a_meta]
+        ['action', { id: 1 }, a_logux_meta],
+        ['action', { id: 2 }, a_logux_meta]
       )
     end
   end

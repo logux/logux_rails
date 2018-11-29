@@ -39,8 +39,8 @@ describe Logux, timecop: true do
       [
         [
           'action',
-          an_action_with(type: 'logux/undo', id: meta[:id], reason: reason),
-          a_meta_with(clients: ['1:client'])
+          { type: 'logux/undo', id: meta[:id], reason: reason },
+          a_logux_meta_with(clients: ['1:client'])
         ]
       ]
     end
