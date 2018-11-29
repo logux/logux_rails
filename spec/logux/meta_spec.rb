@@ -49,6 +49,22 @@ describe Logux::Meta do
     end
   end
 
+  describe '#user_id' do
+    let(:attributes) { { id: '1 user:client:id 0' } }
+
+    it 'parses user ID' do
+      expect(meta.user_id).to eq('user')
+    end
+  end
+
+  describe '#node_id' do
+    let(:attributes) { { id: '1 user:client:id 0' } }
+
+    it 'parses node ID' do
+      expect(meta.node_id).to eq('user:client:id')
+    end
+  end
+
   describe '#client_id' do
     let(:attributes) { { id: id } }
 
