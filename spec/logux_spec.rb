@@ -27,7 +27,7 @@ describe Logux, timecop: true do
     let(:request) { described_class.undo(meta, reason: reason) }
     let(:meta) do
       Logux::Meta.new(
-        id: '1 1:uuid 0',
+        id: '1 1:client:uuid 0',
         users: ['3'],
         reasons: ['user/1/lastValue'],
         nodeIds: ['2:uuid'],
@@ -40,7 +40,7 @@ describe Logux, timecop: true do
         [
           'action',
           an_action_with(type: 'logux/undo', id: meta[:id], reason: reason),
-          a_meta_with(nodeIds: ['1:uuid'])
+          a_meta_with(clients: ['1:client'])
         ]
       ]
     end

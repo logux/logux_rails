@@ -75,7 +75,7 @@ module Logux
   def self.undo(meta, reason: nil)
     add(
       [{ type: 'logux/undo', id: meta.id, reason: reason }],
-      meta: Logux::Meta.new(nodeIds: [meta.node_id])
+      meta: Logux::Meta.new(clients: [meta.client_id])
     )
   end
 
