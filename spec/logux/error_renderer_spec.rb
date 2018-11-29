@@ -3,7 +3,8 @@
 require 'spec_helper'
 
 describe Logux::ErrorRenderer do
-  let(:meta) { create(:logux_meta, id: 123) }
+  let(:action_id) { '123 10:uuid 0' }
+  let(:meta) { create(:logux_meta, id: action_id) }
 
   describe '#message' do
     def build_message(exception)
@@ -13,13 +14,13 @@ describe Logux::ErrorRenderer do
     it 'returns correct error message for UnknownActionError' do
       exception = Logux::UnknownActionError.new('test', meta: meta)
 
-      expect(build_message(exception)).to eq(['unknownAction', 123])
+      expect(build_message(exception)).to eq(['unknownAction', action_id])
     end
 
     it 'returns correct error message for UnknownChannelError' do
       exception = Logux::UnknownChannelError.new('test', meta: meta)
 
-      expect(build_message(exception)).to eq(['unknownChannel', 123])
+      expect(build_message(exception)).to eq(['unknownChannel', action_id])
     end
 
     it 'returns correct error message for UnauthorizedError' do

@@ -12,7 +12,7 @@ module Logux
     def self.included(base)
       base.extend(DSL)
 
-      base.before_update :touch_logux_id_for_changes,
+      base.before_update :touch_logux_order_for_changes,
                          unless: -> { changes.key?('logux_fields_updated_at') }
     end
 
@@ -22,7 +22,7 @@ module Logux
 
     private
 
-    def touch_logux_id_for_changes
+    def touch_logux_order_for_changes
       attributes = changed.each_with_object({}) do |attr, res|
         res[attr] = send(attr)
       end
