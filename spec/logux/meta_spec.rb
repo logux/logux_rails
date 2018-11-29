@@ -18,6 +18,14 @@ describe Logux::Meta do
       end
     end
 
+    context 'with id' do
+      let(:attributes) { { id: '112 10:uuid 0' } }
+
+      it 'fills time' do
+        expect(meta[:time]).to eq('112')
+      end
+    end
+
     context 'with meta' do
       let(:time) { '4321' }
       let(:id) { '1234' }
@@ -30,6 +38,30 @@ describe Logux::Meta do
       it 'does not rewrite time if it is provided' do
         expect(meta[:time]).to eq(time)
       end
+    end
+  end
+
+  describe '#logux_order' do
+    let(:attributes) { { id: '100 10:uuid 0', time: '200' } }
+
+    it 'combines id and time' do
+      expect(meta.logux_order).to eq('200 10:uuid 0')
+    end
+  end
+
+  describe '#user_id' do
+    let(:attributes) { { id: '1 user:client:id 0' } }
+
+    it 'parses user ID' do
+      expect(meta.user_id).to eq('user')
+    end
+  end
+
+  describe '#node_id' do
+    let(:attributes) { { id: '1 user:client:id 0' } }
+
+    it 'parses node ID' do
+      expect(meta.node_id).to eq('user:client:id')
     end
   end
 

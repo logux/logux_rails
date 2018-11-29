@@ -10,7 +10,7 @@ module Logux
       def update(meta, attributes)
         updater = Updater.new(
           model: @model,
-          logux_id: meta.logux_id,
+          logux_order: meta.logux_order,
           attributes: attributes
         )
         @model.update_attributes(updater.updated_attributes)

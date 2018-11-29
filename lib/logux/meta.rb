@@ -7,7 +7,7 @@ module Logux
     def initialize(source_hash = nil, default = nil, &blk)
       super
       self[:id] ||= Logux.generate_action_id
-      self[:time] ||= Time.now.to_datetime.strftime('%Q')
+      self[:time] ||= self[:id].split(' ').first
     end
 
     def to_s
@@ -15,23 +15,19 @@ module Logux
     end
 
     def node_id
-      id&.split(' ')&.second
+      self[:id].split(' ').second
     end
 
     def user_id
-      id&.split(' ')&.second&.split(':')&.first
+      node_id.split(':').first
     end
 
     def client_id
       node_id.split(':')[0..1].join(':')
     end
 
-    def sequence_id
-      id&.split(' ')&.third
-    end
-
-    def logux_id
-      [time, node_id, sequence_id].join(' ')
+    def logux_order
+      self[:time] + ' ' + self[:id].split(' ')[1..-1].join(' ')
     end
   end
 end

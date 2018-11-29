@@ -35,12 +35,14 @@ module Logux
         end
 
         def match_commands?(stored_command, expected_command)
-          # TOD: move matching to test command wrappers
-          if expected_command.length < stored_command.length
-            stored_command[0..(expected_command.length - 1)].to_json ==
-              expected_command.to_json
-          else
-            stored_command.to_json == expected_command.to_json
+          expected_command.each_with_index.all? do |part, index|
+            part.stringify_keys! if part.is_a?(Hash)
+            matcher = if part.is_a?(RSpec::Matchers::BuiltIn::BaseMatcher)
+                        part
+                      else
+                        RSpec::Matchers::BuiltIn::Eq.new(part)
+                      end
+            matcher.matches?(stored_command[index])
           end
         end
       end

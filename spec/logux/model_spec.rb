@@ -7,8 +7,8 @@ describe Logux::Model do
     create(
       :post,
       logux_fields_updated_at: {
-        title: initial_meta.logux_id,
-        content: initial_meta.logux_id
+        title: initial_meta.logux_order,
+        content: initial_meta.logux_order
       }
     )
   end
@@ -16,28 +16,28 @@ describe Logux::Model do
   let(:older_update_meta) do
     create(
       :logux_meta,
-      time: Time.parse('01-11-2018 12:05').to_datetime.strftime('%Q')
+      id: Time.parse('01-11-2018 12:05').to_datetime.strftime('%Q 10:uuid 0')
     )
   end
 
   let(:initial_meta) do
     create(
       :logux_meta,
-      time: Time.parse('01-11-2018 12:10').to_datetime.strftime('%Q')
+      id: Time.parse('01-11-2018 12:10').to_datetime.strftime('%Q 10:uuid 0')
     )
   end
 
   let(:newer_update_meta) do
     create(
       :logux_meta,
-      time: Time.parse('01-11-2018 12:15').to_datetime.strftime('%Q')
+      id: Time.parse('01-11-2018 12:15').to_datetime.strftime('%Q 10:uuid 0')
     )
   end
 
   let(:latest_update_meta) do
     create(
       :logux_meta,
-      time: Time.parse('01-11-2018 12:20').to_datetime.strftime('%Q')
+      id: Time.parse('01-11-2018 12:20').to_datetime.strftime('%Q 10:uuid 0')
     )
   end
 
@@ -68,7 +68,7 @@ describe Logux::Model do
       model.update_attributes(title: 'something')
 
       title_updated_at = model.logux.updated_at(:title)
-      expect(title_updated_at).not_to eq(initial_meta.logux_id)
+      expect(title_updated_at).not_to eq(initial_meta.logux_order)
     end
   end
 
@@ -77,7 +77,7 @@ describe Logux::Model do
       model.update_attribute(:content, 'something')
 
       content_updated_at = model.logux.updated_at(:content)
-      expect(content_updated_at).not_to eq(initial_meta.logux_id)
+      expect(content_updated_at).not_to eq(initial_meta.logux_order)
     end
   end
 
@@ -87,7 +87,7 @@ describe Logux::Model do
       model.save
 
       content_updated_at = model.logux.updated_at(:content)
-      expect(content_updated_at).not_to eq(initial_meta.logux_id)
+      expect(content_updated_at).not_to eq(initial_meta.logux_order)
     end
   end
 end

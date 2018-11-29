@@ -19,6 +19,11 @@ module Logux
         Logux::Test::Matchers::SendToLogux.new(*commands)
       end
 
+      def a_logux_meta_with(attributes = {})
+        RSpec::Matchers::BuiltIn::Include.new(attributes.stringify_keys)
+      end
+      alias a_logux_meta a_logux_meta_with
+
       def logux_approved(meta = nil)
         Logux::Test::Matchers::ResponseChunks.new(
           meta: meta, includes: ['approved'], excludes: %w[forbidden error]
