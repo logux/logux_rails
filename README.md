@@ -1,4 +1,4 @@
-# LoguxRails
+# Logux Rails
 
 [![Build Status](https://travis-ci.org/wilddima/logux_rails.svg?branch=master)](https://travis-ci.org/wilddima/logux_rails) [![Coverage Status](https://coveralls.io/repos/github/wilddima/logux_rails/badge.svg?branch=master)](https://coveralls.io/github/wilddima/logux_rails?branch=master)
 
@@ -24,7 +24,7 @@ gem install logux_rails
 
 ## Usage
 
-First of all, you have to configure logux, by defining server address in, for example, `config/initializers/logux.rb`:
+First of all, you have to configure Logux, by defining server address in, for example, `config/initializers/logux.rb`:
 
 ```ruby
 Logux.configuration do |config|
@@ -38,16 +38,11 @@ Mount logux in routes:
   mount Logux::Engine => '/'
 ```
 
-After this, POST requests to `/logux` will be processed by LoguxController. You can redefine it or inherit from, if it necessary, for example, for implementing custom authorization flow.
+After this, POST requests to `/logux` will be processed by `LoguxController`. You can redefine it or inherit from, if it necessary, for example, for implementing custom authorization flow.
 
-LoguxRails will try to find Action for the specific message from logux-server. For example, for `project/rename` action, you should define `Action::Project` class, inherited from `Logux::Action` base class, and implement `rename` method.
+Logux Rails will try to find Action for the specific message from Logux Server. For example, for `project/rename` action, you should define `Action::Project` class, inherited from `Logux::Action` base class, and implement `rename` method.
 
-You can execute `rake logux:actions` to get the list of available action types, or `rake logux:channels` to get the list of available channels
-
-## Todo
-
-- Add permit method to logux params
-- Add specs matchers, with mocks for requests and so on.
+You can execute `rake logux:actions` to get the list of available action types, or `rake logux:channels` to get the list of available channels.
 
 ## Development with Docker
 
@@ -64,20 +59,12 @@ Run tests with:
 docker-compose run app bundle exec appraisal rspec
 ```
 
-Run rubocop with:
+Run RuboCop with:
 
 ```bash
-  docker-compose run app bundle exec rubocop
+docker-compose run app bundle exec rubocop
 ```
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/wilddima/logux_rails. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the LoguxRails project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/wilddima/logux_rails/blob/master/CODE_OF_CONDUCT.md).
