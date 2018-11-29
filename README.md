@@ -12,11 +12,15 @@ gem 'logux_rails'
 
 And then execute:
 
-    $ bundle
+```bash
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install logux_rails
+```bash
+gem install logux_rails
+```
 
 ## Usage
 
@@ -38,7 +42,7 @@ After this, POST requests to `/logux` will be processed by LoguxController. You 
 
 LoguxRails will try to find Action for the specific message from logux-server. For example, for `project/rename` action, you should define `Action::Project` class, inherited from `Logux::Action` base class, and implement `rename` method.
 
-You can execute `rake logux:actions` to get the list of available action types, or `rake logux:channels` to get the list of available channels 
+You can execute `rake logux:actions` to get the list of available action types, or `rake logux:channels` to get the list of available channels
 
 ## Todo
 
@@ -50,14 +54,14 @@ You can execute `rake logux:actions` to get the list of available action types, 
 After checking out the repo, run:
 
 ```bash
-  docker-compose run app bundle install
-  docker-compose run app bundle exec appraisal install
+docker-compose run app bundle install
+docker-compose run app bundle exec appraisal install
 ```
 
 Run tests with:
 
 ```bash
-  docker-compose run app bundle exec appraisal rspec
+docker-compose run app bundle exec appraisal rspec
 ```
 
 Run rubocop with:
