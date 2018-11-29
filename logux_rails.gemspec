@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'colorize'
   spec.add_dependency 'configurations'
-  spec.add_dependency 'hashie'
   spec.add_dependency 'nanoid'
   spec.add_dependency 'rails', '>= 5.0'
   spec.add_dependency 'rest-client'

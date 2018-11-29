@@ -1,21 +1,16 @@
 # frozen_string_literal: true
 
 module Logux
-  class Meta < Hashie::Mash
-    disable_warnings
+  class Meta < Hash
+    def initialize(source_hash = {})
+      merge!(source_hash.stringify_keys)
 
-    def initialize(source_hash = nil, default = nil, &blk)
-      super
-      self[:id] ||= Logux.generate_action_id
-      self[:time] ||= self[:id].split(' ').first
-    end
-
-    def to_s
-      to_h.to_s
+      self['id'] ||= Logux.generate_action_id
+      self['time'] ||= self['id'].split(' ').first
     end
 
     def node_id
-      self[:id].split(' ').second
+      id.split(' ').second
     end
 
     def user_id
@@ -27,7 +22,15 @@ module Logux
     end
 
     def logux_order
-      self[:time] + ' ' + self[:id].split(' ')[1..-1].join(' ')
+      time + ' ' + id.split(' ')[1..-1].join(' ')
+    end
+
+    def time
+      fetch('time')
+    end
+
+    def id
+      fetch('id')
     end
   end
 end

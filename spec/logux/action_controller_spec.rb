@@ -18,7 +18,7 @@ describe Logux::ActionController do
     end
 
     it 'sets the meta with time' do
-      expect(response.meta).to have_key(:time)
+      expect(response.meta).to have_key('time')
     end
   end
 
