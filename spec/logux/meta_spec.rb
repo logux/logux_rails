@@ -69,7 +69,8 @@ describe Logux::Meta do
     let(:attributes) { { id: id } }
 
     context 'with full node ID' do
-      let(:id) { '1 user:client:id 0' } 
+      let(:id) { '1 user:client:id 0' }
+
       it 'parses client ID' do
         expect(meta.client_id).to eq('user:client')
       end
