@@ -12,18 +12,20 @@ module Logux
       @password = password
     end
 
-    def call(data, meta: Logux::Meta.new({}))
-      prepared_data = prepare_data(data: data, meta: meta)
+    def call(action, meta)
+      prepared_data = prepare_data(action, meta)
       Logux.logger.info('Logux add:', prepared_data)
       client.post(prepared_data)
     end
 
     private
 
-    def prepare_data(data:, meta:)
-      { version: 0,
+    def prepare_data(action, meta)
+      {
+        version: 0,
         password: password,
-        commands: data.map { |d| ['action', d, meta] } }
+        commands: [['action', action, meta]]
+      }
     end
   end
 end

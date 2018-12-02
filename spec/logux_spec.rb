@@ -37,16 +37,14 @@ describe Logux, timecop: true do
     let(:reason) { 'error' }
     let(:logux_commands) do
       [
-        [
-          'action',
-          { type: 'logux/undo', id: meta.id, reason: reason },
-          a_logux_meta_with(clients: ['1:client'])
-        ]
+        'action',
+        { type: 'logux/undo', id: meta.id, reason: reason },
+        a_logux_meta_with(clients: ['1:client'])
       ]
     end
 
     it 'makes request' do
-      expect { request }.to send_to_logux(*logux_commands)
+      expect { request }.to send_to_logux(logux_commands)
     end
   end
 end
