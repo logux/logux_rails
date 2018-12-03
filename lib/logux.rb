@@ -69,6 +69,10 @@ module Logux
     Logux::Add.new.call(action, meta)
   end
 
+  def self.add_batch(commands)
+    commands.each { |command| add(*command) }
+  end
+
   def self.undo(meta, reason: nil)
     add(
       { type: 'logux/undo', id: meta.id, reason: reason },
