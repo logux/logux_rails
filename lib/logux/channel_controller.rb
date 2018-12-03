@@ -3,7 +3,7 @@
 module Logux
   class ChannelController < BaseController
     def subscribe
-      add(initial_data, meta: initial_meta)
+      Logux.add_batch(initial_data.map { |d| [d, initial_meta] })
     end
 
     def initial_data

@@ -26,12 +26,6 @@ module Logux
                           custom_data: custom_data)
     end
 
-    def add(data, meta: @meta, version: 0)
-      Logux::Add
-        .new(version: version)
-        .call(data, meta: meta)
-    end
-
     def user_id
       @user_id ||= meta.user_id
     end

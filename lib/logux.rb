@@ -65,16 +65,18 @@ module Logux
     config.render_backtrace_on_error = true
   end
 
-  def self.add(type, meta: {})
-    logux_add = Logux::Add.new
-    logux_meta = Logux::Meta.new(meta)
-    logux_add.call(type, meta: logux_meta)
+  def self.add(action, meta = Meta.new)
+    Logux::Add.new.call([[action, meta]])
+  end
+
+  def self.add_batch(commands)
+    Logux::Add.new.call(commands)
   end
 
   def self.undo(meta, reason: nil)
     add(
-      [{ type: 'logux/undo', id: meta.id, reason: reason }],
-      meta: Logux::Meta.new(clients: [meta.client_id])
+      { type: 'logux/undo', id: meta.id, reason: reason },
+      Logux::Meta.new(clients: [meta.client_id])
     )
   end
 

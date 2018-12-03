@@ -6,12 +6,44 @@ describe Logux, timecop: true do
   end
 
   describe '.add' do
-    let(:type) { [] }
+    let(:action) { { type: 'action' } }
 
-    it 'makes request' do
-      stub = stub_request(:post, Logux.configuration.logux_host)
-      Logux::Test.enable_http_requests! { described_class.add(type) }
-      expect(stub).to have_been_requested
+    describe 'http request' do
+      it 'makes request' do
+        stub = stub_request(:post, Logux.configuration.logux_host)
+        Logux::Test.enable_http_requests! { described_class.add(action) }
+        expect(stub).to have_been_requested
+      end
+    end
+
+    it 'sends action with meta' do
+      expect { described_class.add(action) }.to send_to_logux(
+        ['action', { type: 'action' }, a_logux_meta]
+      )
+    end
+  end
+
+  describe '.add_batch' do
+    let(:commands) do
+      [
+        [{ 'type': 'action' }],
+        [{ 'type': 'action2' }]
+      ]
+    end
+
+    describe 'http request' do
+      it 'makes a request' do
+        stub = stub_request(:post, Logux.configuration.logux_host)
+        Logux::Test.enable_http_requests! { described_class.add(commands) }
+        expect(stub).to have_been_requested
+      end
+    end
+
+    it 'sends action with meta' do
+      expect { described_class.add_batch(commands) }.to send_to_logux(
+        ['action', { type: 'action' }, a_logux_meta],
+        ['action', { type: 'action2' }, a_logux_meta]
+      )
     end
   end
 
@@ -37,16 +69,14 @@ describe Logux, timecop: true do
     let(:reason) { 'error' }
     let(:logux_commands) do
       [
-        [
-          'action',
-          { type: 'logux/undo', id: meta.id, reason: reason },
-          a_logux_meta_with(clients: ['1:client'])
-        ]
+        'action',
+        { type: 'logux/undo', id: meta.id, reason: reason },
+        a_logux_meta_with(clients: ['1:client'])
       ]
     end
 
     it 'makes request' do
-      expect { request }.to send_to_logux(*logux_commands)
+      expect { request }.to send_to_logux(logux_commands)
     end
   end
 end
