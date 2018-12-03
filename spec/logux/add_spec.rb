@@ -13,7 +13,7 @@ describe Logux::Add, timecop: true do
     end
 
     it 'return processed' do
-      expect { request.call(action, meta) }.to send_to_logux(
+      expect { request.call([[action, meta]]) }.to send_to_logux(
         ['action', { id: 1 }, a_logux_meta]
       )
     end

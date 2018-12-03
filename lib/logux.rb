@@ -66,11 +66,11 @@ module Logux
   end
 
   def self.add(action, meta = Meta.new)
-    Logux::Add.new.call(action, meta)
+    Logux::Add.new.call([[action, meta]])
   end
 
   def self.add_batch(commands)
-    commands.each { |command| add(*command) }
+    Logux::Add.new.call(commands)
   end
 
   def self.undo(meta, reason: nil)
