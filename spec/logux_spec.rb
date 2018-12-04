@@ -18,7 +18,7 @@ describe Logux, timecop: true do
 
     it 'sends action with meta' do
       expect { described_class.add(action) }.to send_to_logux(
-        ['action', { type: 'action' }, a_logux_meta]
+        ['action', a_logux_action_with(type: 'action'), a_logux_meta]
       )
     end
   end
@@ -41,8 +41,8 @@ describe Logux, timecop: true do
 
     it 'sends action with meta' do
       expect { described_class.add_batch(commands) }.to send_to_logux(
-        ['action', { type: 'action' }, a_logux_meta],
-        ['action', { type: 'action2' }, a_logux_meta]
+        ['action', a_logux_action_with(type: 'action'), a_logux_meta],
+        ['action', a_logux_action_with(type: 'action2'), a_logux_meta]
       )
     end
   end
