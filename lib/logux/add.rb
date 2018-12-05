@@ -13,6 +13,8 @@ module Logux
     end
 
     def call(commands)
+      return if commands.empty?
+
       prepared_data = prepare_data(commands)
       Logux.logger.info('Logux add:', prepared_data)
       client.post(prepared_data)
