@@ -37,10 +37,10 @@ describe Logux::ErrorRenderer do
       end
 
       it 'returns correct error with backtrace for some unknown error' do
-        exception = StandardError.new
+        exception = StandardError.new('Test')
         exception.set_backtrace(caller)
 
-        expect(build_message(exception)).to eq(['error', exception.backtrace])
+        expect(build_message(exception)).to eq(['error', "Test\n" + exception.backtrace.join("\n")])
       end
     end
 

@@ -24,7 +24,7 @@ module Logux
 
     def render_stardard_error(exception)
       if Logux.configuration.render_backtrace_on_error
-        ['error', exception.backtrace]
+        ['error', exception.message + "\n" + exception.backtrace.join("\n")]
       else
         ['error', 'Please look server logs for more information']
       end
