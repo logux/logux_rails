@@ -40,9 +40,9 @@ describe Logux::ErrorRenderer do
         exception = StandardError.new('Test')
         exception.set_backtrace(caller)
 
-        expect(build_message(exception)).to eq([
-          'error', "Test\n" + exception.backtrace.join("\n")
-        ])
+        expect(build_message(exception)).to eq(
+          ['error', "Test\n" + exception.backtrace.join("\n")]
+        )
       end
     end
 
