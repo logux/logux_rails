@@ -15,8 +15,10 @@ module Logux
     end
 
     def since_time
-      since = action['since'].try(:[], 'time')
-      Time.at(since).to_datetime if since
+      @since_time ||= begin
+        since = action['since'].try(:[], 'time')
+        Time.at(since).to_datetime if since
+      end
     end
   end
 end
