@@ -15,7 +15,7 @@ module Logux
     end
 
     def since_time
-      action.dig('since', 'time')
+      action['since'].try(:[], 'time')
     end
   end
 end
