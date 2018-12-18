@@ -13,5 +13,12 @@ module Logux
     def initial_meta
       { clients: [meta.client_id] }
     end
+
+    def since_time
+      @since_time ||= begin
+        since = action['since'].try(:[], 'time')
+        Time.at(since).to_datetime if since
+      end
+    end
   end
 end
