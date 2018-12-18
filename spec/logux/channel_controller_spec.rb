@@ -33,7 +33,7 @@ describe Logux::ChannelController do
       let(:action) { create(:logux_actions_subscribe_since) }
 
       it 'tries to find record by chanel data' do
-        expect(since_time).to be(100)
+        expect(since_time).to eql(Time.at(100).to_datetime)
       end
     end
 
