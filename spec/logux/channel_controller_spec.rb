@@ -15,8 +15,9 @@ describe Logux::ChannelController do
   let(:meta) { Logux::Meta.new }
 
   describe '#subscribe' do
-    let(:action) { create(:logux_actions_subscribe) }
     subject(:subscribe) { channel_controller.subscribe }
+
+    let(:action) { create(:logux_actions_subscribe) }
 
     context 'when ActiveRecord defined' do
       it 'tries to find record by chanel data' do
@@ -30,13 +31,15 @@ describe Logux::ChannelController do
 
     context 'when action.since defined' do
       let(:action) { create(:logux_actions_subscribe_since) }
+
       it 'tries to find record by chanel data' do
-        expect(since_time).to eql(100)
+        expect(since_time).to be(100)
       end
     end
 
     context 'when action.since not defined' do
       let(:action) { create(:logux_actions_subscribe) }
+
       it 'tries to find record by chanel data' do
         expect(since_time).to be_nil
       end
