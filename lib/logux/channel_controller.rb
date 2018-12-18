@@ -13,5 +13,9 @@ module Logux
     def initial_meta
       { clients: [meta.client_id] }
     end
+
+    def since_time
+      action.dig('since', 'time')
+    end
   end
 end

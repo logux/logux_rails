@@ -9,6 +9,17 @@ FactoryBot.define do
       end
     end
 
+    factory :logux_actions_subscribe_since do
+      skip_create
+      initialize_with do
+        new({
+          type: 'logux/subscribe',
+          channel: 'user/1',
+          since: { time: 100 }
+        }.merge(attributes))
+      end
+    end
+
     factory :logux_actions_add do
       skip_create
       initialize_with do
