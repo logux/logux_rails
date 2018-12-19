@@ -16,7 +16,7 @@ module Logux
         logger.info(
           "Searching action for Logux action: #{action}, meta: #{meta}"
         )
-        format(action_controller.public_send(action.action_type))
+        action_controller.public_send(action.action_type)
       end
     rescue Logux::UnknownActionError, Logux::UnknownChannelError => e
       logger.warn(e)
