@@ -12,13 +12,13 @@ module Logux
       def call
         preprocessed_batch.map.with_index do |chunk, index|
           case chunk[:type]
-          when :access
+          when 'access'
             process_access(chunk: chunk.slice(:action, :meta))
-          when :init
+          when 'init'
             process_init(chunk: chunk.slice(:action, :meta))
-          when :action
+          when 'action'
             process_action(chunk: chunk.slice(:action, :meta))
-          when :auth
+          when 'auth'
             process_auth(chunk: chunk[:auth])
           end
         end
@@ -58,7 +58,7 @@ module Logux
       end
 
       def preprocess_auth(chunk)
-        { type: :auth,
+        { type: 'auth',
           auth: Logux::Auth.new(node_id: chunk[1],
                                 credentials: chunk[2],
                                 auth_id: chunk[3]) }
