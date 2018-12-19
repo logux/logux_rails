@@ -2,7 +2,7 @@
 
 module Logux
   module Process
-    class Action
+    class Access
       attr_reader :chunk
 
       def initialize(chunk:)

@@ -10,7 +10,7 @@ module Logux
       end
 
       def call
-        preprocessed_batch.map.with_index do |chunk, index|
+        preprocessed_batch.map do |chunk|
           case chunk[:type]
           when 'access'
             process_access(chunk: chunk.slice(:action, :meta))
