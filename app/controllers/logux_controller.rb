@@ -7,7 +7,7 @@ class LoguxController < ActionController::Base
     Logux.logger.info("Write to Logux response: #{responce}")
     render json: responce
   rescue => ex
-    render json: [handle_processing_errors(ex)]
+    handle_processing_errors(ex)
   end
 
   private
@@ -28,6 +28,6 @@ class LoguxController < ActionController::Base
     Logux.configuration.on_error.call(exception)
     Logux.logger.error("#{exception}\n#{exception.backtrace.join("\n")}")
   ensure
-    Logux::ErrorRenderer.new(exception).message
+    render json: [Logux::ErrorRenderer.new(exception).message]
   end
 end
