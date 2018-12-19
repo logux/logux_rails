@@ -10,8 +10,7 @@ module Logux
       end
 
       def call
-        authed = Logux.configuration.auth_rule.call(user_id, chunk.credentials)
-        if auth
+        if Logux.configuration.auth_rule.call(user_id, chunk.credentials)
           ['authenticated', chunk.auth_id]
         else
           ['denied', chunk.auth_id]
