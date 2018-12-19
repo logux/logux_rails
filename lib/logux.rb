@@ -91,8 +91,8 @@ module Logux
     raise Logux::UnauthorizedError, 'Incorrect password' unless auth
   end
 
-  def self.process_batch(stream:, batch:)
-    Logux::Process::Batch.new(stream: stream, batch: batch).call
+  def self.process_batch(batch:)
+    Logux::Process::Batch.new(batch: batch).call
   end
 
   def self.generate_action_id

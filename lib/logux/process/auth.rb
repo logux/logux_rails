@@ -3,18 +3,19 @@
 module Logux
   module Process
     class Auth
-      attr_reader :stream, :chunk
+      attr_reader :chunk
 
-      def initialize(stream:, chunk:)
-        @stream = stream
+      def initialize(chunk:)
         @chunk = chunk
       end
 
       def call
         authed = Logux.configuration.auth_rule.call(user_id, chunk.credentials)
-        return stream.write(['authenticated', chunk.auth_id]) if authed
-
-        stream.write(['denied', chunk.auth_id])
+        if auth
+          ['authenticated', chunk.auth_id]
+        else
+          ['denied', chunk.auth_id]
+        end
       end
 
       private

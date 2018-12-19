@@ -20,16 +20,9 @@ module Logux
       end
     rescue Logux::UnknownActionError, Logux::UnknownChannelError => e
       logger.warn(e)
-      format(nil)
     end
 
     private
-
-    def format(response)
-      return response if response.is_a?(Logux::Response)
-
-      Logux::Response.new(:processed, action: action, meta: meta)
-    end
 
     def class_finder
       @class_finder ||= Logux::ClassFinder.new(action: action, meta: meta)

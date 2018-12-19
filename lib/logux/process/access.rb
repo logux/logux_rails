@@ -11,8 +11,7 @@ module Logux
 
       def call
         if authorizated?
-          process_action!
-          ['processed', meta_from_chunk.id]
+          ['approved', meta_from_chunk.id]
         else
           ['forbidden', meta_from_chunk.id]
         end
@@ -27,13 +26,6 @@ module Logux
       end
 
       private
-
-      def process_action!
-        Logux::ActionCaller.new(
-          action: action_from_chunk,
-          meta: meta_from_chunk
-        ).call!
-      end
 
       def authorizated?
         Logux::PolicyCaller.new(

@@ -3,38 +3,47 @@
 module Logux
   module Process
     class Batch
-      attr_reader :stream, :batch
+      attr_reader :batch
 
-      def initialize(stream:, batch:)
-        @stream = stream
+      def initialize(batch:)
         @batch = batch
       end
 
       def call
-        last_chunk = batch.size - 1
         preprocessed_batch.map.with_index do |chunk, index|
           case chunk[:type]
+          when :access
+            process_access(chunk: chunk.slice(:action, :meta))
+          when :init
+            process_init(chunk: chunk.slice(:action, :meta))
           when :action
             process_action(chunk: chunk.slice(:action, :meta))
           when :auth
             process_auth(chunk: chunk[:auth])
           end
-          stream.write(',') if index != last_chunk
         end
       end
 
+      def process_access(chunk:)
+        Logux::Process::Access.new(chunk: chunk).call
+      end
+
+      def process_init(chunk:)
+        Logux::Process::Init.new(chunk: chunk).call
+      end
+
       def process_action(chunk:)
-        Logux::Process::Action.new(stream: stream, chunk: chunk).call
+        Logux::Process::Action.new(chunk: chunk).call
       end
 
       def process_auth(chunk:)
-        Logux::Process::Auth.new(stream: stream, chunk: chunk).call
+        Logux::Process::Auth.new(chunk: chunk).call
       end
 
       def preprocessed_batch
         @preprocessed_batch ||= batch.map do |chunk|
           case chunk[0]
-          when 'action'
+          when 'init', 'access', 'action'
             preprocess_action(chunk)
           when 'auth'
             preprocess_auth(chunk)
