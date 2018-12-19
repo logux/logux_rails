@@ -3,7 +3,9 @@
 class LoguxController < ActionController::Base
   def create
     Logux.verify_request_meta_data(meta_params)
-    render json: Logux.process_batch(batch: command_params)
+    responce = Logux.process_batch(batch: command_params)
+    Logux.logger.info("Write to Logux response: #{responce}")
+    render json: responce
   rescue => ex
     render json: [handle_processing_errors(ex)]
   end

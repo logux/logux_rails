@@ -40,7 +40,6 @@ module Logux
   autoload :Add, 'logux/add'
   autoload :Node, 'logux/node'
   autoload :Response, 'logux/response'
-  autoload :Stream, 'logux/stream'
   autoload :Process, 'logux/process'
   autoload :Logger, 'logux/logger'
   autoload :Version, 'logux/version'
