@@ -52,7 +52,7 @@ module Logux
       end
 
       def preprocess_action(chunk)
-        { type: :action,
+        { type: chunk[0],
           action: Logux::Actions.new(chunk[1]),
           meta: Logux::Meta.new(chunk[2]) }
       end
