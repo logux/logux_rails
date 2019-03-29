@@ -51,11 +51,12 @@ module Logux
   configurable :logux_host, :verify_authorized,
                :password, :logger,
                :on_error, :auth_rule,
-               :render_backtrace_on_error
+               :render_backtrace_on_error, :logux_logger
 
   configuration_defaults do |config|
     config.logux_host = 'localhost:1338'
     config.verify_authorized = true
+    config.logux_logger = Logux::Logger
     config.logger = ActiveSupport::Logger.new(STDOUT)
     if defined?(Rails) && Rails.respond_to?(:logger)
       config.logger = Rails.logger
@@ -100,6 +101,6 @@ module Logux
   end
 
   def self.logger
-    Logux::Logger
+    configuration.logux_logger
   end
 end
