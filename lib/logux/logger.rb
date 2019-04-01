@@ -16,7 +16,7 @@ module Logux
       delegate :warn, :error, to: :logger
 
       def logger
-        Logux.configuration.logger
+        Logux.base_logger
       end
     end
   end
