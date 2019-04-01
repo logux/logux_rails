@@ -12,7 +12,8 @@ module Logux
     end
 
     def call!
-      logger.info("Searching policy for Logux action: #{action}, meta: #{meta}")
+      logger.debug('Searching policy for Logux action:' \
+                   " #{action}, meta: #{meta}")
       policy.public_send("#{action.action_type}?")
     rescue Logux::UnknownActionError, Logux::UnknownChannelError => e
       raise e if configuration.verify_authorized

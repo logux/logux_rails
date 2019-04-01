@@ -16,7 +16,7 @@ module Logux
       return if commands.empty?
 
       prepared_data = prepare_data(commands)
-      Logux.logger.info('Logux add:', prepared_data)
+      Logux.logger.debug('Logux add:', prepared_data)
       client.post(prepared_data)
     end
 
