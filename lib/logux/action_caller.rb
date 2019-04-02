@@ -13,7 +13,7 @@ module Logux
 
     def call!
       Logux::Model::UpdatesDeprecator.watch(level: :error) do
-        logger.info(
+        logger.debug(
           "Searching action for Logux action: #{action}, meta: #{meta}"
         )
         format(action_controller.public_send(action.action_type))

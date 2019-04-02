@@ -100,6 +100,6 @@ module Logux
   end
 
   def self.logger
-    Logux::Logger
+    configuration.logger
   end
 end
