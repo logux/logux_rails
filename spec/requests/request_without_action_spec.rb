@@ -12,7 +12,7 @@ describe 'Request logux server without action' do
   let(:password) { Logux.configuration.password }
 
   let(:logux_params) do
-    { version: 0,
+    { version: Logux::PROTOCOL_VERSION,
       password: password,
       commands: [
         ['action',

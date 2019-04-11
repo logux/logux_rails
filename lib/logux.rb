@@ -13,6 +13,8 @@ module Logux
   extend ActiveSupport::Autoload
   include Configurations
 
+  PROTOCOL_VERSION = 1
+
   class WithMetaError < StandardError
     attr_reader :meta
 

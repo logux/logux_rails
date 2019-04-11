@@ -5,7 +5,7 @@ module Logux
     attr_reader :client, :version, :password
 
     def initialize(client: Logux::Client.new,
-                   version: 0,
+                   version: Logux::PROTOCOL_VERSION,
                    password: Logux.configuration.password)
       @client = client
       @version = version
@@ -24,7 +24,7 @@ module Logux
 
     def prepare_data(commands)
       {
-        version: 0,
+        version: PROTOCOL_VERSION,
         password: password,
         commands: commands.map do |command|
           action = command.first
