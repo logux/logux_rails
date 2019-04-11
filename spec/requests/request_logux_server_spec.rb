@@ -12,7 +12,7 @@ describe 'Request logux server' do
   let(:password) { Logux.configuration.password }
 
   let(:logux_params) do
-    { version: 0,
+    { version: Logux::PROTOCOL_VERSION,
       password: password,
       commands: [
         ['action',
@@ -40,7 +40,7 @@ describe 'Request logux server' do
     before { request_logux }
 
     let(:logux_params) do
-      { version: 0,
+      { version: Logux::PROTOCOL_VERSION,
         password: password,
         commands: [
           ['action',
@@ -66,7 +66,7 @@ describe 'Request logux server' do
 
   context 'with proxy' do
     let(:logux_params) do
-      { version: 0,
+      { version: Logux::PROTOCOL_VERSION,
         password: password,
         commands: [
           ['action',

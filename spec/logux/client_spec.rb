@@ -10,7 +10,7 @@ describe Logux::Client do
   end
   let(:params) do
     {
-      version: 0,
+      version: Logux::PROTOCOL_VERSION,
       password: nil,
       commands: commands
     }
