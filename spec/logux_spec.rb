@@ -56,7 +56,6 @@ describe Logux, timecop: true do
   end
 
   describe '.undo' do
-    let(:request) { described_class.undo(meta, reason: reason) }
     let(:meta) do
       Logux::Meta.new(
         id: '1 1:client:uuid 0',
@@ -67,16 +66,44 @@ describe Logux, timecop: true do
       )
     end
     let(:reason) { 'error' }
-    let(:logux_commands) do
-      [
-        'action',
-        { type: 'logux/undo', id: meta.id, reason: reason },
-        a_logux_meta_with(clients: ['1:client'])
-      ]
+
+    context 'when extra data is not provided' do
+      let(:request) { described_class.undo(meta, reason: reason) }
+      let(:logux_commands) do
+        [
+          'action',
+          { type: 'logux/undo', id: meta.id, reason: reason },
+          a_logux_meta_with(clients: ['1:client'])
+        ]
+      end
+
+      it 'makes request' do
+        expect { request }.to send_to_logux(logux_commands)
+      end
     end
 
-    it 'makes request' do
-      expect { request }.to send_to_logux(logux_commands)
+    context 'when data provided' do
+      let(:request) do
+        described_class.undo(meta,
+                             reason: reason,
+                             data: { errors: ['limitExceeded'] })
+      end
+      let(:logux_commands) do
+        [
+          'action',
+          {
+            type: 'logux/undo',
+            id: meta.id,
+            reason: reason,
+            errors: ['limitExceeded']
+          },
+          a_logux_meta_with(clients: ['1:client'])
+        ]
+      end
+
+      it 'makes request' do
+        expect { request }.to send_to_logux(logux_commands)
+      end
     end
   end
 end
