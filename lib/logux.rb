@@ -75,9 +75,9 @@ module Logux
     Logux::Add.new.call(commands)
   end
 
-  def self.undo(meta, reason: nil)
+  def self.undo(meta, reason: nil, data: {})
     add(
-      { type: 'logux/undo', id: meta.id, reason: reason },
+      data.merge(type: 'logux/undo', id: meta.id, reason: reason),
       Logux::Meta.new(clients: [meta.client_id])
     )
   end
