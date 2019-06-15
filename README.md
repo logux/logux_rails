@@ -16,19 +16,13 @@ And then execute:
 bundle
 ```
 
-Or install it yourself as:
-
-```bash
-gem install logux_rails
-```
-
 ## Usage
 
 First of all, you have to configure Logux, by defining server address in, for example, `config/initializers/logux.rb`:
 
 ```ruby
 Logux.configuration do |config|
-  config.logux_host = 'http://localhost:3333'
+  config.logux_host = 'http://localhost:31338'
 end
 ```
 
