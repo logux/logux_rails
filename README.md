@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/logux/logux_rails.svg?branch=master)](https://travis-ci.org/logux/logux_rails) [![Coverage Status](https://coveralls.io/repos/github/logux/logux_rails/badge.svg?branch=master)](https://coveralls.io/github/logux/logux_rails?branch=master)
 
+Add WebSockets, live-updates and offline-first to Ruby on Rails with [Logux](https://github.com/logux/logux/). This gem will add [Logux Back-end Protocol](https://github.com/logux/logux/blob/master/backend-protocol/spec.md) to Ruby on Rails and then you can use Logux Server as a proxy between WebSocket and your Rails application.
+
+Read [Creating Logux Proxy](https://github.com/logux/logux/blob/master/2-starting/2-creating-proxy.md) guide.
+
 ## Installation
 
 Add this line to your application's Gemfile:
