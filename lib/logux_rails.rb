@@ -13,4 +13,12 @@ module Logux
     config.logger = Rails.logger if defined?(Rails.logger)
     config.logger ||= ActiveSupport::Logger.new(STDOUT)
   end
+
+  class ActionCaller
+    protected
+
+    def perform_action
+      Logux::Model::UpdatesDeprecator.watch(level: :error) { super }
+    end
+  end
 end
