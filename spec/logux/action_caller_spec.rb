@@ -34,20 +34,20 @@ describe Logux::ActionCaller do
   end
 
   context 'when attributes updated' do
-    context 'when insecure #update_attributes is called' do
+    context 'when insecure #update is called' do
       let(:action) { create(:logux_actions_post, type: 'post/rename') }
 
-      it 'raises exception when #update_attributes is called inside action' do
+      it 'raises exception when #update is called inside action' do
         expect do
           action_caller.call!
         end.to raise_error(Logux::Model::InsecureUpdateError)
       end
     end
 
-    context 'when secure #update_attributes is called' do
+    context 'when secure #update is called' do
       let(:action) { create(:logux_actions_post, type: 'post/touch') }
 
-      it 'raises exception when #update_attributes is called inside action' do
+      it 'raises exception when #update is called inside action' do
         expect { action_caller.call! }.not_to raise_error
       end
     end

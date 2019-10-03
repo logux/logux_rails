@@ -63,9 +63,9 @@ describe Logux::Model do
     # rubocop:enable RSpec/MultipleExpectations
   end
 
-  describe '#update_attributes' do
+  describe '#update' do
     it 'updates logux.updated_at' do
-      model.update_attributes(title: 'something')
+      model.update(title: 'something')
 
       title_updated_at = model.logux.updated_at(:title)
       expect(title_updated_at).not_to eq(initial_meta.logux_order)

@@ -13,7 +13,7 @@ module Logux
           logux_order: meta.logux_order,
           attributes: attributes
         )
-        @model.update_attributes(updater.updated_attributes)
+        @model.update(updater.updated_attributes)
       end
 
       def updated_at(field)
