@@ -8,7 +8,7 @@ describe Logux::Model::UpdatesDeprecator do
   context 'with error level' do
     it 'raises error when insecure update is detected' do
       expect do
-        described_class.watch(level: :error) do
+        described_class.call(level: :error) do
           post.update(title: 'new title')
         end
       end.to raise_error(Logux::Model::InsecureUpdateError)
@@ -16,7 +16,7 @@ describe Logux::Model::UpdatesDeprecator do
 
     it 'does not raise error when update is secure' do
       expect do
-        described_class.watch(level: :error) do
+        described_class.call(level: :error) do
           post.update(updated_at: Time.now)
         end
       end.not_to raise_error
@@ -26,7 +26,7 @@ describe Logux::Model::UpdatesDeprecator do
   context 'with warn level' do
     it 'outputs deprecation warning when update is detected' do
       expect do
-        described_class.watch(level: :warn) do
+        described_class.call(level: :warn) do
           post.update(title: 'new title')
         end
       end.to output(/DEPRECATION WARNING/).to_stderr
@@ -34,7 +34,7 @@ describe Logux::Model::UpdatesDeprecator do
 
     it 'uses warn level by default' do
       expect do
-        described_class.watch do
+        described_class.call do
           post.update(title: 'new title')
         end
       end.to output(/DEPRECATION WARNING/).to_stderr

@@ -10,15 +10,10 @@ module Logux
   autoload :Model, 'logux/model'
 
   configuration_defaults do |config|
+    config.action_watcher = Logux::Model::UpdatesDeprecator
+    config.action_watcher_options = { level: :error }
     config.logger = Rails.logger if defined?(Rails.logger)
     config.logger ||= ActiveSupport::Logger.new(STDOUT)
-  end
-
-  class ActionCaller
-    protected
-
-    def perform_action
-      Logux::Model::UpdatesDeprecator.watch(level: :error) { super }
-    end
+    config.on_error = proc {}
   end
 end

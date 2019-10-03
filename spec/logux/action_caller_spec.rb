@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Logux::ActionCaller do
   let(:action_caller) { described_class.new(action: action, meta: meta) }
