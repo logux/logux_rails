@@ -2,8 +2,16 @@
 
 module Logux
   module Model
-    class UpdatesDeprecator < Logux::ActionWatcher
+    class UpdatesDeprecator
       EVENT = 'logux.insecure_update'
+
+      def self.call(options = {}, &block)
+        new(options).call(&block)
+      end
+
+      def initialize(options)
+        @options = options
+      end
 
       def call(&block)
         callback = lambda(&method(:handle_insecure_update))
@@ -43,7 +51,7 @@ module Logux
       DEFAULT_LEVEL = :warn
 
       def level
-        options[:level] || DEFAULT_LEVEL
+        @options[:level] || DEFAULT_LEVEL
       end
     end
   end
