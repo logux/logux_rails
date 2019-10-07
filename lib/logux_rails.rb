@@ -9,6 +9,11 @@ require 'logux/engine'
 module Logux
   autoload :Model, 'logux/model'
 
+  configurable %i[
+    action_watcher
+    action_watcher_options
+  ]
+
   configuration_defaults do |config|
     config.action_watcher = Logux::Model::UpdatesDeprecator
     config.action_watcher_options = { level: :error }
