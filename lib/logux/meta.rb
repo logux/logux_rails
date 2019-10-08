@@ -44,7 +44,7 @@ module Logux
       nodes
       reasons
       channels
-    ]
+    ].freeze
 
     private_constant :RESEND_KEYS
 
