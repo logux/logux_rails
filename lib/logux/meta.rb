@@ -32,5 +32,31 @@ module Logux
     def id
       fetch('id')
     end
+
+    def undo_meta
+      self.class.new(undo_meta_hash)
+    end
+
+    private
+
+    RESEND_KEYS = %w[
+      users
+      nodes
+      reasons
+      channels
+    ]
+
+    private_constant :RESEND_KEYS
+
+    def undo_meta_hash
+      { status: 'processed' }
+        .merge(slice(*RESEND_KEYS))
+        .merge(clients: clients)
+    end
+
+    def clients
+      result = [client_id]
+      key?('clients') ? (result + self['clients']) : result
+    end
   end
 end
