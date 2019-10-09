@@ -1,5 +1,5 @@
+language: minimal
 sudo: require
-install: skip
 services:
   - docker
 
