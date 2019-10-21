@@ -5,17 +5,15 @@ module Logux
     class UpdatesDeprecator
       EVENT = 'logux.insecure_update'
 
-      class << self
-        def watch(args = {}, &block)
-          new(args).watch(&block)
-        end
+      def self.call(options = {}, &block)
+        new(options).call(&block)
       end
 
-      def initialize(level: :warn)
-        @level = level
+      def initialize(options)
+        @options = options
       end
 
-      def watch(&block)
+      def call(&block)
         callback = lambda(&method(:handle_insecure_update))
         ActiveSupport::Notifications.subscribed(callback, EVENT, &block)
       end
@@ -42,12 +40,18 @@ module Logux
           Logux tracked #{pluralized_attributes} (#{insecure_attributes.join(', ')}) should be updated using model.logux.update(...)
         TEXT
 
-        case @level
+        case level
         when :warn
           ActiveSupport::Deprecation.warn(message)
         when :error
           raise InsecureUpdateError, message
         end
+      end
+
+      DEFAULT_LEVEL = :warn
+
+      def level
+        @options[:level] || DEFAULT_LEVEL
       end
     end
   end

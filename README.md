@@ -30,17 +30,22 @@ Logux.configuration do |config|
 end
 ```
 
-Mount logux in routes:
+Mount `Logux::Rack` in your application routing configuration:
 
 ```ruby
+# config/routes.rb
+Rails.application.routes.draw do
   mount Logux::Engine => '/'
+end
 ```
 
 After this, POST requests to `/logux` will be processed by `LoguxController`. You can redefine it or inherit from, if it necessary, for example, for implementing custom authorization flow.
 
 Logux Rails will try to find Action for the specific message from Logux Server. For example, for `project/rename` action, you should define `Action::Project` class, inherited from `Logux::Action` base class, and implement `rename` method.
 
-You can execute `rake logux:actions` to get the list of available action types, or `rake logux:channels` to get the list of available channels.
+### Rake commands
+
+Use `rails logux:actions` command to get the list of available action types, or `rails logux:channels` for channels. The default search path is set to `app/logux/actions` and `app/logux/channels` for actions and channels correspondingly, assuming `app` directory is the root of your Rails application. Both command support custom search paths: `rails logux:actions[lib/logux/actions]`.
 
 ## Development with Docker
 

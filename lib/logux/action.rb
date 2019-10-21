@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Logux
-  class Actions < ::ActionController::Parameters
+  class Action < ::ActionController::Parameters
     def action_name
       type&.split('/')&.dig(0)
     end
