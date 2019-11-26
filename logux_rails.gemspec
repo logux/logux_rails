@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Logux client for rails'
   spec.description   = 'Logux client for rails'
-  spec.homepage      = 'https://github.com/logux'
+  spec.homepage      = 'https://logux.io/'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
