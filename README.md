@@ -25,7 +25,7 @@ bundle
 First of all, you have to configure Logux, by defining server address in, for example, `config/initializers/logux.rb`:
 
 ```ruby
-Logux.configuration do |config|
+Logux.configure do |config|
   config.logux_host = 'http://localhost:31338'
 end
 ```
