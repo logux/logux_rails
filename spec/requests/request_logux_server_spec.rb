@@ -60,7 +60,7 @@ describe 'Request logux server' do
     let(:secret) { 'INTENTIONALLY_WRONG' }
 
     it 'returns error' do
-      expect(response).to be_forbidden?
+      expect(response).to be_forbidden
     end
   end
 
