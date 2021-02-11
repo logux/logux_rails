@@ -9,11 +9,11 @@ describe 'Request logux server without action' do
          as: :json)
   end
 
-  let(:password) { Logux.configuration.password }
+  let(:secret) { Logux.configuration.secret }
 
   let(:logux_params) do
     { version: Logux::PROTOCOL_VERSION,
-      password: password,
+      secret: secret,
       commands: [
         ['action',
          { type: action, key: 'text', value: 'hi' },
