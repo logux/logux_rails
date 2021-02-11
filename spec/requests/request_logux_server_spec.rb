@@ -57,10 +57,10 @@ describe 'Request logux server' do
   context 'when secret wrong' do
     before { request_logux }
 
-    let(:password) { '12345' }
+    let(:secret) { 'INTENTIONALLY_WRONG' }
 
     it 'returns error' do
-      expect(response).to logux_unauthorized
+      expect(response).to be_forbidden?
     end
   end
 
