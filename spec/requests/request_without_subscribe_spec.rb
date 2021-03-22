@@ -9,11 +9,11 @@ describe 'Request logux server without subscribe' do
          as: :json)
   end
 
-  let(:password) { Logux.configuration.password }
+  let(:secret) { Logux.configuration.secret }
 
   let(:logux_params) do
     { version: Logux::PROTOCOL_VERSION,
-      password: password,
+      secret: secret,
       commands: [
         ['action',
          { type: 'logux/subscribe', channel: channel },

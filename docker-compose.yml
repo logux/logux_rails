@@ -10,6 +10,7 @@ services:
       - DB_HOST=db
       - DB_NAME=logux_rails
       - DB_USERNAME=postgres
+      - DB_PASSWORD=password
     command: bash
     working_dir: /app
     volumes:
@@ -24,6 +25,7 @@ services:
     image: postgres:10
     environment:
       - POSTGRES_DB=logux_rails
+      - POSTGRES_PASSWORD=password
 
 volumes:
   bundler_data:

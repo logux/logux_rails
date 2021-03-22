@@ -9,11 +9,11 @@ describe 'Request logux server' do
          as: :json)
   end
 
-  let(:password) { Logux.configuration.password }
+  let(:secret) { Logux.configuration.secret }
 
   let(:logux_params) do
     { version: Logux::PROTOCOL_VERSION,
-      password: password,
+      secret: secret,
       commands: [
         ['action',
          { type: 'logux/subscribe', channel: 'post/123' },
@@ -41,7 +41,7 @@ describe 'Request logux server' do
 
     let(:logux_params) do
       { version: Logux::PROTOCOL_VERSION,
-        password: password,
+        secret: secret,
         commands: [
           ['action',
            { type: 'comment/update', key: 'text', value: 'hi' },
@@ -54,20 +54,20 @@ describe 'Request logux server' do
     end
   end
 
-  context 'when password wrong' do
+  context 'when secret wrong' do
     before { request_logux }
 
-    let(:password) { '12345' }
+    let(:secret) { 'INTENTIONALLY_WRONG' }
 
     it 'returns error' do
-      expect(response).to logux_unauthorized
+      expect(response).to be_forbidden
     end
   end
 
   context 'with proxy' do
     let(:logux_params) do
       { version: Logux::PROTOCOL_VERSION,
-        password: password,
+        secret: secret,
         commands: [
           ['action',
            { type: 'logux/subscribe', channel: 'post/123' },
