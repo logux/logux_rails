@@ -23,9 +23,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'logux-rack', '>= 0.1.0'
-  spec.add_dependency 'rails', '>= 5.0', '< 6.1'
+  spec.add_dependency 'rails', '>= 5.0'
   spec.add_development_dependency 'appraisal', '~> 2.2'
-  spec.add_development_dependency 'bundler', '~> 1.16'
+  spec.add_development_dependency 'bundler', '>= 1.16'
   spec.add_development_dependency 'combustion', '~> 1.1.0'
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'factory_bot'
